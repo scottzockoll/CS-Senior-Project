@@ -28,11 +28,11 @@ Jason Zogheb
 
 3. Install React (frontend)
 
-    * Using the terminal navigate to /flickpick/
+    * Using the terminal navigate to /client/
 
     * Run the command "npm install"
 
-      This will install all the needed dependencies defined in /flickpick/package.json
+      This will install all the needed dependencies defined in /client/package.json
 
     * Run the command "npm start"
 
