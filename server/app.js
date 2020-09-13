@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const port = 9000
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -29,3 +30,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 module.exports = app;
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
