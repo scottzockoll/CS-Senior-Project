@@ -21,18 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Remove child IDE configuration folders.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/www" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/users.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/views/error.hbs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/views/index.hbs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/views/layout.hbs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +37,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="ProjectId" id="1hCmLOYxU4gvLRFBT96riJBgycF" />
   <component name="ProjectLevelVcsManager">

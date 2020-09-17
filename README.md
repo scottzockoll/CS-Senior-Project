@@ -11,8 +11,11 @@ Jason Zogheb
 # Setup
 1. [Install Node.JS](https://nodejs.org/en/)
 
-    * I have 14.10.1 (Latest) installed and recommend everyone install the same version.
-2. Install Express (backend)
+    * I have 14.10.1 (Latest) installed and recommend everyone installs the same version.
+    
+2. [Install Git LFS](https://git-lfs.github.com/)
+    
+3. Install Express (backend)
 
     * Clone the GitHub repository to your computer
 
@@ -26,7 +29,7 @@ Jason Zogheb
 
     * Navigate to http://localhost:9000 in your browser and make sure the page loads
 
-3. Install React (frontend)
+4. Install React (frontend)
 
     * Using the terminal navigate to /client/
 
