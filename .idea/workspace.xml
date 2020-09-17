@@ -20,8 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Remove child IDE configuration folders.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/genome-scores.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/genome-tags.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/links.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/movies.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/ratings.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dataset/tags.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +56,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/server" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/dataset" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -60,6 +66,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\CS-Senior-Project\dataset" />
       <recent name="E:\CS-Senior-Project\server" />
     </key>
   </component>
@@ -93,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599526107734</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Update README.md, add package-lock.json for client">
+      <created>1600373294656</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1600373294656</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,7 +128,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Express &amp; React-App initialization." />
     <MESSAGE value="Remove child IDE configuration folders." />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove child IDE configuration folders." />
+    <MESSAGE value="Update README.md, add package-lock.json for client" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md, add package-lock.json for client" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1060" y="442" key="FileChooserDialogImpl" timestamp="1599528751747">
