@@ -2,6 +2,7 @@
 # $ conda create --name <env> --file <this file>
 # platform: win-64
 astroid=2.4.2=py38h32f6830_0
+autopep8=1.5.4=pyh9f0ad1d_0
 blas=1.0=mkl
 ca-certificates=2020.6.20=hecda079_0
 certifi=2020.6.20=py38h32f6830_0
@@ -26,6 +27,7 @@ numpy=1.19.1=py38h72c728b_0
 openssl=1.1.1g=he774522_1
 pandas=1.1.2=py38h7ae7562_0
 pip=20.2.3=py_0
+pycodestyle=2.6.0=pyh9f0ad1d_0
 pylint=2.6.0=py38h32f6830_0
 python=3.8.5=h60c2a47_8_cpython
 python-dateutil=2.8.1=py_0

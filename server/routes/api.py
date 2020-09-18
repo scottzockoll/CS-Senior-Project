@@ -1,5 +1,6 @@
 from server import app
 
+
 @app.route('/api/v1/user/<int:id>', methods=['GET'])
 def get_user(id: int):
     return {
