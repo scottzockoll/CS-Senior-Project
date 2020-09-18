@@ -25,17 +25,16 @@ Scott Zockoll : zockol72@students.rowan.edu
     $ git lfs install
     ```
 3. Create & initialize your Conda environment
-     > In `<repository>/` run
+    > In `<repository>/` run
 
-     ```shell script
-     $ conda create --name <env> --file environment.yaml
+    ```shell script
+    $ conda create --name <env> --file environment.yaml
     ```
 4. Install the front end dependencies
-     > In `<repository>/client` run
-
-     ```shell script
-     $ npm install
-     ```
+    > In `<repository>/client` run
+    ```shell script
+    $ npm install
+    ```
 5. Setup PyCharm
     > File > Settings > Project: \<repository\> > Python Interpreter
     >
@@ -44,3 +43,47 @@ Scott Zockoll : zockol72@students.rowan.edu
     > You want "Existing Environment" then choose the env from step 3
     > 
     > OK
+
+6. Setup Flask Environment (Windows)
+    > In `<repository>/server` run
+    ```shell script
+    $ set FLASK_APP=__init__.py
+    $ set FLASK_ENV=development
+    ```
+   
+6. Setup Flask Environment (Unix)
+    > In `<repository>/server` run
+    ```shell script
+    $ export FLASK_APP=__init__.py
+    $ export FLASK_ENV=development
+    ```
+   
+# Develop
+You can run the client and server individually or both at once.
+
+##### Both the client and server
+> In `<repository>/` run
+    
+```shell script
+$ dev
+```
+
+The client and server will open in new windows. They will reload individually when you make changes to them.
+
+##### Just the client
+> In `<repository>/` run
+    
+```shell script
+$ client
+```
+
+The site will open in your browser and automatically reload when changes are made to the client files.
+
+##### Just the server
+> In `<repository>/` run
+    
+```shell script
+$ server
+```
+
+The server will reload when you make changes to the files.

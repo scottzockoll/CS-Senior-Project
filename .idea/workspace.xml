@@ -19,22 +19,30 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Remove child IDE configuration folders.">
-      <change beforePath="$PROJECT_DIR$/.idea/CS-Senior-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CS-Senior-Project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/bin/www" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.sass" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/users.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/public/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/onion.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/serviceWorker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +84,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/src" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -87,6 +95,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\CS-Senior-Project\client\src" />
       <recent name="E:\CS-Senior-Project\dataset" />
       <recent name="E:\CS-Senior-Project\server" />
     </key>
@@ -106,7 +115,10 @@
       <workItem from="1599528188342" duration="565000" />
       <workItem from="1599529222486" duration="120000" />
       <workItem from="1599529428483" duration="430000" />
-      <workItem from="1600442298715" duration="5242000" />
+      <workItem from="1600442298715" duration="5689000" />
+      <workItem from="1600448008174" duration="771000" />
+      <workItem from="1600448791527" duration="630000" />
+      <workItem from="1600449430367" duration="775000" />
     </task>
     <task id="LOCAL-00001" summary="Express &amp; React-App initialization.">
       <created>1599526007575</created>
@@ -143,7 +155,21 @@
       <option name="project" value="LOCAL" />
       <updated>1600373599324</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Update README.md to reflect Flask server">
+      <created>1600447649244</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1600447649244</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml">
+      <created>1600447675451</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1600447675451</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,9 +194,15 @@
     <MESSAGE value="Update README.md, add package-lock.json for client" />
     <MESSAGE value="Added dataset files to LFS" />
     <MESSAGE value="Update workspace.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update workspace.xml" />
+    <MESSAGE value="Update README.md to reflect Flask server" />
+    <MESSAGE value="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="1055" y="502" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600448060141">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1055" y="502" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1600448060141" />
     <state x="1060" y="442" key="FileChooserDialogImpl" timestamp="1599528751747">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
