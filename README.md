@@ -53,24 +53,6 @@ Scott Zockoll : zockol72@students.rowan.edu
    >
    > OK
 
-6. Setup Flask Environment (Windows)
-
-   > In `<repository>/server` run
-
-   ```shell script
-   $ set FLASK_APP=__init__.py
-   $ set FLASK_ENV=development
-   ```
-
-7. Setup Flask Environment (Unix)
-
-   > In `<repository>/server` run
-
-   ```shell script
-   $ export FLASK_APP=__init__.py
-   $ export FLASK_ENV=development
-   ```
-
 # Develop
 
 You can run the client and server individually or both at once.
