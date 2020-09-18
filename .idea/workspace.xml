@@ -20,14 +20,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Remove child IDE configuration folders.">
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/README.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/genome-scores.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/genome-tags.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/links.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/movies.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/ratings.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dataset/tags.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CS-Senior-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CS-Senior-Project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/bin/www" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/public/stylesheets/style.sass" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/routes/users.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,13 +45,26 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript File" />
+        <option value="Python Script" />
       </list>
+    </option>
+  </component>
+  <component name="FlaskConsoleOptions" custom-start-script="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))">
+    <envs>
+      <env key="FLASK_APP" value="app" />
+    </envs>
+    <option name="myCustomStartScript" value="import sys&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;from flask.cli import ScriptInfo&#10;locals().update(ScriptInfo(create_app=None).load_app().make_shell_context())&#10;print(&quot;Python %s on %s\nApp: %s [%s]\nInstance: %s&quot; % (sys.version, sys.platform, app.import_name, app.env, app.instance_path))" />
+    <option name="myEnvs">
+      <map>
+        <entry key="FLASK_APP" value="app" />
+      </map>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
   </component>
+  <component name="JupyterTrust" id="bf8be082-0d5b-4783-bf9b-56509728c752" />
   <component name="ProjectId" id="1hCmLOYxU4gvLRFBT96riJBgycF" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -56,11 +76,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dataset" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="ts.external.directory.path" value="E:\CS-Senior-Project\client\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -85,6 +106,7 @@
       <workItem from="1599528188342" duration="565000" />
       <workItem from="1599529222486" duration="120000" />
       <workItem from="1599529428483" duration="430000" />
+      <workItem from="1600442298715" duration="5242000" />
     </task>
     <task id="LOCAL-00001" summary="Express &amp; React-App initialization.">
       <created>1599526007575</created>
@@ -107,7 +129,21 @@
       <option name="project" value="LOCAL" />
       <updated>1600373294656</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added dataset files to LFS">
+      <created>1600373584654</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1600373584654</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Update workspace.xml">
+      <created>1600373599324</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1600373599324</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,10 +162,13 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="Express &amp; React-App initialization." />
     <MESSAGE value="Remove child IDE configuration folders." />
     <MESSAGE value="Update README.md, add package-lock.json for client" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update README.md, add package-lock.json for client" />
+    <MESSAGE value="Added dataset files to LFS" />
+    <MESSAGE value="Update workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update workspace.xml" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1060" y="442" key="FileChooserDialogImpl" timestamp="1599528751747">
@@ -140,5 +179,9 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1129" y="402" key="RollbackChangesDialog/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1599528510558" />
+    <state x="781" y="345" key="SettingsEditor" timestamp="1600446262855">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="781" y="345" key="SettingsEditor/0.0.2560.1400/-1920.349.1920.1040@0.0.2560.1400" timestamp="1600446262855" />
   </component>
 </project>
