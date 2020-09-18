@@ -86,3 +86,13 @@ $ server
 ```
 
 The server will reload when you make changes to the files.
+
+##### One-off formats
+
+Front-end code is automatically formatted on commit, but you can format the whole project
+
+> In `<repository>/` run
+
+```shell script
+$ format
+```
