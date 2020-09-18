@@ -19,30 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml">
+    <list default="true" id="fad30902-65b1-4c3c-8630-131b82be454d" name="Default Changelist" comment="Reinstall client with TSX and NPM&#10;Add pylint to dependencies">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.test.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/onion.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/serviceWorker.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/setupTests.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/yarn.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/api.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +98,7 @@
       <workItem from="1600442298715" duration="5689000" />
       <workItem from="1600448008174" duration="771000" />
       <workItem from="1600448791527" duration="630000" />
-      <workItem from="1600449430367" duration="775000" />
+      <workItem from="1600449430367" duration="935000" />
     </task>
     <task id="LOCAL-00001" summary="Express &amp; React-App initialization.">
       <created>1599526007575</created>
@@ -169,7 +149,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600447675451</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Reinstall client with TSX and NPM&#10;Add pylint to dependencies">
+      <created>1600450270094</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1600450270094</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,7 +183,8 @@
     <MESSAGE value="Update workspace.xml" />
     <MESSAGE value="Update README.md to reflect Flask server" />
     <MESSAGE value="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Use Flask&#10;Update README.md to reflect Flask server&#10;Add environment.yaml" />
+    <MESSAGE value="Reinstall client with TSX and NPM&#10;Add pylint to dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reinstall client with TSX and NPM&#10;Add pylint to dependencies" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1055" y="502" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1600448060141">

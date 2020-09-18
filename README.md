@@ -11,7 +11,7 @@ Scott Zockoll : zockol72@students.rowan.edu
 # Setup
 1. Install the required software (everyone ***MUST*** use the same software)
     * [WebStorm](https://www.jetbrains.com/webstorm/) for front end development
-    * [NodeJS 14.11.0](https://nodejs.org/en/) for front end development
+    * [NodeJS 14.11.0](https://nodejs.org/en/) for front end development (***use NPM not yarn***)
     * [PyCharm](https://www.jetbrains.com/pycharm/) for backend development
         * [Anaconda](https://www.anaconda.com/) as your Python distribution
     * [Install Git LFS](https://git-lfs.github.com/) for everyone
