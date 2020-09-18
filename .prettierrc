@@ -4,7 +4,7 @@
       "files": ["*.js", "*.jsx", "*.ts", "*.tsx"],
       "options": {
         "semi": true,
-        "tabWidth": 7,
+        "tabWidth": 4,
         "singleQuote": true,
         "trailingComma": "es5"
       }
