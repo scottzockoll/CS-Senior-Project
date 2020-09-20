@@ -35,6 +35,7 @@ Scott Zockoll : zockol72@students.rowan.edu
    > In `<repository>/` run
 
    ```shell script
+   $ conda config --add channels conda-forge
    $ conda create --name <env> --file environment.yaml
    ```
 
