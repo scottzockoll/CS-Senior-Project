@@ -1,15 +1,6 @@
 import React from 'react';
-import logo from './onion.png';
 import './App.css';
-import {
-    Box,
-    Button,
-    Carousel,
-    Grommet,
-    Heading,
-    Image,
-    TextInput,
-} from 'grommet';
+import { Box, Button, Carousel, Heading, Image, TextInput } from 'grommet';
 import { Ticket } from 'grommet-icons';
 
 type WelcomeProps = {
