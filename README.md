@@ -17,7 +17,8 @@ Scott Zockoll : zockol72@students.rowan.edu
    - [NodeJS 14.11.0](https://nodejs.org/en/) for front end development (**_use NPM not yarn_**)
    - [PyCharm](https://www.jetbrains.com/pycharm/) for backend development
      - [Anaconda](https://www.anaconda.com/) as your Python distribution
-   - [Install Git LFS](https://git-lfs.github.com/) for everyone
+   - [Git LFS](https://git-lfs.github.com/) for everyone
+   - (Optional, Highly recommended) [Tensorflow GPU Support](https://www.tensorflow.org/install/gpu) for everyone
    - (Optional) [Postman](https://www.postman.com/) for everyone
 
    > Note WebStorm & PyCharm are both paid products that you can get for [free as a student](https://www.jetbrains.com/community/education/#students)
@@ -36,7 +37,7 @@ Scott Zockoll : zockol72@students.rowan.edu
 
    ```shell script
    $ conda config --add channels conda-forge
-   $ conda create --name <env> --file environment.yaml
+   $ conda create --name <your-env-name-here> --file environment.yaml
    ```
 
 4. Install the front end dependencies
@@ -50,13 +51,15 @@ Scott Zockoll : zockol72@students.rowan.edu
    >
    > Click the cogwheel on the right next to the dropdown then click "Add..."
    >
-   > You want "Existing Environment" then choose the env from step 3
+   > You want "Existing Environment" then choose the your-env-name-here from step 3
    >
    > OK
 
 # Develop
 
 You can run the client and server individually or both at once.
+
+> :warning: You must activate your Anaconda environment to run the Flask server. This means you must either run the server through PyCharm or use Anaconda Prompt. You may find it easier to use Anaconda Prompt, or have both PyCharm and WebStorm running while you develop.
 
 ##### Both the client and server
 
