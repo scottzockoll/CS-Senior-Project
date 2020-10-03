@@ -141,7 +141,7 @@ def update_feedback_tag(feedbackId: int):
 
 # Create a new feedback row for a movie from a user.
 @app.route('/api/v1/feedback/movie/<int:userId>/<int:movieId>', methods=['POST'])
-def create_feedback():
+def create_feedback(userId: int, movieId: int):
   return {
     "id": movieId,
     "result": "Created"
@@ -149,7 +149,7 @@ def create_feedback():
 
 # Creates a new tag feedback for a specific movie and user
 @app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])
-def create_feedback_tag():
+def create_feedback_tag(userId: int, movieId: int, tagId: int):
   return {
     "id": tagId,
     "result": "Created"
