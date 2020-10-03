@@ -11,7 +11,7 @@ def get_user(id: int):
     "firstName": "Joe",
     "lastName": "Smith",
     "isAdmin": true
-  }
+  }, 200
 
 # Delete a user by user id.
 @app.route('/api/v1/user/<int:id>', methods=['DELETE'])
@@ -19,7 +19,7 @@ def del_user(id: int):
   return {
     "id": id,
     "result": "OK"
-  }
+  }, 200
 
 # Partially update a user by user id.
 @app.route('/api/v1/user/<int:id>', methods=['PATCH'])
@@ -27,7 +27,7 @@ def update_user(id: int):
   return {
     "id": id,
     "result": "OK"
-  }
+  }, 200
 
 # Create a new user.
 @app.route('/api/v1/user', methods=['POST'])
@@ -35,7 +35,7 @@ def create_user():
   return {
     "id": 999,
     "result": "Created"
-  }
+  }, 201
 
 # --Movie--
 
@@ -46,7 +46,7 @@ def get_movie(id: int):
     "movie_id": id,
     "movie_name": "Terminator",
     "genres": ["Action", "Science Fiction"]
-  }
+  }, 200
 
 # Get a list of auto-complete suggestions for a partial movie title.
 @app.route('/api/v1/movie/search/<string:name>', methods=['GET'])
@@ -64,7 +64,7 @@ def get_movie_autocomplete(name: string):
       "id": 33,
       "title": "The Terminal"
     }]
-  }
+  }, 200
 
 # --Tag--
 
@@ -75,7 +75,7 @@ def get_tag(id: int):
     "id": id,
     "name": "Science Fiction",
     "movie_id": 999
-  }
+  }, 200
 
 # Get a list of auto-complete suggestions for a partial tag. The same tag may exist across multiple movies, this method does not return every instance of a tag, only unique tags.
 @app.route('/api/v1/tag/search/<string:name>/<int:movieId>', methods=['GET'])
@@ -90,7 +90,7 @@ def get_tag_autocomplete(name: string, movieId: int):
     {
       "name": "Comedy"
     }]
-  }
+  }, 200
 
 # --Feedback--
 
@@ -100,7 +100,7 @@ def get_feedback(userId: int, movieId: int):
   return {
     "id": 999,
     "request": "OK"
-  }
+  }, 200
 
 # Return the user’s feedback on tags of a specific movie.
 @app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>', methods=['GET'])
@@ -121,7 +121,7 @@ def get_feedback_tags(userId: int, movieId: int):
       "tag_id": 666,
       "rating": 4.5
     }]
-  }
+  }, 200
 
 # Replace a user's feedback of a specific movie.
 @app.route('/api/v1/feedback/movie/<int:feedbackId>', methods=['PUT'])
@@ -129,7 +129,7 @@ def update_feedback(feedbackId: int):
   return {
     "id": feedbackId,
     "request": "OK"
-  }
+  }, 200
 
 # Replace the feedback for a specific tag id.
 @app.route('/api/v1/feedback/tags/<int:feedbackId>', methods=['PUT'])
@@ -137,7 +137,7 @@ def update_feedback_tag(feedbackId: int):
   return {
     "id": feedbackId,
     "request": "OK"
-  }
+  }, 200
 
 # Create a new feedback row for a movie from a user.
 @app.route('/api/v1/feedback/movie/<int:userId>/<int:movieId>', methods=['POST'])
@@ -145,7 +145,7 @@ def create_feedback(userId: int, movieId: int):
   return {
     "id": movieId,
     "result": "Created"
-  }
+  }, 201
 
 # Creates a new tag feedback for a specific movie and user
 @app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])
@@ -153,7 +153,7 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
   return {
     "id": tagId,
     "result": "Created"
-  }
+  }, 201
 
 # --Recommendation--
 
@@ -162,4 +162,4 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
 def get_recommendations(userId: int):
   return {
     "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
-  }
+  }, 200
