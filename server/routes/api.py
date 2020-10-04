@@ -62,7 +62,7 @@ def get_movie(id: int):
 
 
 @app.route('/api/v1/movie/search/<string:name>', methods=['GET'])
-def get_movie_autocomplete(name: string):
+def get_movie_autocomplete(name: str):
     return {
         "movies": [{
             "id": 11,
@@ -95,7 +95,7 @@ def get_tag(id: int):
 
 
 @app.route('/api/v1/tag/search/<string:name>/<int:movieId>', methods=['GET'])
-def get_tag_autocomplete(name: string, movieId: int):
+def get_tag_autocomplete(name: str, movieId: int):
     return {
         "tags": [{
             "name": "Action"
