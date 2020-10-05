@@ -19,3 +19,6 @@ yarn-error.log*
 
 # Config
 .idea/workspace.xml
+.idea/watcherTasks.xml
+.idea/dictionaries/**/*
+/checkpoints/

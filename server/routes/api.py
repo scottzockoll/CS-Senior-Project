@@ -12,7 +12,7 @@ def get_user(id: int):
         "email": "example@example.com",
         "firstName": "Joe",
         "lastName": "Smith",
-        "isAdmin": true
+        "isAdmin": True
     }, 200
 
 # Delete a user by user id.
@@ -91,7 +91,9 @@ def get_tag(id: int):
         "movie_id": 999
     }, 200
 
-# Get a list of auto-complete suggestions for a partial tag. The same tag may exist across multiple movies, this method does not return every instance of a tag, only unique tags.
+# Get a list of auto-complete suggestions for a partial tag. The same tag
+# may exist across multiple movies, this method does not return every
+# instance of a tag, only unique tags.
 
 
 @app.route('/api/v1/tag/search/<string:name>/<int:movieId>', methods=['GET'])
@@ -190,6 +192,7 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
 
 @app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])
 def get_recommendations(userId: int):
+
     return {
         "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
     }, 200
