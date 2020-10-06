@@ -59,6 +59,10 @@ def construct_model(movies: tf.data.Dataset) -> tfrs.Model:
     return model
 
 
+def load_weights(model: tfrs.Model, filepath='weights'):
+    model.load_weights('E:\\CS-Senior-Project\\server\\model\\weights\\checkpoint')
+
+
 def run(**kwargs):
     seed = kwargs['seed']
     if seed is None:
@@ -89,9 +93,7 @@ def run(**kwargs):
         model.fit(train.batch(train_size // 16), epochs=1)
 
         if (current % save_every) == 0:
-            model.save_weights(
-                'checkpoints/epoch %d/flick_pick_weights' %
-                current)
+            model.save_weights('checkpoints/epoch %d/flick_pick_weights' % current)
 
         print(model.evaluate(test.batch(test_size), return_dict=True))
 

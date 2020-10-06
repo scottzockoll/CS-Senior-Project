@@ -1,4 +1,5 @@
 from flask import Flask
+import tensorflow_recommenders as tfrs
 
 
 def register_api_routes(app: Flask):
@@ -16,7 +17,10 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/feedback/tags/<int:feedbackId>', methods=['PUT'])(update_feedback_tag)
     app.route('/api/v1/feedback/movie/<int:userId>/<int:movieId>', methods=['POST'])(create_feedback)
     app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])(create_feedback_tag)
-    app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations)
+
+
+def register_recommendations_routes(app: Flask, model: tfrs.Model):
+    app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations(model))
 
 
 def get_user(id: int):
@@ -157,7 +161,9 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
     }, 201
 
 
-def get_recommendations(userId: int):
-    return {
-        "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
-    }, 200
+def get_recommendations(model: tfrs.Model):
+    def process_request(userId: int):
+        return {
+            "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
+        }, 200
+    return process_request
