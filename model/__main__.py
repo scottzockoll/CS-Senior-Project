@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
 
     if args.train:
-        from server.model.recommender import run
+        from model.recommender import run
 
         run(**vars(args))
 
