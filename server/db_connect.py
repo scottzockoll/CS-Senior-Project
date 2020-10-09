@@ -1,7 +1,6 @@
-from flask import Flask
+from server import app
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
 
 # User = fp_user
 # Password = flickpick123
@@ -12,9 +11,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
     'mysql://fp_user:flickpick123@ec2-18-222-97-98.us-east-2.compute.amazonaws.com/FlickPick'
 db = SQLAlchemy(app)
 
-# Testing Purposes - insert, show result, delete
-# engine = db.engine
-# connection = engine.connect()
+engine = db.engine
+connection = engine.connect()
+
+# Test Queries
 
 # insert = connection.execute("INSERT INTO movies (id, name) values ('1', 'Testing')")
 
