@@ -34,8 +34,8 @@ def load_dataset(data_dir: str) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     :param data_dir: The directory to load datasets from
     :return: (ratings, movies)
     """
-    ratings: tf.data.Dataset = tfds.load('movie_lens/25m-ratings', data_dir=data_dir, split="train")
-    movies: tf.data.Dataset = tfds.load('movie_lens/25m-movies', data_dir=data_dir, split="train")
+    ratings: tf.data.Dataset = tfds.load('movie_lens/100k-ratings', data_dir=data_dir, split="train")
+    movies: tf.data.Dataset = tfds.load('movie_lens/100k-movies', data_dir=data_dir, split="train")
 
     ratings = ratings.map(lambda x: {
         "movie_id": float(x["movie_id"]),
@@ -58,10 +58,6 @@ def construct_model(movies: tf.data.Dataset) -> tfrs.Model:
     model.compile(optimizer=tf.keras.optimizers.Adam(0.025))
 
     return model
-
-
-def load_weights(model: tfrs.Model):
-    model.load_weights('E:\\CS-Senior-Project\\server\\model\\weights\\checkpoint')
 
 
 class CheckpointCallback(tf.keras.callbacks.Callback):
