@@ -1,26 +1,78 @@
 import React from 'react';
-import logo from './onion.png';
 import './App.css';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+
+type Action =
+    | {
+          type: 'ADD';
+      }
+    | {
+          type: 'REMOVE';
+          message: string;
+      };
+
+interface Movie {
+    id: number;
+    name: string;
+    genres: Array<string>;
+}
+
+interface Tag {
+    id: number;
+    name: string;
+    movieId: number;
+}
+
+interface User {
+    firstName: string;
+    lastName: string;
+    isAdmin: boolean;
+    movies: Record<number, Movie>;
+    tags: Record<number, Tag>;
+}
+
+// Testing
+export const message = (state = '', action: Action) => {
+    switch (action.type) {
+        case 'ADD':
+            return 'Message';
+        default:
+            return state;
+    }
+};
+
+// Testing
+export const messages = (state = [], action: Action) => {
+    switch (action.type) {
+        case 'ADD': {
+            return [...state, message('', action)];
+        }
+        case 'REMOVE': {
+            return state.filter((message) => message !== action.message);
+        }
+        default:
+            return state;
+    }
+};
 
 function App() {
+    const store = createStore(combineReducers({ messages }));
+
+    console.log(store.getState());
+    store.dispatch({
+        type: 'ADD',
+    });
+    store.dispatch({
+        type: 'REMOVE',
+        message: 'Message',
+    });
+    console.log(store.getState());
+
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>Cooking with Elvin (and React)</p>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </header>
-        </div>
+        <Provider store={store}>
+            <div className="App"></div>
+        </Provider>
     );
 }
 
