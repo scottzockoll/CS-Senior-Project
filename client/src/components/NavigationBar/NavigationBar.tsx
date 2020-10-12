@@ -15,7 +15,7 @@ class NavigationBar extends Component {
         return (
             <nav className="NavigationBarItems">
                 <h1 className="navigation-bar-logo">
-                    React <i className="fas fa-film"></i>
+                    FlickPick <i className="fas fa-film"></i>
                 </h1>
                 <div className="menu-icon" onClick={this.toggleSelection}>
                     <i
