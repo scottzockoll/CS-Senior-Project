@@ -19,3 +19,5 @@ yarn-error.log*
 
 # Config
 .idea/workspace.xml
+.idea/CS-Senior-Project.iml
+.idea/misc.xml
