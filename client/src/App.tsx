@@ -8,6 +8,7 @@ function App() {
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
                 <p>Cooking with FlickPick (and React)</p>
+                <p>React works!</p>
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
