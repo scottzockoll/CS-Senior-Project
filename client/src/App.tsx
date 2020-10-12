@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './onion.png';
+import logo from './sampleLogo.png';
 import './App.css';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
-                <p>Cooking with Elvin (and React)</p>
+                <p>Cooking with FlickPick (and React)</p>
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
