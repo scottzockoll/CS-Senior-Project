@@ -118,6 +118,9 @@ def train_model(output_folder: str, output_name: str):
     path = os.path.join(path, f"{output_name}.mdl")
     os.makedirs(path, exist_ok=True)
 
+    if os.path.exists(path):
+        os.unlink(path)
+
     file_handle = open(path, 'wb')
     torch.save(model, file_handle)
     file_handle.close()
