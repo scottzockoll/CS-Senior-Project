@@ -4,7 +4,7 @@ import numpy as np
 from time import time
 import os
 
-from sklearn.metrics import mean_squared_error
+from sklearn.metrics import log_loss
 from torch.utils.data import DataLoader
 
 from server.model.dataset import MovieLens
@@ -46,7 +46,7 @@ def evaluate_model(model: FPNet, dataset: MovieLens):
     y_pred = np.array(y_pred, dtype=float)
 
     # TODO: Implement NDCG scoring
-    return mean_squared_error(y_real, y_pred)
+    return log_loss(y_real, y_pred, labels=[0, 1])
 
 
 def train_model(output_folder: str, output_name: str):
@@ -110,7 +110,7 @@ def train_model(output_folder: str, output_name: str):
         # print epoch statistics
         train_loss = np.mean(train_losses)
         print(f"Training Loss: {train_loss}")
-        print(f"Test MSE: {epoch_accuracy:.6f}")
+        print(f"Test Loss: {epoch_accuracy:.6f}")
         print(f"Epoch {current_epoch} completed {time() - t0:.1f}s")
         print()
 
