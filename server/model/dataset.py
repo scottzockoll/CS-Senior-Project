@@ -74,7 +74,7 @@ class MovieLens(torch.utils.data.Dataset):
         self._item_map = IdxReducer()
 
         path = os.path.abspath(path)
-        path = os.path.join(path, size, 'ratings.csv')
+        path = os.path.join(path, 'movie_lens', size, 'ratings.csv')
         self.frame: pd.DataFrame = load_dataframe(path)
 
         num_users = len(self.frame['user_id'].unique())
