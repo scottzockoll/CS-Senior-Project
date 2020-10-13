@@ -122,6 +122,3 @@ def train_model(output_folder: str, output_name: str):
     torch.save(model, file_handle)
     file_handle.close()
 
-
-if __name__ == '__main__':
-    train_model()
