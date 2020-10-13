@@ -115,8 +115,9 @@ def train_model(output_folder: str, output_name: str):
         print()
 
     path = os.path.abspath(output_folder)
-    path = os.path.join(path, f"{output_name}.mdl")
     os.makedirs(path, exist_ok=True)
+
+    path = os.path.join(path, f"{output_name}.mdl")
 
     if os.path.exists(path):
         os.unlink(path)
