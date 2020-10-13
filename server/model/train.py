@@ -2,6 +2,7 @@
 import torch
 import numpy as np
 from time import time
+import os
 
 from sklearn.metrics import mean_squared_error
 from torch.utils.data import DataLoader
@@ -48,7 +49,13 @@ def evaluate_model(model: FPNet, dataset: MovieLens):
     return mean_squared_error(y_real, y_pred)
 
 
-def train_model():
+def train_model(output_folder: str, output_name: str):
+    """
+    Train the model.
+    :param output_folder: Output folder path
+    :param output_name: Name of output model name
+    :return:
+    """
     print(f'Running FlickPick model on {device}.')
 
     dataset = MovieLens('dataset', '100k')
@@ -107,7 +114,11 @@ def train_model():
         print(f"Epoch {current_epoch} completed {time() - t0:.1f}s")
         print()
 
-    file_handle = open('model_state.torch', 'wb')
+    path = os.path.abspath(output_folder)
+    path = os.path.join(path, f"{output_name}.mdl")
+    os.makedirs(path, exist_ok=True)
+
+    file_handle = open(path, 'wb')
     torch.save(model, file_handle)
     file_handle.close()
 
