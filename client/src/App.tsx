@@ -1,13 +1,11 @@
 import React from 'react';
-import logo from './onion.png';
 import './App.css';
 
 function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>Cooking with Elvin (and React)</p>
+                <p>React works!</p>
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
