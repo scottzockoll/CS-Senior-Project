@@ -20,6 +20,7 @@ Scott Zockoll : zockol72@students.rowan.edu
    - [Git LFS](https://git-lfs.github.com/) for everyone
    - (Optional, Highly recommended) [Tensorflow GPU Support](https://www.tensorflow.org/install/gpu) for everyone
    - (Optional) [Postman](https://www.postman.com/) for everyone
+   - (Optional) [nVidia CUDA 10.1](https://developer.nvidia.com/cuda-10.1-download-archive-base) if you want to train on your GPU
 
    > Note WebStorm & PyCharm are both paid products that you can get for [free as a student](https://www.jetbrains.com/community/education/#students)
 
