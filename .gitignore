@@ -6,6 +6,9 @@
 # production
 /build
 
+# dataset
+./dataset
+
 # misc
 .DS_Store
 .env.local
@@ -19,3 +22,9 @@ yarn-error.log*
 
 # Config
 .idea/workspace.xml
+
+# client Debug log
+./client/debug.log
+
+# Server Pycache
+./server/pycache
