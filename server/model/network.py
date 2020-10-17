@@ -15,6 +15,10 @@ LAYERS = [
 
 
 class FPNet(torch.nn.Module):
+    """
+    A 'Neural Collaborative Filtering model.
+    See: arXiv:1708.05031v2
+    """
 
     def __init__(self, n_users: int, n_items: int, dropout=True):
         super(FPNet, self).__init__()
