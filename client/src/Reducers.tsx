@@ -1,5 +1,30 @@
 import { User, Movie, Recommendations, ActionTypes, GET_USER, GET_MOVIE, GET_RECOMMENDATIONS } from './Types';
 
+// Reducers take state and an action and then returns a new state after the
+// action was applied.
+
+// It is a common pattern for the reducers to use the spread operator (...)
+// You can think of the spread operator as "unloading" an object into a new
+// object. For example:
+
+// a = {
+//     'dog': 'bark',
+//     'cat': 'meow'
+// }
+
+// b = {
+//     ...a,
+//     'fox': '???'
+// }
+
+// Object b is actually:
+
+// b = {
+//     'dog': 'bark',
+//     'cat': 'meow',
+//     'fox': '???'
+// }
+
 const initialUserState: User = {
     firstName: '',
     lastName: '',

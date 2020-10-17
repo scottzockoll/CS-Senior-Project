@@ -41,4 +41,6 @@ export interface GetRecommendationAction {
     userId: number;
 }
 
+// The "|" operator is a union. This means ActionTypes can be any one of the
+// types on the right hand side.
 export type ActionTypes = GetUserAction | GetMovieAction | GetRecommendationAction;
