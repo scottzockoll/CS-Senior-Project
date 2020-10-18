@@ -20,10 +20,7 @@ interface UserTableState {
 /**
  * React Component for UseTable displaying all the records for each user.
  */
-export default class UserTable extends React.Component<
-    UserTableProps,
-    UserTableState
-> {
+export default class UserTable extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
     selectedUser: UserRecord; // The reference to the selected user record in the UserTable
 
@@ -36,8 +33,8 @@ export default class UserTable extends React.Component<
         // initialize our instance variables
         this.selectedUser = {
             email: '',
-            first: '',
-            last: '',
+            firstName: '',
+            lastName: '',
             moviesWatched: 0,
             registerDate: '',
             userId: 0,
@@ -59,13 +56,13 @@ export default class UserTable extends React.Component<
                             search: true,
                         },
                         {
-                            property: 'first',
+                            property: 'firstName',
                             header: 'First',
                             sortable: true,
                             search: true,
                         },
                         {
-                            property: 'last',
+                            property: 'lastName',
                             header: 'Last',
                             sortable: true,
                             search: true,
