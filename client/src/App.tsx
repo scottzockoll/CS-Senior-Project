@@ -1,4 +1,5 @@
 import React from 'react';
+import ClientPage from './routes/Client/index';
 import './App.css';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -6,8 +7,9 @@ import { getUser, getMovie, getRecommendations } from './ActionCreators';
 import { userReducer, movieReducer, recommendationsReducer } from './Reducers';
 import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
-import { UserRecord } from './routes/admin/UserRecord';
+import { UserRecord, WatchedMovie } from './routes/admin/UserRecord';
 import AdminPage from './routes/admin';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 /**
  * Sample user records for the admin page
@@ -15,8 +17,8 @@ import AdminPage from './routes/admin';
 const records: UserRecord[] = [
     {
         userId: 1,
-        first: 'Mary',
-        last: 'Burnham',
+        firstName: 'Mary',
+        lastName: 'Burnham',
         email: 'burnham23@s.r.e',
         registerDate: '9/12/20',
         moviesWatched: 5,
@@ -66,8 +68,8 @@ const records: UserRecord[] = [
     },
     {
         userId: 2,
-        first: 'John',
-        last: 'Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         email: 'doeJ71@s.r.e',
         registerDate: '9/12/20',
         moviesWatched: 2,
@@ -92,8 +94,8 @@ const records: UserRecord[] = [
     },
     {
         userId: 3,
-        first: ' Umang',
-        last: 'Doshi',
+        firstName: ' Umang',
+        lastName: 'Doshi',
         email: 'doshiU22@s.r.e',
         registerDate: '9/14/20',
         moviesWatched: 3,
@@ -112,6 +114,26 @@ const records: UserRecord[] = [
         ],
     },
 ];
+
+let movieRecords: WatchedMovie[] = [
+    {
+        title: 'Avengers Endgame (2019)',
+        genre: 'Action',
+        userRating: 5,
+    },
+    {
+        title: 'Goon (2011)',
+        genre: 'Adventure',
+        userRating: 3,
+    },
+    {
+        title: 'Justice League (2017)',
+        genre: 'Action',
+        userRating: 3.5,
+    },
+];
+
+const sampleRecord = records[0];
 
 function App() {
     // The store needs to be passed a single reducer. We can create this
@@ -145,8 +167,22 @@ function App() {
     return (
         <Provider store={store}>
             <div className="App">
-              <NavigationBar />
-              <Homepage />
+                <Router>
+                    <Switch>
+                        <Route path="/admin">
+                            <NavigationBar />
+                            <AdminPage userRecords={records} />
+                        </Route>
+                        <Route path="/client">
+                            <NavigationBar />
+                            <ClientPage userRecord={sampleRecord} />
+                        </Route>
+                        <Route path="/">
+                            <NavigationBar />
+                            <Homepage />
+                        </Route>
+                    </Switch>
+                </Router>
             </div>
         </Provider>
     );
