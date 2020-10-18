@@ -1,13 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # testing
-/coverage
+coverage
 
 # production
-/build
+build
 
 # dataset
-./dataset
+dataset
 
 # misc
 .DS_Store
@@ -21,7 +21,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # Config
+.idea
 .idea/workspace.xml
+*.pyc
 .idea/CS-Senior-Project.iml
 .idea/misc.xml
 
@@ -29,4 +31,5 @@ yarn-error.log*
 ./client/debug.log
 
 # Server Pycache
-./server/pycache
+**/__pycache__
+
