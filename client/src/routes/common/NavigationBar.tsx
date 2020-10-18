@@ -9,7 +9,7 @@ function NavigationBar() {
                 <Menu
                     dropBackground="white"
                     label="Sign Up"
-                    items={[{ label: 'Sign In' }, { label: 'Home' }]}
+                    items={[{ label: 'Sign In' }, { label: 'Home', href: '/' }, { label: 'Admin', href: '/admin' }]}
                 />
             </Header>
         </Box>

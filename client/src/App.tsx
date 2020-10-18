@@ -8,6 +8,7 @@ import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
 import { UserRecord } from './routes/admin/UserRecord';
 import AdminPage from './routes/admin';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 /**
  * Sample user records for the admin page
@@ -145,8 +146,18 @@ function App() {
     return (
         <Provider store={store}>
             <div className="App">
-              <NavigationBar />
-              <Homepage />
+                <Router>
+                    <Switch>
+                        <Route path="/admin">
+                            <NavigationBar />
+                            <AdminPage userRecords={records} />
+                        </Route>
+                        <Route path="/">
+                            <NavigationBar />
+                            <Homepage />
+                        </Route>
+                    </Switch>
+                </Router>
             </div>
         </Provider>
     );

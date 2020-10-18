@@ -5,7 +5,7 @@
     "strict": true,
     "alwaysStrict": true,
 
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": false,
     "noImplicitThis": false,
     "strictNullChecks": true,
