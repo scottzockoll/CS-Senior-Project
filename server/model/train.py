@@ -5,7 +5,7 @@ from time import time
 import os
 
 from sklearn.metrics import log_loss
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Sampler
 
 from server.model.dataset import MovieLens
 from server.model.network import FPNet
@@ -59,10 +59,13 @@ def train_model(output_folder: str, output_name: str):
     print(f'Running FlickPick model on {device}.')
 
     dataset = MovieLens('dataset', '100k')
-    num_users, num_items = dataset.shape
+    dataset.prepare()
 
-    model = FPNet(num_users, num_items)
-    generator = DataLoader(dataset, batch_size=256, shuffle=True, num_workers=0)
+    num_users = dataset.n_users
+    num_movies = dataset.n_movies
+
+    model = FPNet(num_users, num_movies)
+    generator = DataLoader(dataset, batch_size=256, num_workers=0)
     # we're using binary-cross entropy; which has been noted to be good for this
     loss_fn = torch.nn.BCELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001)

@@ -20,13 +20,13 @@ class FPNet(torch.nn.Module):
     See: arXiv:1708.05031v2
     """
 
-    def __init__(self, n_users: int, n_items: int, dropout=True):
+    def __init__(self, n_users: int, n_movies: int, dropout=True):
         super(FPNet, self).__init__()
 
         self._dropout = dropout
 
         self.user_embeddings = torch.nn.Embedding(n_users + 1, 8)
-        self.item_embeddings = torch.nn.Embedding(n_items + 1, 8)
+        self.movie_embeddings = torch.nn.Embedding(n_movies + 1, 8)
 
         self.hidden = torch.nn.ModuleList([
             torch.nn.Linear(LAYERS[0][0], LAYERS[0][1]),
@@ -43,11 +43,11 @@ class FPNet(torch.nn.Module):
         :return:
         """
         user = inputs['user_id']
-        item = inputs['item_id']
+        movie = inputs['movie_id']
         user_embedding = self.user_embeddings(user)
-        item_embedding = self.item_embeddings(item)
+        movie_embedding = self.movie_embeddings(movie)
 
-        x = torch.cat([user_embedding, item_embedding], 1)
+        x = torch.cat([user_embedding, movie_embedding], 1)
         for idx, _ in enumerate(range(len(self.hidden))):
             x = self.hidden[idx](x)
             x = f.relu(x)
