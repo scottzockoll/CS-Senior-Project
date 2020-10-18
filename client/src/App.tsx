@@ -9,6 +9,7 @@ import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
 import { UserRecord, WatchedMovie } from './routes/admin/UserRecord';
 import AdminPage from './routes/admin';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 /**
  * Sample user records for the admin page
@@ -169,13 +170,24 @@ function App() {
     console.log(store.getState());
 
     return (
-        // <div className="App">
-        //     <ClientPage userRecord={record}/>
-        // </div>
         <Provider store={store}>
             <div className="App">
-                <NavigationBar />
-                <Homepage />
+                <Router>
+                    <Switch>
+                        <Route path="/admin">
+                            <NavigationBar />
+                            <AdminPage userRecords={records} />
+                        </Route>
+                        <Route path="/client">
+                            <NavigationBar />
+                            <ClientPage userRecord={records[0]} />
+                        </Route>
+                        <Route path="/">
+                            <NavigationBar />
+                            <Homepage />
+                        </Route>
+                    </Switch>
+                </Router>
             </div>
         </Provider>
     );

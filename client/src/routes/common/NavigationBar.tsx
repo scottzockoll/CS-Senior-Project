@@ -6,7 +6,11 @@ function NavigationBar() {
         <Box>
             <Header style={{ height: 60 }} background="brand">
                 <Button plain={true} label="FlickPick" hoverIndicator />
-                <Menu dropBackground="white" label="Sign Up" items={[{ label: 'Sign In' }, { label: 'Home' }]} />
+                <Menu
+                    dropBackground="white"
+                    label="Sign Up"
+                    items={[{ label: 'Sign In' }, { label: 'Home', href: '/' }, { label: 'Admin', href: '/admin' }]}
+                />
             </Header>
         </Box>
     );
