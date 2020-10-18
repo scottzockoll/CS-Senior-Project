@@ -33,8 +33,8 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
         // initialize our instance variables
         this.selectedUser = {
             email: '',
-            first: '',
-            last: '',
+            firstName: '',
+            lastName: '',
             moviesWatched: 0,
             registerDate: '',
             userId: 0,
@@ -56,13 +56,13 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             search: true,
                         },
                         {
-                            property: 'first',
+                            property: 'firstName',
                             header: 'First',
                             sortable: true,
                             search: true,
                         },
                         {
-                            property: 'last',
+                            property: 'lastName',
                             header: 'Last',
                             sortable: true,
                             search: true,

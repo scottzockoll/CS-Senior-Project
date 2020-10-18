@@ -50,15 +50,15 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                     <Text textAlign={'center'} gridArea={'firstLabel'} weight={'bold'}>
                         First
                     </Text>
-                    <Text textAlign={'center'} gridArea={'first'}>
-                        {this.props.userRecord.first}
+                    <Text textAlign={'center'} gridArea={'firstName'}>
+                        {this.props.userRecord.firstName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
                         Last
                     </Text>
-                    <Text textAlign={'center'} gridArea={'last'}>
-                        {this.props.userRecord.last}
+                    <Text textAlign={'center'} gridArea={'lastName'}>
+                        {this.props.userRecord.lastName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>

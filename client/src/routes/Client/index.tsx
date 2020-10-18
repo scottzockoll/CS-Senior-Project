@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, DataTable, Text, Button } from "grommet";
-import {UserRecord, WatchedMovie} from "./interfaces";
+import React from 'react';
+import { Box, DataTable, Text, Button } from 'grommet';
+import { UserRecord } from '../admin/UserRecord';
 
 /*
 let movieRecords: WatchedMovie[] = [
@@ -27,11 +27,9 @@ const userRecord: UserRecord =
   };
 */
 
-interface ClientPageProps{
-  userRecord: UserRecord
+interface ClientPageProps {
+    userRecord: UserRecord;
 }
-
-
 
 // function resetMovies(userRecord: UserRecord){
 //   userRecord.watchedMovies = []
@@ -39,21 +37,22 @@ interface ClientPageProps{
 //
 // }
 
-
 export default function ClientPage(props: ClientPageProps) {
-  return (
-    <Box align="center" pad="large">
-      <Text>User: {props.userRecord.firstName} {props.userRecord.lastName}</Text>
-      <Text>Email: {props.userRecord.email}</Text>
-      <DataTable border={true}
-        columns={[
-          { property: 'title', header: 'Rating Survey(s)' },
-          { property: 'rating', header: 'Rating' },
-        ]}
-        data={props.userRecord.watchedMovies}
-      />
-      <Button label="Reset Movie Survey" />
-    </Box>
-  );
+    return (
+        <Box align="center" pad="large">
+            <Text>
+                User: {props.userRecord.firstName} {props.userRecord.lastName}
+            </Text>
+            <Text>Email: {props.userRecord.email}</Text>
+            <DataTable
+                border={true}
+                columns={[
+                    { property: 'title', header: 'Rating Survey(s)' },
+                    { property: 'userRating', header: 'Rating' },
+                ]}
+                data={props.userRecord.watchedMovies}
+            />
+            <Button label="Reset Movie Survey" />
+        </Box>
+    );
 }
-

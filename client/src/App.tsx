@@ -133,12 +133,7 @@ let movieRecords: WatchedMovie[] = [
     },
 ];
 
-// const record: UserRecord = {
-//     firstName: "Jason",
-//     lastName: "Zogheb",
-//     email: "jz@fakeemail.com",
-//     watchedMovies: movieRecords,
-//   };
+const sampleRecord = records[0];
 
 function App() {
     // The store needs to be passed a single reducer. We can create this
@@ -180,7 +175,7 @@ function App() {
                         </Route>
                         <Route path="/client">
                             <NavigationBar />
-                            <ClientPage userRecord={records[0]} />
+                            <ClientPage userRecord={sampleRecord} />
                         </Route>
                         <Route path="/">
                             <NavigationBar />
