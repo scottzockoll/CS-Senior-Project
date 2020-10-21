@@ -29,6 +29,8 @@ class MovieLens(torch.utils.data.IterableDataset):
         self.path = os.path.abspath(path)
         self.path = os.path.join(path, 'movie_lens', dataset_size)
 
+        self.test: [(int, int, float)] = []
+
         self.n_users = 0
         self.n_movies = 0
         self.n_items = 0

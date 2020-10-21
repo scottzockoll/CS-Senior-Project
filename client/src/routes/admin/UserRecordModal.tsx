@@ -11,9 +11,7 @@ interface UserRecordModalProps {
  * corresponding UserRecord
  * @param userRecord
  */
-export default class userRecordModal extends React.Component<
-    UserRecordModalProps
-> {
+export default class userRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
             <Box height={'large'} width={'large'}>
@@ -22,15 +20,7 @@ export default class userRecordModal extends React.Component<
                 </Heading>
                 <hr style={{ width: '90%' }} />
                 <Grid
-                    rows={[
-                        'xxxsmall',
-                        'xxxsmall',
-                        'xxxsmall',
-                        'xxxsmall',
-                        'xxxsmall',
-                        'xxxsmall',
-                        'xxxsmall',
-                    ]}
+                    rows={['xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall']}
                     columns={['small', 'small']}
                     alignSelf={'center'}
                     areas={[
@@ -57,66 +47,42 @@ export default class userRecordModal extends React.Component<
                     ]}
                 >
                     {/*User Information display*/}
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'firstLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'firstLabel'} weight={'bold'}>
                         First
                     </Text>
-                    <Text textAlign={'center'} gridArea={'first'}>
-                        {this.props.userRecord.first}
+                    <Text textAlign={'center'} gridArea={'firstName'}>
+                        {this.props.userRecord.firstName}
                     </Text>
 
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'lastLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
                         Last
                     </Text>
-                    <Text textAlign={'center'} gridArea={'last'}>
-                        {this.props.userRecord.last}
+                    <Text textAlign={'center'} gridArea={'lastName'}>
+                        {this.props.userRecord.lastName}
                     </Text>
 
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'emailLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
                         Email
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
                         {this.props.userRecord.email}
                     </Text>
 
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'registerDateLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
                         Register Date
                     </Text>
                     <Text textAlign={'center'} gridArea={'registerDate'}>
                         {this.props.userRecord.registerDate}
                     </Text>
 
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'moviesWatchedLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
                         Movies Watched
                     </Text>
                     <Text textAlign={'center'} gridArea={'moviesWatched'}>
                         {this.props.userRecord.moviesWatched}
                     </Text>
 
-                    <Text
-                        textAlign={'center'}
-                        gridArea={'visitsLabel'}
-                        weight={'bold'}
-                    >
+                    <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
                         Visits
                     </Text>
                     <Text textAlign={'center'} gridArea={'visits'}>
@@ -130,11 +96,7 @@ export default class userRecordModal extends React.Component<
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
                     Movies Watched
                 </Heading>
-                <Box
-                    background={'light-2'}
-                    style={{ width: '90%' }}
-                    alignSelf={'center'}
-                >
+                <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
@@ -157,8 +119,7 @@ export default class userRecordModal extends React.Component<
                                             background={'light-4'}
                                             values={[
                                                 {
-                                                    value:
-                                                        datum.userRating * 20,
+                                                    value: datum.userRating * 20,
                                                 },
                                             ]}
                                             thickness="small"

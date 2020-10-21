@@ -5,19 +5,19 @@ import React from 'react';
  */
 export interface UserRecord {
     userId: number;
-    first: string;
-    last: string;
+    firstName: string;
+    lastName: string;
     email: string;
     registerDate: string;
     moviesWatched: number;
     visits: number;
-    watchedMovies: WatchedMovies[];
+    watchedMovies: WatchedMovie[];
 }
 
 /**
  * Interface for a single record of a Watched Movie.
  */
-interface WatchedMovies {
+export interface WatchedMovie {
     title: String;
     genre: String;
     userRating: number;
