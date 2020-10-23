@@ -14,7 +14,6 @@ interface ClientPageProps {
 export default function ClientPage(props: ClientPageProps) {
   return (
     <Grommet full={true} >
-      <NavigationBar />
       <Box pad="medium" align="start">
         <Text>User: {props.userRecord.firstName} {props.userRecord.lastName}</Text>
         <Text>Email: {props.userRecord.email}</Text>
