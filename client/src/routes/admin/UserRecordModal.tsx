@@ -1,7 +1,8 @@
 import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
 import React from 'react';
 import { UserRecord } from './UserRecord';
-import { messages } from './UserRecord.nls';
+import en from '../../en.json';
+
 
 interface UserRecordModalProps {
     userRecord: UserRecord;
@@ -17,7 +18,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
         return (
             <Box height={'large'} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
-                    {messages.userRecord}
+                    {en.UI_LABELS.userRecord}
                 </Heading>
                 <hr style={{ width: '90%' }} />
                 <Grid
@@ -49,42 +50,42 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 >
                     {/*User Information display*/}
                     <Text textAlign={'center'} gridArea={'firstLabel'} weight={'bold'}>
-                        {messages.firstName}
+                        {en.UI_LABELS.firstName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'firstName'}>
                         {this.props.userRecord.firstName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
-                        {messages.lastName}
+                        {en.UI_LABELS.lastName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastName'}>
                         {this.props.userRecord.lastName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
-                        {messages.email}
+                        {en.UI_LABELS.email}
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
                         {this.props.userRecord.email}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
-                        {messages.registerDate}
+                        {en.UI_LABELS.registerDate}
                     </Text>
                     <Text textAlign={'center'} gridArea={'registerDate'}>
                         {this.props.userRecord.registerDate}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
-                        {messages.moviesWatched}
+                        {en.UI_LABELS.moviesWatched}
                     </Text>
                     <Text textAlign={'center'} gridArea={'moviesWatched'}>
                         {this.props.userRecord.moviesWatched}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
-                        {messages.visits}
+                        {en.UI_LABELS.visits}
                     </Text>
                     <Text textAlign={'center'} gridArea={'visits'}>
                         {this.props.userRecord.visits}
@@ -95,24 +96,24 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
 
                 {/* Table containing the list of movies watched by the user*/}
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
-                    {messages.moviesWatched}
+                    {en.UI_LABELS.moviesWatched}
                 </Heading>
                 <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
                                 property: 'title',
-                                header: messages.title,
+                                header: en.UI_LABELS.title,
                                 sortable: true,
                             },
                             {
                                 property: 'genre',
-                                header: messages.genre,
+                                header: en.UI_LABELS.genre,
                                 sortable: true,
                             },
                             {
                                 property: 'userRating',
-                                header: messages.userRating,
+                                header: en.UI_LABELS.userRating,
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>

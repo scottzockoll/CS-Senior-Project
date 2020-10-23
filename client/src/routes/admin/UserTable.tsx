@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
 import { UserRecord } from './UserRecord';
-import { messages } from './UserRecord.nls';
+import en from '../../en.json';
 
 interface UserTableProps {
     /**
@@ -51,43 +51,43 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                     columns={[
                         {
                             property: 'userId',
-                            header: messages.userId,
+                            header: en.UI_LABELS.userId,
                             primary: true,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'firstName',
-                            header: messages.firstName,
+                            header: en.UI_LABELS.firstName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'lastName',
-                            header: messages.lastName,
+                            header: en.UI_LABELS.lastName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'email',
-                            header: messages.email,
+                            header: en.UI_LABELS.email,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'registerDate',
-                            header: messages.registerDate,
+                            header: en.UI_LABELS.registerDate,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'moviesWatched',
-                            header: messages.moviesWatched,
+                            header: en.UI_LABELS.moviesWatched,
                             sortable: true,
                         },
                         {
                             property: 'visits',
-                            header: messages.visits,
+                            header: en.UI_LABELS.visits,
                             sortable: true,
                         },
                     ]}
