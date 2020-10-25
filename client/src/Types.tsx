@@ -4,6 +4,10 @@ export interface Movie {
     genres: Array<string>;
 }
 
+export interface RatedMovie extends Movie {
+    userRating: number;
+}
+
 export interface Tag {
     id: number;
     name: string;
@@ -11,10 +15,15 @@ export interface Tag {
 }
 
 export interface User {
+    userId: number;
+    isAdmin: boolean;
     firstName: string;
     lastName: string;
-    isAdmin: boolean;
-    movies: Record<number, Movie>;
+    email: string;
+    registerDate: string;
+    visits: number;
+    totalMoviesWatched: number;
+    watchedMovies: Record<number, RatedMovie>;
     tags: Record<number, Tag>;
 }
 
@@ -23,12 +32,17 @@ export interface Recommendations {
 }
 
 export const GET_USER = 'GET_USER';
+export const GET_USERS = 'GET_USERS';
 export const GET_MOVIE = 'GET_MOVIE';
 export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
 
 export interface GetUserAction {
     type: typeof GET_USER;
     userId: number;
+}
+
+export interface GetUsersAction {
+    type: typeof GET_USERS;
 }
 
 export interface GetMovieAction {
@@ -43,4 +57,4 @@ export interface GetRecommendationAction {
 
 // The "|" operator is a union. This means ActionTypes can be any one of the
 // types on the right hand side.
-export type ActionTypes = GetUserAction | GetMovieAction | GetRecommendationAction;
+export type ActionTypes = GetUserAction | GetUsersAction | GetMovieAction | GetRecommendationAction;

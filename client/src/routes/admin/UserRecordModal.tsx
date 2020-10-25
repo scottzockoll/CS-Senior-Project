@@ -1,9 +1,9 @@
 import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
 import React from 'react';
-import { UserRecord } from './UserRecord';
+import { User } from '../../Types';
 
 interface UserRecordModalProps {
-    userRecord: UserRecord;
+    user: User;
 }
 
 /**
@@ -51,42 +51,42 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         First
                     </Text>
                     <Text textAlign={'center'} gridArea={'firstName'}>
-                        {this.props.userRecord.firstName}
+                        {this.props.user.firstName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
                         Last
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastName'}>
-                        {this.props.userRecord.lastName}
+                        {this.props.user.lastName}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
                         Email
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
-                        {this.props.userRecord.email}
+                        {this.props.user.email}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
                         Register Date
                     </Text>
                     <Text textAlign={'center'} gridArea={'registerDate'}>
-                        {this.props.userRecord.registerDate}
+                        {this.props.user.registerDate}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
                         Movies Watched
                     </Text>
                     <Text textAlign={'center'} gridArea={'moviesWatched'}>
-                        {this.props.userRecord.moviesWatched}
+                        {this.props.user.totalMoviesWatched}
                     </Text>
 
                     <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
                         Visits
                     </Text>
                     <Text textAlign={'center'} gridArea={'visits'}>
-                        {this.props.userRecord.visits}
+                        {this.props.user.visits}
                     </Text>
                 </Grid>
 
@@ -100,14 +100,26 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                     <DataTable
                         columns={[
                             {
-                                property: 'title',
+                                property: 'movieName',
                                 header: 'Title',
                                 sortable: true,
                             },
                             {
-                                property: 'genre',
+                                property: 'genres',
                                 header: 'Genre',
                                 sortable: true,
+                                render: (datum) => {
+                                    // retrieve the all the genres
+                                    let genres: string = '';
+
+                                    for (let i = 0; i < datum.genres.length; i++) {
+                                        // add the seperator if there's more than one genre
+                                        if (i > 0) genres += '/';
+                                        genres += datum.genres[i];
+                                    }
+
+                                    return <Text>{genres}</Text>;
+                                },
                             },
                             {
                                 property: 'userRating',
@@ -131,7 +143,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         ]}
                         sortable={true}
                         style={{ width: '100%' }}
-                        data={this.props.userRecord.watchedMovies}
+                        data={Object.values(this.props.user.watchedMovies)}
                         size={'medium'}
                     />
                 </Box>

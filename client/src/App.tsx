@@ -3,8 +3,8 @@ import ClientPage from './routes/Client/index';
 import './App.css';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { getUser, getMovie, getRecommendations } from './ActionCreators';
-import { userReducer, movieReducer, recommendationsReducer } from './Reducers';
+import { getUser, getUsers, getMovie, getRecommendations } from './ActionCreators';
+import { userReducer, usersReducer, movieReducer, recommendationsReducer } from './Reducers';
 import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
 import { UserRecord, WatchedMovie } from './routes/admin/UserRecord';
@@ -140,6 +140,7 @@ function App() {
     // by calling combineReducers
     const rootReducer = combineReducers({
         user: userReducer,
+        users: usersReducer,
         movie: movieReducer,
         recommendations: recommendationsReducer,
     });
@@ -154,6 +155,12 @@ function App() {
     store.dispatch(getUser(1));
 
     // Print out the store to show the user object
+    console.log(store.getState());
+
+    // Dispatch the getUsers action to the store.
+    store.dispatch(getUsers());
+
+    // print out the store a display the list of users
     console.log(store.getState());
 
     // Dispatch the getMovie action
@@ -171,7 +178,7 @@ function App() {
                     <Switch>
                         <Route path="/admin">
                             <NavigationBar />
-                            <AdminPage userRecords={records} />
+                            <AdminPage />
                         </Route>
                         <Route path="/client">
                             <NavigationBar />
