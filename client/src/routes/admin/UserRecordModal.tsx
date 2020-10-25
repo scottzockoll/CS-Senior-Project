@@ -2,7 +2,6 @@ import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
 import React from 'react';
 import { UserRecord } from './UserRecord';
 import en from '../../en.json';
-
 interface UserRecordModalProps {
     userRecord: UserRecord;
 }
