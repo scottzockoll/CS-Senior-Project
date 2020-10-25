@@ -12,7 +12,9 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.6",
-    "grommet": "^2.15.1",
+
+    "grommet": "^2.15.2",
+
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",

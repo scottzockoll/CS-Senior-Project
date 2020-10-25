@@ -1,14 +1,13 @@
 
+
 import React from 'react';
 import { Box, DataTable, Text, Button, Layer, Grommet} from 'grommet';
 import { UserRecord, WatchedMovie } from '../admin/UserRecord';
 
-
-
-
 interface ClientPageProps {
     userRecord: UserRecord;
 }
+
 
 
 export default function ClientPage(props: ClientPageProps) {
