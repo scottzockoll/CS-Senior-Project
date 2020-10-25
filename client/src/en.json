@@ -13,6 +13,12 @@
     "userRating": "User Rating",
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+    "fullName": "Name",
+    "resetYourMovies": "Reset Your Movies?",
+    "deleteYourAccount": "Delete Your Account?",
+    "signOutQuestion": "Sign Out?",
+    "yes": "Yes",
+    "no": "No"
   }
 }
