@@ -5,9 +5,10 @@ from time import time
 import os
 
 from sklearn.metrics import log_loss
-from torch.utils.data import DataLoader, Sampler
+from torch.utils.data import DataLoader
 
 from server.model.dataset import MovieLens
+from server.model.joint_dataset import PosNegDataset
 from server.model.network import FPNet
 from server.model.utilities import get_device, push_to_device
 
@@ -58,11 +59,13 @@ def train_model(output_folder: str, output_name: str):
     """
     print(f'Running FlickPick model on {device}.')
 
-    dataset = MovieLens('dataset', '100k')
-    dataset.prepare()
+    dataset = PosNegDataset(
+        MovieLens('dataset/processed/100k', 'ratings_train_pos.csv', 512),
+        MovieLens('dataset/processed/100k', 'ratings_train_neg.csv', 512)
+    )
 
-    num_users = dataset.n_users
-    num_movies = dataset.n_movies
+    num_users = dataset.meta_data.n_users
+    num_movies = dataset.meta_data.n_movies
 
     model = FPNet(num_users, num_movies)
     generator = DataLoader(dataset, batch_size=256, num_workers=0)
@@ -81,8 +84,11 @@ def train_model(output_folder: str, output_name: str):
 
         model.train()
 
+        done = 0
         # actual model training
         for inputs in generator:
+            done += 1
+            print(inputs)
             if device.type == 'cuda':
                 inputs = push_to_device(inputs, device)
 
@@ -104,6 +110,8 @@ def train_model(output_folder: str, output_name: str):
 
             # accumulate the loss for monitoring
             train_losses.append(loss.item())
+
+        print(f'Done: {done}')
 
         print(f'Finished training epoch {current_epoch}')
         print('Beginning model evaluation')

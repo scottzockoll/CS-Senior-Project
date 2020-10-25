@@ -1,4 +1,4 @@
-import os, json, argparse
+import os, argparse, pickle
 
 import numpy as np
 import pandas as pd
@@ -67,8 +67,8 @@ def main():
     for movie_id in movies:
         metadata['movie_ids'][int(movie_id)] = len(metadata['movie_ids']) + 1
 
-    with open(os.path.join(o_path, 'dataset.json'), 'w') as file:
-        file.write(json.dumps(metadata))
+    with open(os.path.join(o_path, 'dataset.json'), 'wb') as file:
+        file.write(pickle.dumps(metadata))
 
     train_pos_file = open(os.path.join('processed', args.dataset, 'ratings_train_pos.csv'), 'w')
     test_pos_file = open(os.path.join('processed', args.dataset, 'ratings_test_pos.csv'), 'w')
