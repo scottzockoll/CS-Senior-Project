@@ -58,17 +58,13 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                         },
                         {
                             property: 'firstName',
-
                             header: en.UI_LABELS.firstName,
-
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'lastName',
-
                             header: en.UI_LABELS.lastName,
-
                             sortable: true,
                             search: true,
                         },

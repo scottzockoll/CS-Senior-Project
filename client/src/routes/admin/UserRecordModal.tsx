@@ -3,7 +3,6 @@ import React from 'react';
 import { UserRecord } from './UserRecord';
 import en from '../../en.json';
 
-
 interface UserRecordModalProps {
     userRecord: UserRecord;
 }
@@ -50,54 +49,37 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 >
                     {/*User Information display*/}
                     <Text textAlign={'center'} gridArea={'firstLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.firstName}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'firstName'}>
                         {this.props.userRecord.firstName}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.lastName}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastName'}>
                         {this.props.userRecord.lastName}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.email}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
                         {this.props.userRecord.email}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.registerDate}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'registerDate'}>
                         {this.props.userRecord.registerDate}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.moviesWatched}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'moviesWatched'}>
                         {this.props.userRecord.moviesWatched}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
-
                         {en.UI_LABELS.visits}
-
                     </Text>
                     <Text textAlign={'center'} gridArea={'visits'}>
                         {this.props.userRecord.visits}
