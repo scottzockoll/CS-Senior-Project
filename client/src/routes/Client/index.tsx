@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, DataTable, Text, Button, Layer, Grommet } from 'grommet';
 import { UserRecord, WatchedMovie } from '../admin/UserRecord';
+import en from '../../en.json';
 interface ClientPageProps {
     userRecord: UserRecord;
 }
@@ -22,15 +23,15 @@ export default function ClientPage(props: ClientPageProps) {
                 <DataTable
                     border={true}
                     columns={[
-                        { property: 'title', header: 'Rating Survey(s)' },
-                        { property: 'userRating', header: 'Rating' },
+                        { property: 'title', header: en.UI_LABELS.title },
+                        { property: 'userRating', header: en.UI_LABELS.userRating },
                     ]}
                     data={props.userRecord.watchedMovies}
                 />
             </Box>
             <Box pad="medium">
                 <Button
-                    label="Reset Movie Survey"
+                    label={en.UI_LABELS.resetMovieSurvey}
                     fill={false}
                     alignSelf="start"
                     onClick={() => setShowResetMovies(true)}
@@ -51,7 +52,7 @@ export default function ClientPage(props: ClientPageProps) {
             </Box>
 
             <Box as="footer" direction="row" justify="end">
-                <Button label="Sign Out" onClick={() => setShowSignOut(true)} />
+                <Button label={en.UI_LABELS.signOut} onClick={() => setShowSignOut(true)} />
                 {showSignOut && (
                     <Layer onEsc={() => setShowSignOut(false)} onClickOutside={() => setShowSignOut(false)}>
                         <Box justify="center">
@@ -65,7 +66,7 @@ export default function ClientPage(props: ClientPageProps) {
                     </Layer>
                 )}
 
-                <Button label="Delete Account" onClick={() => setShowDeleteAccount(true)} />
+                <Button label={en.UI_LABELS.deleteAccount} onClick={() => setShowDeleteAccount(true)} />
                 {showDeleteAccount && (
                     <Layer onEsc={() => setShowDeleteAccount(false)} onClickOutside={() => setShowDeleteAccount(false)}>
                         <Box justify="center">
