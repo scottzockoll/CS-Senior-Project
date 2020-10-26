@@ -47,7 +47,7 @@ for g_row in movie_df.itertuples():
         genreTable.append(gt)
 
 # User ID, Movie ID and Rating from ratings.csv
-for mf_row in rating_df.head().itertuples():
+for mf_row in rating_df.itertuples():
     mft = [mf_row.rating, mf_row.movieId, mf_row.userId]
     movie_feedbackTable.append(mft)
 
