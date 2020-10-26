@@ -9,7 +9,7 @@ class Metadata:
 
     @property
     def metadata_path(self):
-        return os.path.join(self.path, 'dataset.json')
+        return os.path.join(self.path, 'dataset.pickle')
 
     def __init__(self, path: str):
         self.path = path

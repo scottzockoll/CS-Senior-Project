@@ -7,7 +7,8 @@ from tqdm import tqdm
 
 def negative_sample(pos_idxs: np.ndarray, n_items: int, n_samples: int) -> np.ndarray:
     """
-    Generate a set of UNIQUE negative samples, which include the positive samples in pos_idxs.
+    Generate a set of UNIQUE negative samples, which exclude the positive samples in pos_idxs.
+    pos_idxs must be sorted.
     :param pos_idxs: The positive samples to be included.
     :param n_items: The total number of possible values (1-?)
     :param n_samples: The number of samples to generate.
@@ -24,6 +25,7 @@ def train_test_split(positives: np.ndarray, user_id: int, n_rows: int, n_train: 
     """
     Split test and train data, generate negative samples for each subset.
     """
+    positives = np.sort(positives)
     negatives = negative_sample(positives, n_rows, len(positives)*10)
 
     # assert we have no overlap in our sets
@@ -64,10 +66,14 @@ def main():
         'movie_ids': movie_map
     }
 
+    print(f'Number of unique movies: {len(movies)}')
+
     for movie_id in movies:
         metadata['movie_ids'][int(movie_id)] = len(metadata['movie_ids']) + 1
 
-    with open(os.path.join(o_path, 'dataset.json'), 'wb') as file:
+    df['movieId'] = df['movieId'].map(lambda idx: movie_map.get(idx))
+
+    with open(os.path.join(o_path, 'dataset.pickle'), 'wb') as file:
         file.write(pickle.dumps(metadata))
 
     train_pos_file = open(os.path.join('processed', args.dataset, 'ratings_train_pos.csv'), 'w')
@@ -89,11 +95,6 @@ def main():
             train_neg_file.write(f'{value[0]},{value[1]},{value[2]}\n')
         for value in test_neg:
             test_neg_file.write(f'{value[0]},{value[1]},{value[2]}\n')
-
-        train_pos_file.flush()
-        test_pos_file.flush()
-        train_neg_file.flush()
-        test_neg_file.flush()
 
     train_pos_file.close()
     test_pos_file.close()

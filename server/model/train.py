@@ -5,17 +5,19 @@ from time import time
 import os
 
 from sklearn.metrics import log_loss
-from torch.utils.data import DataLoader
+from torch.utils.data import Dataset, DataLoader, ChainDataset
 
 from server.model.dataset import MovieLens
-from server.model.joint_dataset import PosNegDataset
+from server.model.metadata import Metadata
 from server.model.network import FPNet
 from server.model.utilities import get_device, push_to_device
+
+from tqdm import tqdm
 
 device = get_device()
 
 
-def evaluate_model(model: FPNet, dataset: MovieLens):
+def evaluate_model(model: FPNet, dataset: Dataset):
     """
     Evaluate model accuracy over the test dataset.
     :param model:
@@ -24,14 +26,11 @@ def evaluate_model(model: FPNet, dataset: MovieLens):
     """
     y_real: [float] = []
     y_pred: [float] = []
-    for idx in range(len(dataset.user_test)):
-        user = dataset.user_test[idx]
-        item = dataset.item_test[idx]
-        rate = dataset.rate_test[idx]
-
+    for inputs in dataset:
+        rating = inputs['rating']
         inputs = {
-            'user_id': torch.tensor([user], dtype=torch.int64),
-            'item_id': torch.tensor([item], dtype=torch.int64),
+            'user_id': torch.tensor([inputs['user_id']], dtype=torch.int64),
+            'movie_id': torch.tensor([inputs['movie_id']], dtype=torch.int64),
         }
 
         if device.type == 'cuda':
@@ -40,14 +39,14 @@ def evaluate_model(model: FPNet, dataset: MovieLens):
         predict = model.predict(inputs)
         predict = predict[0][0]
 
-        y_real.append(rate)
+        y_real.append(rating)
         y_pred.append(predict)
 
     y_real = np.array(y_real, dtype=float)
     y_pred = np.array(y_pred, dtype=float)
 
     # TODO: Implement NDCG scoring
-    return log_loss(y_real, y_pred, labels=[0, 1])
+    return log_loss(y_real, y_pred)
 
 
 def train_model(output_folder: str, output_name: str):
@@ -59,16 +58,29 @@ def train_model(output_folder: str, output_name: str):
     """
     print(f'Running FlickPick model on {device}.')
 
-    dataset = PosNegDataset(
-        MovieLens('dataset/processed/100k', 'ratings_train_pos.csv', 512),
-        MovieLens('dataset/processed/100k', 'ratings_train_neg.csv', 512)
-    )
+    meta_data = Metadata('dataset/processed/100k')
+    train_data = ChainDataset([
+        MovieLens('dataset/processed/100k', 'ratings_train_pos.csv'),
+        MovieLens('dataset/processed/100k', 'ratings_train_neg.csv')
+    ])
+    train_gen = DataLoader(train_data, batch_size=256, num_workers=0)
 
-    num_users = dataset.meta_data.n_users
-    num_movies = dataset.meta_data.n_movies
+    test_data = ChainDataset([
+        MovieLens('dataset/processed/100k', 'ratings_test_pos.csv'),
+        MovieLens('dataset/processed/100k', 'ratings_test_neg.csv')
+    ])
+
+    train_samples = 0
+    for _ in train_data:
+        train_samples += 1
+    test_samples = 0
+    for _ in train_data:
+        test_samples += 1
+
+    num_users = meta_data.n_users
+    num_movies = meta_data.n_movies
 
     model = FPNet(num_users, num_movies)
-    generator = DataLoader(dataset, batch_size=256, num_workers=0)
     # we're using binary-cross entropy; which has been noted to be good for this
     loss_fn = torch.nn.BCELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
@@ -84,11 +96,8 @@ def train_model(output_folder: str, output_name: str):
 
         model.train()
 
-        done = 0
         # actual model training
-        for inputs in generator:
-            done += 1
-            print(inputs)
+        for inputs in tqdm(train_gen, total=train_samples//train_gen.batch_size):
             if device.type == 'cuda':
                 inputs = push_to_device(inputs, device)
 
@@ -111,12 +120,10 @@ def train_model(output_folder: str, output_name: str):
             # accumulate the loss for monitoring
             train_losses.append(loss.item())
 
-        print(f'Done: {done}')
-
         print(f'Finished training epoch {current_epoch}')
         print('Beginning model evaluation')
         model.eval()
-        epoch_accuracy = evaluate_model(model, dataset)
+        epoch_accuracy = evaluate_model(model, test_data)
 
         # print epoch statistics
         train_loss = np.mean(train_losses)
