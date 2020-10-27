@@ -17,7 +17,7 @@ from tqdm import tqdm
 device = get_device()
 
 
-def evaluate_model(model: FPNet, dataset: Dataset):
+def evaluate_model(model: FPNet, dataset: Dataset, test_samples: int):
     """
     Evaluate model accuracy over the test dataset.
     :param model:
@@ -26,7 +26,7 @@ def evaluate_model(model: FPNet, dataset: Dataset):
     """
     y_real: [float] = []
     y_pred: [float] = []
-    for inputs in dataset:
+    for inputs in tqdm(dataset, total=test_samples):
         rating = inputs['rating']
         inputs = {
             'user_id': torch.tensor([inputs['user_id']], dtype=torch.int64),
@@ -58,24 +58,17 @@ def train_model(output_folder: str, output_name: str):
     """
     print(f'Running FlickPick model on {device}.')
 
-    meta_data = Metadata('dataset/processed/100k')
+    meta_data = Metadata('dataset/processed/25m')
     train_data = ChainDataset([
-        MovieLens('dataset/processed/100k', 'ratings_train_pos.csv'),
-        MovieLens('dataset/processed/100k', 'ratings_train_neg.csv')
+        MovieLens('dataset/processed/25m', 'ratings_train_pos.csv'),
+        MovieLens('dataset/processed/25m', 'ratings_train_neg.csv')
     ])
     train_gen = DataLoader(train_data, batch_size=256, num_workers=0)
 
     test_data = ChainDataset([
-        MovieLens('dataset/processed/100k', 'ratings_test_pos.csv'),
-        MovieLens('dataset/processed/100k', 'ratings_test_neg.csv')
+        MovieLens('dataset/processed/25m', 'ratings_test_pos.csv'),
+        MovieLens('dataset/processed/25m', 'ratings_test_neg.csv')
     ])
-
-    train_samples = 0
-    for _ in train_data:
-        train_samples += 1
-    test_samples = 0
-    for _ in train_data:
-        test_samples += 1
 
     num_users = meta_data.n_users
     num_movies = meta_data.n_movies
@@ -85,7 +78,7 @@ def train_model(output_folder: str, output_name: str):
     loss_fn = torch.nn.BCELoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 
-    total_epochs = 30
+    total_epochs = 5
     for current_epoch in range(1, total_epochs + 1):
         print('-'*50)
         print(f'Beginning epoch {current_epoch}')
@@ -97,7 +90,10 @@ def train_model(output_folder: str, output_name: str):
         model.train()
 
         # actual model training
-        for inputs in tqdm(train_gen, total=train_samples//train_gen.batch_size):
+        for inputs in tqdm(train_gen,
+                           total=meta_data.train_size//train_gen.batch_size,
+                           unit_scale=train_gen.batch_size,
+                           unit='sample'):
             if device.type == 'cuda':
                 inputs = push_to_device(inputs, device)
 
@@ -123,7 +119,7 @@ def train_model(output_folder: str, output_name: str):
         print(f'Finished training epoch {current_epoch}')
         print('Beginning model evaluation')
         model.eval()
-        epoch_accuracy = evaluate_model(model, test_data)
+        epoch_accuracy = evaluate_model(model, test_data, meta_data.test_size)
 
         # print epoch statistics
         train_loss = np.mean(train_losses)

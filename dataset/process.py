@@ -63,6 +63,8 @@ def main():
         'n_users': len(df['userId'].unique()),
         'n_movies': len(movies),
         'n_items': len(df),
+        'train_size': 0,
+        'test_size': 0,
         'movie_ids': movie_map
     }
 
@@ -72,9 +74,6 @@ def main():
         metadata['movie_ids'][int(movie_id)] = len(metadata['movie_ids']) + 1
 
     df['movieId'] = df['movieId'].map(lambda idx: movie_map.get(idx))
-
-    with open(os.path.join(o_path, 'dataset.pickle'), 'wb') as file:
-        file.write(pickle.dumps(metadata))
 
     train_pos_file = open(os.path.join('processed', args.dataset, 'ratings_train_pos.csv'), 'w')
     test_pos_file = open(os.path.join('processed', args.dataset, 'ratings_test_pos.csv'), 'w')
@@ -96,10 +95,18 @@ def main():
         for value in test_neg:
             test_neg_file.write(f'{value[0]},{value[1]},{value[2]}\n')
 
+        metadata['train_size'] += len(train_pos) + len(train_neg)
+        metadata['test_size'] += len(test_pos) + len(test_neg)
+
+    with open(os.path.join(o_path, 'dataset.pickle'), 'wb') as file:
+        file.write(pickle.dumps(metadata))
+
     train_pos_file.close()
     test_pos_file.close()
     train_neg_file.close()
     test_neg_file.close()
+
+    print('Done.')
 
 
 if __name__ == '__main__':
