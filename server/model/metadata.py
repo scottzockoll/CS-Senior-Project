@@ -14,16 +14,14 @@ class Metadata:
     def __init__(self, path: str):
         self.path = path
 
-        self.n_users: int = 0
-        self.n_movies: int = 0
-        self.n_items: int = 0
-        self.train_size: int = 0
-        self.test_size: int = 0
-
         with open(self.metadata_path, 'rb') as file:
             metadata = pickle.load(file)
-            self.n_users = metadata['n_users']
-            self.n_movies = metadata['n_movies']
-            self.n_items = metadata['n_items']
-            self.train_size = metadata['train_size']
-            self.test_size = metadata['test_size']
+            self.n_users: int = metadata['n_users']
+            self.n_movies: int = metadata['n_movies']
+            self.n_items: int = metadata['n_items']
+            self.train_size: int = metadata['train_size']
+            self.test_size: int = metadata['test_size']
+            self.movie_map: Dict[int, int] = metadata['movie_ids']
+
+    def map_movie_id(self, movie_id: int) -> int:
+        return self.movie_map.get(movie_id)
