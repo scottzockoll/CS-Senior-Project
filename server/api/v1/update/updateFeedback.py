@@ -27,10 +27,12 @@ def update_feedback(feedbackId: int):
         
         # Update row in database
         cursor.execute("UPDATE movie_feedback SET rating={r} WHERE id={f}".format(r = rating, f = feedbackId))
-        if cursor.rowcount() < 1:
-            return Response({}, mimetype='application/json', status=404)
-        else:
+        if cursor.rowcount == 1:
+            con.commit()
             return Response({}, mimetype='application/json', status=200)
+        else:
+            con.rollback()
+            return Response({}, mimetype='application/json', status=404)
     except Exception:
         return Response({}, mimetype='application/json', status=500)
     finally:
