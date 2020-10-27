@@ -30,22 +30,10 @@ def del_user(id: int):
         elif not isinstance(id, int):       # checks if id is integer
             return Response({
             }, mimetype='application/json', status=400)
-        else:                               # starts execution of queries
-            cursor.execute("SELECT * FROM tag_feedback WHERE user_id=%s", (id,))        # verify if user exists here
-            r1 = cursor.fetchmany()
-            if len(r1) == 1:
-                cursor.execute("DELETE FROM tag_feedback WHERE user_id=%s", (id,))      # deletes if so
-
-            cursor.execute("SELECT * FROM movie_feedback WHERE user_id=%s", (id,))      # verify if user exists here
-            r2 = cursor.fetchmany()
-            if len(r2) == 1:
-                cursor.execute("DELETE FROM movie_feedback WHERE user_id=%s", (id,))    # deletes if so
-
-            cursor.execute("SELECT * FROM users WHERE id=%s", (id,))                    # verify if user exists here
-            r3 = cursor.fetchmany(size=1)
-            if len(r3) == 1:
-                cursor.execute("DELETE FROM users WHERE id=%s", (id,))                  # deletes if so
-                con.commit()                                                            # commits all deletes
+        else:                               # executes query
+            cursor.execute("DELETE FROM users WHERE id=%s", (id,))
+            if cursor.rowcount == 1:
+                con.commit()
                 return Response({
                 }, mimetype='application/json', status=200)
             else:
@@ -57,3 +45,6 @@ def del_user(id: int):
     finally:
         cursor.close()
         con.close()
+
+
+print(del_user(611))
