@@ -31,7 +31,7 @@ def update_feedback(feedbackId: int):
             con.commit()
             return Response({}, mimetype='application/json', status=200)
         else:
-            con.rollback()
+            con.rollback() # necessary? update affects no row...
             return Response({}, mimetype='application/json', status=404)
     except Exception:
         return Response({}, mimetype='application/json', status=500)
