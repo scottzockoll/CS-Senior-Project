@@ -1,9 +1,35 @@
-import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
+import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
 import React from 'react';
 import { UserRecord } from './UserRecord';
+import { CSVParser } from '../common/CSVParser';
 
 interface UserRecordModalProps {
     userRecord: UserRecord;
+}
+
+/***
+ * Exports all of user's watched movie data to a CSV file.
+ *
+ * @param userRecord The current user's record.
+ */
+function exportUserRecordToCSV(userRecord: UserRecord) {
+    if (window.confirm('Download the selected user record to CSV?')) {
+        // check if the user has at least one movie watched
+        if (userRecord.watchedMovies.length < 1) {
+            alert('User has no data to export. Cancelling download.');
+            return;
+        }
+
+        // retrieve the current datetime
+        let date = new Date();
+        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+        // format the filename
+        let filename = `${userRecord.firstName}_${userRecord.lastName}_${datetimeStr}.csv`;
+
+        // export user records to csv
+        CSVParser.exportToCsv(filename, userRecord.watchedMovies);
+    }
 }
 
 /**
@@ -14,7 +40,7 @@ interface UserRecordModalProps {
 export default class userRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
-            <Box height={'large'} width={'large'}>
+            <Box style={{ height: '80%' }} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
                     User Record
                 </Heading>
@@ -96,7 +122,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
                     Movies Watched
                 </Heading>
-                <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
+                <Box background={'light-2'} style={{ width: '90%', height: '50%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
@@ -130,9 +156,18 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                             },
                         ]}
                         sortable={true}
-                        style={{ width: '100%' }}
+                        style={{ width: '100%', height: '100%' }}
                         data={this.props.userRecord.watchedMovies}
                         size={'medium'}
+                    />
+                </Box>
+                <Box width={'small'} margin={{ top: '10px', left: 'auto', right: 'auto', bottom: '5px' }}>
+                    <Button
+                        primary
+                        label={'Download to CSV'}
+                        onClick={() => {
+                            exportUserRecordToCSV(this.props.userRecord);
+                        }}
                     />
                 </Box>
             </Box>
