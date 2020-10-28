@@ -45,6 +45,3 @@ def del_user(id: int):
     finally:
         cursor.close()
         con.close()
-
-
-print(del_user(611))
