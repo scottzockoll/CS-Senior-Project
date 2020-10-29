@@ -5,7 +5,7 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { getUser, getMovie, getRecommendations } from './ActionCreators';
 import { userReducer, movieReducer, recommendationsReducer } from './Reducers';
-import Homepage from './routes/home/Homepage';
+import Homepage from './routes/home/index';
 import NavigationBar from './routes/common/NavigationBar';
 import { UserRecord, WatchedMovie } from './routes/admin/UserRecord';
 import AdminPage from './routes/admin';

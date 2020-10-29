@@ -1,15 +1,23 @@
 {
-    "UI_LABELS": {
-        "userRecord": "User Record",
-        "userId": "User ID",
-        "firstName": "First Name",
-        "lastName": "Last Name",
-        "email": "Email",
-        "registerDate": "Register Date",
-        "moviesWatched": "Movies Watched",
-        "visits": "Visits",
-        "title": "Title",
-        "genre": "Genre",
-        "userRating": "User Rating"
+  "UI_LABELS": {
+    "userRecord": "User Record",
+    "userId": "User ID",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "registerDate": "Register Date",
+    "moviesWatched": "Movies Watched",
+    "visits": "Visits",
+    "title": "Title",
+    "genre": "Genre",
+    "userRating": "User Rating",
+    "takeAMovieSurvey": "Take a Movie Survey",
+    "NAVIGATION_BAR_LABELS": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "home": "Home",
+      "admin": "Admin",
+      "client": "Client"
     }
+  }
 }
