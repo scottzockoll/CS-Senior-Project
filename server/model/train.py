@@ -1,11 +1,11 @@
-
 import torch
 import numpy as np
 from time import time
 import os
 
-from sklearn.metrics import log_loss
-from torch.utils.data import Dataset, DataLoader, ChainDataset
+from torch.utils.data import DataLoader, ChainDataset
+
+from sklearn.metrics import confusion_matrix
 
 from server.model.dataset import MovieLens
 from server.model.metadata import Metadata
@@ -17,72 +17,92 @@ from tqdm import tqdm
 device = get_device()
 
 
-def evaluate_model(model: FPNet, dataset: Dataset, test_samples: int):
+def evaluate_model(model: FPNet, test_gen: DataLoader, meta_data: Metadata):
     """
     Evaluate model accuracy over the test dataset.
-    :param model:
-    :param dataset:
+    :param model: The model to evaluate.
+    :param test_gen: The data loader to use to load testing data.
+    :param meta_data: Meta data to use to calculate total length.
     :return:
     """
-    y_real: [float] = []
-    y_pred: [float] = []
-    for inputs in tqdm(dataset, total=test_samples):
-        rating = inputs['rating']
-        inputs = {
-            'user_id': torch.tensor([inputs['user_id']], dtype=torch.int64),
-            'movie_id': torch.tensor([inputs['movie_id']], dtype=torch.int64),
-        }
+    model.eval()
 
+    losses: [float] = []
+    loss_fn = torch.nn.BCELoss()
+
+    pred_y: [float] = []
+    real_y: [float] = []
+
+    pbar = tqdm(test_gen,
+                total=meta_data.test_size // test_gen.batch_size,
+                unit_scale=test_gen.batch_size,
+                unit='sample')
+    for inputs in pbar:
         if device.type == 'cuda':
             inputs = push_to_device(inputs, device)
 
-        predict = model.predict(inputs)
-        predict = predict[0][0]
+        prediction = model(inputs)
 
-        y_real.append(rating)
-        y_pred.append(predict)
+        # get the target values
+        y: torch.Tensor[float] = inputs['rating']
 
-    y_real = np.array(y_real, dtype=float)
-    y_pred = np.array(y_pred, dtype=float)
+        # convert to float and match dim
+        y = y.float().view(prediction.size())
+
+        real_y.extend(torch.flatten(y).detach().numpy())
+        pred_y.extend(torch.flatten(prediction).detach().numpy().round())
+
+        loss = loss_fn(prediction, y)
+        losses.append(loss.item())
+        pbar.set_description(f'Test Loss {np.mean(losses)*100:.02f}%')
 
     # TODO: Implement NDCG scoring
-    return log_loss(y_real, y_pred)
+    return np.mean(losses), confusion_matrix(real_y, pred_y)
 
 
-def train_model(output_folder: str, output_name: str):
+def train_model(output_folder: str, output_name: str, dataset_size: str, epochs: int = 5, lr: float = 1e-5):
     """
     Train the model.
     :param output_folder: Output folder path
     :param output_name: Name of output model name
+    :param dataset_size: Size of the dataset to use.
+    :param epochs: Number of passes through the data to do.
+    :param lr: Learning rate to use.
     :return:
     """
+
+    assert dataset_size in ['100k', '25m'], 'Dataset size must be one of [100k, 25m].'
+
     print(f'Running FlickPick model on {device}.')
 
-    meta_data = Metadata('dataset/processed/25m')
+    meta_data = Metadata(f'dataset/processed/{dataset_size}')
     train_data = ChainDataset([
-        MovieLens('dataset/processed/25m', 'ratings_train_pos.csv'),
-        MovieLens('dataset/processed/25m', 'ratings_train_neg.csv')
+        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_train_pos.csv'),
+        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_train_neg.csv')
     ])
     train_gen = DataLoader(train_data, batch_size=256, num_workers=0)
 
     test_data = ChainDataset([
-        MovieLens('dataset/processed/25m', 'ratings_test_pos.csv'),
-        MovieLens('dataset/processed/25m', 'ratings_test_neg.csv')
+        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_test_pos.csv'),
+        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_test_neg.csv')
     ])
+    test_gen = DataLoader(test_data, batch_size=256, num_workers=0)
 
     num_users = meta_data.n_users
     num_movies = meta_data.n_movies
 
+    path = os.path.abspath(output_folder)
+    os.makedirs(path, exist_ok=True)
+
     model = FPNet(num_users, num_movies)
     # we're using binary-cross entropy; which has been noted to be good for this
     loss_fn = torch.nn.BCELoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
+    optimizer = torch.optim.SGD(model.parameters(), lr=lr, weight_decay=0.001)
 
-    total_epochs = 5
-    for current_epoch in range(1, total_epochs + 1):
-        print('-'*50)
+    for current_epoch in range(1, epochs + 1):
+        print('-' * 50)
         print(f'Beginning epoch {current_epoch}')
-        print('-'*50)
+        print('-' * 50)
 
         t0 = time()
         train_losses: [float] = []
@@ -90,10 +110,11 @@ def train_model(output_folder: str, output_name: str):
         model.train()
 
         # actual model training
-        for inputs in tqdm(train_gen,
-                           total=meta_data.train_size//train_gen.batch_size,
-                           unit_scale=train_gen.batch_size,
-                           unit='sample'):
+        pbar = tqdm(train_gen,
+                    total=meta_data.train_size // train_gen.batch_size,
+                    unit_scale=train_gen.batch_size,
+                    unit='sample')
+        for inputs in pbar:
             if device.type == 'cuda':
                 inputs = push_to_device(inputs, device)
 
@@ -115,21 +136,33 @@ def train_model(output_folder: str, output_name: str):
 
             # accumulate the loss for monitoring
             train_losses.append(loss.item())
+            pbar.set_description(f'Epoch {current_epoch} :: Train Loss {np.mean(train_losses)*100:.02f}%')
 
         print(f'Finished training epoch {current_epoch}')
         print('Beginning model evaluation')
         model.eval()
-        epoch_accuracy = evaluate_model(model, test_data, meta_data.test_size)
+        epoch_accuracy = evaluate_model(model, test_gen, meta_data)
 
         # print epoch statistics
         train_loss = np.mean(train_losses)
+        print('-' * 50)
         print(f"Training Loss: {train_loss}")
-        print(f"Test Loss: {epoch_accuracy:.6f}")
+        print(f"Test Loss: {epoch_accuracy[0]:.6f}")
+        print(epoch_accuracy[1])
         print(f"Epoch {current_epoch} completed {time() - t0:.1f}s")
+        print('-' * 50)
         print()
 
-    path = os.path.abspath(output_folder)
-    os.makedirs(path, exist_ok=True)
+        chkpt_path = os.path.join(path, "checkpoints", output_name)
+        os.makedirs(chkpt_path, exist_ok=True)
+        chkpt_path = os.path.join(chkpt_path, f"{output_name}-{current_epoch:04}.mdl")
+
+        if os.path.exists(chkpt_path):
+            os.unlink(chkpt_path)
+
+        chkpt_handle = open(chkpt_path, 'wb')
+        torch.save(model, chkpt_handle)
+        chkpt_handle.close()
 
     path = os.path.join(path, f"{output_name}.mdl")
 
@@ -139,4 +172,3 @@ def train_model(output_folder: str, output_name: str):
     file_handle = open(path, 'wb')
     torch.save(model, file_handle)
     file_handle.close()
-

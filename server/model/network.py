@@ -8,9 +8,9 @@ device = get_device()
 
 
 LAYERS = [
-    [16, 32],
-    [32, 16],
-    [16, 8]
+    [32, 64],
+    [64, 32],
+    [32, 16]
 ]
 
 
@@ -25,8 +25,8 @@ class FPNet(torch.nn.Module):
 
         self._dropout = dropout
 
-        self.user_embeddings = torch.nn.Embedding(n_users + 1, 8)
-        self.movie_embeddings = torch.nn.Embedding(n_movies + 1, 8)
+        self.user_embeddings = torch.nn.Embedding(n_users + 1, 16)
+        self.movie_embeddings = torch.nn.Embedding(n_movies + 1, 16)
 
         self.hidden = torch.nn.ModuleList([
             torch.nn.Linear(LAYERS[0][0], LAYERS[0][1]),
