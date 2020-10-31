@@ -1,4 +1,14 @@
-import { User, Movie, Recommendations, ActionTypes, GET_USER, GET_MOVIE, GET_RECOMMENDATIONS } from './Types';
+import {
+    User,
+    Movie,
+    Recommendations,
+    ActionTypes,
+    GET_USER,
+    RECEIVE_USER,
+    GET_MOVIE,
+    GET_RECOMMENDATIONS,
+} from './Types';
+import { AppThunk } from './App';
 
 // Reducers take state and an action and then returns a new state after the
 // action was applied.
@@ -31,10 +41,16 @@ const initialUserState: User = {
     isAdmin: false,
     movies: {},
     tags: {},
+    isFetching: false,
 };
 
 export function userReducer(state = initialUserState, action: ActionTypes): User {
     switch (action.type) {
+        case RECEIVE_USER:
+            return {
+                ...state,
+                isFetching: true,
+            };
         case GET_USER:
             return {
                 ...state,

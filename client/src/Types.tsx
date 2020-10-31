@@ -1,3 +1,13 @@
+import { AppThunk } from './App';
+import { ThunkAction } from 'redux-thunk';
+import { Action } from 'redux';
+
+export interface RootState {
+    user: User;
+    movie: Movie;
+    recommendations: Recommendations;
+}
+
 export interface Movie {
     movieId: number;
     movieName: string;
@@ -16,6 +26,7 @@ export interface User {
     isAdmin: boolean;
     movies: Record<number, Movie>;
     tags: Record<number, Tag>;
+    isFetching: boolean;
 }
 
 export interface Recommendations {
@@ -23,12 +34,19 @@ export interface Recommendations {
 }
 
 export const GET_USER = 'GET_USER';
+export const RECEIVE_USER = 'RECEIVE_USER';
 export const GET_MOVIE = 'GET_MOVIE';
 export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
 
 export interface GetUserAction {
     type: typeof GET_USER;
     userId: number;
+}
+
+export interface ReceiveUserAction {
+    type: typeof RECEIVE_USER;
+    userId: number;
+    userData: object;
 }
 
 export interface GetMovieAction {
@@ -43,4 +61,4 @@ export interface GetRecommendationAction {
 
 // The "|" operator is a union. This means ActionTypes can be any one of the
 // types on the right hand side.
-export type ActionTypes = GetUserAction | GetMovieAction | GetRecommendationAction;
+export type ActionTypes = GetUserAction | ReceiveUserAction | GetMovieAction | GetRecommendationAction;

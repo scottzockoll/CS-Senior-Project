@@ -1,15 +1,18 @@
 import React from 'react';
 import ClientPage from './routes/Client/index';
 import './App.css';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware, Action, Store } from 'redux';
 import { Provider } from 'react-redux';
-import { getUser, getMovie, getRecommendations } from './ActionCreators';
+import { getUser, getMovie, getRecommendations, fetchUser } from './ActionCreators';
 import { userReducer, movieReducer, recommendationsReducer } from './Reducers';
 import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
 import { UserRecord, WatchedMovie } from './routes/admin/UserRecord';
 import AdminPage from './routes/admin';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import thunkMiddleware from 'redux-thunk';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { ActionTypes, RootState } from './Types';
 
 /**
  * Sample user records for the admin page
@@ -135,23 +138,28 @@ let movieRecords: WatchedMovie[] = [
 
 const sampleRecord = records[0];
 
-function App() {
-    // The store needs to be passed a single reducer. We can create this
-    // by calling combineReducers
-    const rootReducer = combineReducers({
-        user: userReducer,
-        movie: movieReducer,
-        recommendations: recommendationsReducer,
-    });
+// The store needs to be passed a single reducer. We can create this
+// by calling combineReducers
+const rootReducer = combineReducers({
+    user: userReducer,
+    movie: movieReducer,
+    recommendations: recommendationsReducer,
+});
 
-    const store = createStore(rootReducer);
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
+
+function App() {
+    function configureStore(): Store<RootState> {
+        const store = createStore(rootReducer, undefined, applyMiddleware(thunkMiddleware));
+        return store;
+    }
+
+    const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
     // Print out the store showing default values
     console.log(store.getState());
 
-    // Dispatch the getUser action to the store
-    // This will end up changing the store's state and loaded a user
-    store.dispatch(getUser(1));
+    store.dispatch(fetchUser(1));
 
     // Print out the store to show the user object
     console.log(store.getState());
