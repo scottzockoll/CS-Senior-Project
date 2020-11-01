@@ -1,4 +1,5 @@
 import { UserRecord } from './routes/admin/UserRecord';
+import { User } from './store/user';
 
 /**
  * Sample user records for the admin page
@@ -121,3 +122,15 @@ export const records: UserRecord[] = [
 //     }
 // ];
 export const sampleRecord = records[0];
+
+export const BIG_USER_DATA: User[] = [];
+for (let i = 0; i < 10000; i++) {
+    BIG_USER_DATA.push({
+        id: i,
+        firstName: `First${i}`,
+        lastName: `Last${i}`,
+        isAdmin: i % 2 == 0,
+        movies: [],
+        tags: [],
+    });
+}
