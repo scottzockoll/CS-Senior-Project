@@ -8,7 +8,6 @@ import {
     GET_MOVIE,
     GET_RECOMMENDATIONS,
 } from './Types';
-import { AppThunk } from './App';
 
 // Reducers take state and an action and then returns a new state after the
 // action was applied.
