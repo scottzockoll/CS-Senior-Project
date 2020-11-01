@@ -1,9 +1,8 @@
-import { AppDispatch, RootState } from '../../store';
 import { Box, Button, Form } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 
-const UnconnectedLogin: React.FC = ({}) => {
+const UnconnectedLogin: React.FC = () => {
     return (
         <Box align={'center'} pad={{ top: 'large' }}>
             <Form>

@@ -9,9 +9,13 @@ import loggerMiddleware from 'redux-logger';
 import { Provider } from 'react-redux';
 import { rootReducer } from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { apiMiddleware } from './store/api';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware)));
+const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
+);
 
 ReactDOM.render(
     <React.StrictMode>

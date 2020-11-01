@@ -129,7 +129,7 @@ for (let i = 0; i < 10000; i++) {
         id: i,
         firstName: `First${i}`,
         lastName: `Last${i}`,
-        isAdmin: i % 2 == 0,
+        isAdmin: i % 2 === 0,
         movies: [],
         tags: [],
     });

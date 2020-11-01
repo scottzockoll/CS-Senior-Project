@@ -1,5 +1,6 @@
 import { Movie } from '../movie';
 import { Tag } from '../../Types';
+import { ApiRequest } from '../api';
 
 export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
 export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
@@ -28,7 +29,7 @@ export interface User {
     tags: Record<number, Tag>;
 }
 
-export interface RequestUserStarted {
+export interface RequestUserStarted extends ApiRequest {
     type: REQUEST_USER_STARTED;
     id: number;
 }
