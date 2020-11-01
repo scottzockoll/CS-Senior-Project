@@ -44,7 +44,7 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
                 entities: {
                     ...state.entities,
-                    ...action.response.entities,
+                    ...action.response.entities.users,
                 },
                 nextPage: state.nextPage, // TODO
                 prevPage: state.prevPage, // TODO

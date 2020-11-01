@@ -23,11 +23,7 @@ const callApi = async (endpoint: string, schema: schema.Entity | schema.Entity[]
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
     const response = await fetch(fullUrl);
-    console.log(response);
-
-    let json = await response.json();
-
-    console.log(json);
+    const json = await response.json();
 
     if (!response.ok) {
         throw new Error(json);
