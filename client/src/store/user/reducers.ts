@@ -13,7 +13,7 @@ const initialUserAuthState: number = -1;
 export function userAuthReducer(state = initialUserAuthState, action: UserAuthActions): number {
     switch (action.type) {
         case 'USER_LOGIN':
-            return action.payload;
+            return action.id;
         case 'USER_LOGOUT':
             return -1;
         default:

@@ -1,10 +1,23 @@
-import { Box, Button, Form } from 'grommet';
+import { Box, Button, Form, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { requestSingleUser } from '../../store/user/actions';
 
-const UnconnectedLogin: React.FC = () => {
+const mapStateToProps = (state: RootState) => ({
+    user: state.users.entities[state.activeUser],
+});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    getUsers: (id: number) => dispatch(requestSingleUser(id)),
+});
+
+type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers }) => {
     return (
         <Box align={'center'} pad={{ top: 'large' }}>
+            {user && <Header>Welcome {user.firstName}</Header>}
+            {!user && <Header>Welcome Guest</Header>}
             <Form>
                 <Button margin={{ horizontal: 'medium' }}>Login</Button>
                 <Button margin={{ horizontal: 'medium' }}>Logout</Button>
@@ -13,4 +26,4 @@ const UnconnectedLogin: React.FC = () => {
     );
 };
 
-export const Login = connect()(UnconnectedLogin);
+export const Login = connect(mapStateToProps, mapDispatchToProps)(UnconnectedLogin);

@@ -10,13 +10,14 @@ import { Provider } from 'react-redux';
 import { rootReducer } from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { apiMiddleware } from './store/api';
-import { requestSingleUser } from './store/user/actions';
+import { requestSingleUser, userLogin } from './store/user/actions';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
 );
+store.dispatch(requestSingleUser(1));
 
 ReactDOM.render(
     <React.StrictMode>
@@ -30,7 +31,7 @@ ReactDOM.render(
 );
 
 setTimeout(() => {
-    store.dispatch(requestSingleUser(1));
+    store.dispatch(userLogin(1));
 }, 1000);
 
 // If you want your app to work offline and load faster, you can change

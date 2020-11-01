@@ -50,7 +50,7 @@ export type UserEntitiesActions = RequestUserStarted | ReceiveUserSuccess | Rece
 
 export interface UserLogin {
     type: USER_LOGIN;
-    payload: number;
+    id: number;
 }
 export interface UserLogout {
     type: USER_LOGOUT;
