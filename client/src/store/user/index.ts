@@ -35,7 +35,11 @@ export interface RequestUserStarted extends ApiRequest {
 }
 export interface ReceiveUserSuccess {
     type: RECEIVE_USER_SUCCESS;
-    payload: User[];
+    response: {
+        entities: {
+            users: Record<number, User>;
+        };
+    };
 }
 export interface ReceiveUserFailure {
     type: RECEIVE_USER_FAILURE;

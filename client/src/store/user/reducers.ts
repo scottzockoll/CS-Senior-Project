@@ -22,65 +22,13 @@ export function userAuthReducer(state = initialUserAuthState, action: UserAuthAc
 }
 
 const initialUserEntitiesState: Paginated<User> = {
-    ids: new Set(),
+    ids: [],
     entities: {},
-    pages: new Set(),
+    pages: [],
     prevPage: '',
     nextPage: '',
     isFetching: false,
 };
-
-// const updatePagination = (
-//     state = {
-//         isFetching: false,
-//         nextPageUrl: undefined,
-//         pageCount: 0,
-//         ids: [],
-//     },
-//     action
-// ) => {
-//     switch (action.type) {
-//         case requestType:
-//             return {
-//                 ...state,
-//                 isFetching: true,
-//             };
-//         case successType:
-//             return {
-//                 ...state,
-//                 isFetching: false,
-//                 ids: union(state.ids, action.response.result),
-//                 nextPageUrl: action.response.nextPageUrl,
-//                 pageCount: state.pageCount + 1,
-//             };
-//         case failureType:
-//             return {
-//                 ...state,
-//                 isFetching: false,
-//             };
-//         default:
-//             return state;
-//     }
-// };
-//
-// return (state = {}, action) => {
-//     // Update pagination by key
-//     switch (action.type) {
-//         case requestType:
-//         case successType:
-//         case failureType:
-//             const key = mapActionToKey(action)
-//             if (typeof key !== 'string') {
-//                 throw new Error('Expected key to be a string.')
-//             }
-//             return {
-//                 ...state,
-//                 [key]: updatePagination(state[key], action)
-//             }
-//         default:
-//             return state
-//     }
-// }
 
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
@@ -90,8 +38,16 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 isFetching: true,
             };
         case RECEIVE_USER_SUCCESS:
+            console.log(action);
             return {
                 ...state,
+                ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
+                entities: {
+                    ...state.entities,
+                    ...action.response.entities,
+                },
+                nextPage: state.nextPage, // TODO
+                prevPage: state.prevPage, // TODO
                 isFetching: false,
             };
         case RECEIVE_USER_FAILURE:

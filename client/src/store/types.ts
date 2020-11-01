@@ -2,7 +2,7 @@ export interface Paginated<T> {
     /**
      * Set of all acquired ids.
      */
-    ids: Set<number>;
+    ids: number[];
     /**
      * Mapping of ids to their corresponding entities.
      */
@@ -10,7 +10,7 @@ export interface Paginated<T> {
     /**
      * Set of all page numbers fetched.
      */
-    pages: Set<number>;
+    pages: number[];
     /**
      * Previous page URL
      */

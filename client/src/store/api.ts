@@ -8,7 +8,7 @@ export const CALL_API = 'CALL_API';
 export interface ApiRequest {
     [CALL_API]: {
         endpoint: string | Function;
-        schema: schema.Entity | [schema.Entity];
+        schema: schema.Entity | schema.Entity[];
         types: {
             [AsyncActionStatus.Request]: string;
             [AsyncActionStatus.Success]: string;
@@ -19,11 +19,15 @@ export interface ApiRequest {
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-const callApi = async (endpoint: string, schema: schema.Entity | [schema.Entity]) => {
+const callApi = async (endpoint: string, schema: schema.Entity | schema.Entity[]) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
     const response = await fetch(fullUrl);
-    const json = await response.json();
+    console.log(response);
+
+    let json = await response.json();
+
+    console.log(json);
 
     if (!response.ok) {
         throw new Error(json);
@@ -60,12 +64,6 @@ export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (ac
         }
         if (!schema) {
             throw new Error('Specify one of the exported Schemas.');
-        }
-        if (!Array.isArray(types) || types.length !== 3) {
-            throw new Error('Expected an array of three action types.');
-        }
-        if (!types.every((type) => typeof type === 'string')) {
-            throw new Error('Expected action types to be strings.');
         }
 
         const actionWith = (data: any) => {
