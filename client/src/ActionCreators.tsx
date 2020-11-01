@@ -1,9 +1,8 @@
 import { GET_USER, RECEIVE_USER, GET_MOVIE, GET_RECOMMENDATIONS, ActionTypes } from './Types';
-import { Dispatch } from 'redux';
 import fetch from 'cross-fetch';
-import { AppThunk } from './App';
 import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
+import { AppThunk } from './store';
 
 // Actions are object literals that contain a type field specifying the action.
 // The literal also contains any data needed to make the change to the store.
