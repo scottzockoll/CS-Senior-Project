@@ -1,5 +1,3 @@
-import { Movie } from '../movie';
-import { Tag } from '../../Types';
 import { ApiRequest } from '../api';
 
 export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
@@ -20,19 +18,37 @@ export type USER_LOGOUT = typeof USER_LOGOUT;
 
 export type UserAuthTypes = USER_LOGIN | USER_LOGOUT;
 
+/**
+ * A single user.
+ */
 export interface User {
     id: number;
     firstName: string;
     lastName: string;
     isAdmin: boolean;
-    movies: Record<number, Movie>;
-    tags: Record<number, Tag>;
+    /**
+     * TODO: Should this be "ratings"?
+     * An array of all movie ids that the user has rated.
+     */
+    movies: number[];
+    /**
+     * TODO: Should this change with "ratings" above?
+     * An array of all tag ids that the user has rated.
+     */
+    tags: number[];
 }
 
+/**
+ * Action that occurs when fetching a specific user starts.
+ */
 export interface RequestUserStarted extends ApiRequest {
     type: REQUEST_USER_STARTED;
     id: number;
 }
+
+/**
+ * Action that occurs when fetching a specific user succeeds.
+ */
 export interface ReceiveUserSuccess {
     type: RECEIVE_USER_SUCCESS;
     response: {
@@ -41,19 +57,36 @@ export interface ReceiveUserSuccess {
         };
     };
 }
+
+/**
+ * Action that occurs when fetching a specific user fails.
+ */
 export interface ReceiveUserFailure {
     type: RECEIVE_USER_FAILURE;
     id: number;
 }
 
+/**
+ * Any user entities retrieval action, that is a user entities Request {Start, Success, Failure}.
+ */
 export type UserEntitiesActions = RequestUserStarted | ReceiveUserSuccess | ReceiveUserFailure;
 
+/**
+ * Action that occurs when the user logins in.
+ */
 export interface UserLogin {
     type: USER_LOGIN;
     id: number;
 }
+
+/**
+ * Action that occurs when the user logs out.
+ */
 export interface UserLogout {
     type: USER_LOGOUT;
 }
 
+/**
+ * Any user authentication action, that is either Login or Logout
+ */
 export type UserAuthActions = UserLogin | UserLogout;
