@@ -13,7 +13,7 @@
     {
       "files": ["*.json", ".eslintrc"],
       "options": {
-        "tabWidth": 2
+        "tabWidth": 4
       }
     }
   ]
