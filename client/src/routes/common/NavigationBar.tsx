@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grommet, Header, Menu, Image, Box } from 'grommet';
+import { Button, Header, Menu, Box } from 'grommet';
 
 function NavigationBar() {
     return (
