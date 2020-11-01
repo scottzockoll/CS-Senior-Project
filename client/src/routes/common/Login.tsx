@@ -1,4 +1,4 @@
-import { Box, Button, Form, Header } from 'grommet';
+import { Box, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
@@ -16,12 +16,12 @@ type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDisp
 const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers }) => {
     return (
         <Box align={'center'} pad={{ top: 'large' }}>
-            {user && <Header>Welcome {user.firstName}</Header>}
+            {user && (
+                <Header>
+                    Welcome {user.firstName} {user.lastName}
+                </Header>
+            )}
             {!user && <Header>Welcome Guest</Header>}
-            <Form>
-                <Button margin={{ horizontal: 'medium' }}>Login</Button>
-                <Button margin={{ horizontal: 'medium' }}>Logout</Button>
-            </Form>
         </Box>
     );
 };
