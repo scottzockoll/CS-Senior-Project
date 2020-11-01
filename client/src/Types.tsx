@@ -1,13 +1,3 @@
-import { AppThunk } from './App';
-import { ThunkAction } from 'redux-thunk';
-import { Action } from 'redux';
-
-export interface RootState {
-    user: User;
-    movie: Movie;
-    recommendations: Recommendations;
-}
-
 export interface Movie {
     movieId: number;
     movieName: string;
