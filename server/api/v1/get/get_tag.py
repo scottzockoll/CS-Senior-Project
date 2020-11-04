@@ -1,10 +1,5 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, is_user
 from flask import Response
-
-
-# Temporary function until we decide on a universal one
-def is_user():
-    return True
 
 
 def get_tag(id: int):
@@ -16,7 +11,7 @@ def get_tag(id: int):
     con, cursor = db_connection()
 
     try:
-        if not is_user():               # checks user
+        if not is_user():               # TODO: Properly define in utilities.py
             return Response({
             }, mimetype='application/json', status=403)
         if not isinstance(id, int):     # checks if id is an integer

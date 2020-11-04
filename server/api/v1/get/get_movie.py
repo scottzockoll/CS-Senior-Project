@@ -1,9 +1,7 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, is_user
 from flask import Response
 import json
 
-def is_user():
-    return True
 
 def get_movie(id: int):
     """
@@ -23,7 +21,7 @@ def get_movie(id: int):
             cursor.execute('''SELECT DISTINCT movies.id, movies.name, tags.name FROM FlickPick.movies '''
                            '''JOIN tags '''
                            '''ON tags.movie_id = movies.id '''
-                           '''WHERE movies.id = 60756;'''(id,))
+                           '''WHERE movies.id = 60756;'''(id, ))
             result = cursor.fetchall()
 
             if len(result) < 1:  # make sure there is at least one result returned

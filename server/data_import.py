@@ -1,7 +1,7 @@
 import pandas as pd
 import time
-from mysql.connector import connection
 import random
+from server.utilities import db_connection
 
 start_time = time.time()
 
@@ -35,9 +35,7 @@ tag_feedbackTable = []
 movie_feedbackTable = []
 
 # Connection to Database
-d_con = connection.MySQLConnection(user='fp_user', password='flickpick123',
-                                   host='ec2-18-222-97-98.us-east-2.compute.amazonaws.com', database='FlickPick')
-cursor = d_con.cursor()
+d_con, cursor = db_connection()
 
 """
 # These need to be executed everytime a new import is attempted (or for general testing purposes)

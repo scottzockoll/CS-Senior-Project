@@ -1,15 +1,5 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, current_user, is_admin
 from flask import Response
-
-
-# Temporary function until we decide on a universal one
-def is_admin():
-    return True
-
-
-# Temporary function until we decide on a universal one
-def current_user():
-    return True
 
 
 def del_user(id: int):
@@ -21,16 +11,16 @@ def del_user(id: int):
     con, cursor = db_connection()
 
     try:
-        if not current_user():              # checks if the logged in user is attempting function (will change)
+        if not current_user():  # checks if the logged in user is attempting function (will change)
             return Response({
             }, mimetype='application/json', status=403)
-        elif not is_admin():                # checks if the user attempting function is admin (will change)
+        elif not is_admin():  # checks if the user attempting function is admin (will change)
             return Response({
             }, mimetype='application/json', status=401)
-        elif not isinstance(id, int):       # checks if id is integer
+        elif not isinstance(id, int):  # checks if id is integer
             return Response({
             }, mimetype='application/json', status=400)
-        else:                               # executes query
+        else:  # executes query
             cursor.execute("DELETE FROM users WHERE id=%s", (id,))
             if cursor.rowcount == 1:
                 con.commit()
