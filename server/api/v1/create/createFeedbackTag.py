@@ -16,11 +16,11 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
     # The line below is for the request body content, which is awaiting implementation on the frontend.
     # rating = request.form["rating"]
     
-    # For now it is hardcoded for testing purposes
+    # TODO: For now it is hardcoded for testing purposes
     rating = 1
     
     try:
-        # Validate user permission level (eventually will come from OAuth)
+        # TODO: Validate user permission level (eventually will come from OAuth)
         if not True:
             return Response({}, mimetype='application/json', status=403)
         
