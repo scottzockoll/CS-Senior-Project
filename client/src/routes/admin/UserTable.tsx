@@ -37,9 +37,6 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
             email: '',
             firstName: '',
             lastName: '',
-            totalMoviesWatched: 0,
-            registerDate: '',
-            visits: 0,
             watchedMovies: [],
             tags: [],
         };
@@ -74,22 +71,6 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             header: 'Email',
                             sortable: true,
                             search: true,
-                        },
-                        {
-                            property: 'registerDate',
-                            header: 'Register Date',
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'moviesWatched',
-                            header: 'Movies Watched',
-                            sortable: true,
-                        },
-                        {
-                            property: 'visits',
-                            header: 'Visits',
-                            sortable: true,
                         },
                     ]}
                     data={this.props.users}

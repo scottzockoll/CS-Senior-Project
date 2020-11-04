@@ -40,9 +40,6 @@ const initialUserState: User = {
     firstName: '',
     lastName: '',
     email: '',
-    registerDate: '',
-    visits: 0,
-    totalMoviesWatched: 0,
     watchedMovies: {},
     tags: {},
 };
@@ -62,9 +59,6 @@ export function userReducer(state = initialUserState, action: ActionTypes): User
                 lastName: 'Zockoll',
                 isAdmin: false,
                 email: 'szockoll@s.r.e',
-                registerDate: '10/20/2020',
-                visits: 5,
-                totalMoviesWatched: 10,
                 watchedMovies: {},
                 tags: {},
             };
@@ -76,7 +70,8 @@ export function userReducer(state = initialUserState, action: ActionTypes): User
 export function usersReducer(state = initialUsersState, action: ActionTypes): User[] {
     switch (action.type) {
         case GET_USERS:
-            // This is where the API request would be made.
+            // This is where the API request would be made. The action.idOffset
+            // and action.limit will be used to make the API request.
             return [
                 {
                     ...state,
@@ -85,9 +80,6 @@ export function usersReducer(state = initialUsersState, action: ActionTypes): Us
                     lastName: 'Zockoll',
                     isAdmin: false,
                     email: 'szockoll@s.r.e',
-                    registerDate: '10/20/2020',
-                    visits: 5,
-                    totalMoviesWatched: 10,
                     watchedMovies: {},
                     tags: {},
                 },
@@ -98,9 +90,6 @@ export function usersReducer(state = initialUsersState, action: ActionTypes): Us
                     lastName: 'Torres',
                     isAdmin: false,
                     email: 'torres62@s.r.e',
-                    registerDate: '10/20/2020',
-                    visits: 5,
-                    totalMoviesWatched: 10,
                     watchedMovies: [
                         {
                             movieId: 1,

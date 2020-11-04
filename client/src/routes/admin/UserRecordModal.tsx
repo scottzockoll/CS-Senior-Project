@@ -20,30 +20,16 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 </Heading>
                 <hr style={{ width: '90%' }} />
                 <Grid
-                    rows={['xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall']}
+                    rows={['xxxsmall', 'xxxsmall', 'xxxsmall']}
                     columns={['small', 'small']}
                     alignSelf={'center'}
                     areas={[
                         { name: 'firstLabel', start: [0, 0], end: [0, 0] },
-                        { name: 'first', start: [1, 0], end: [1, 0] },
+                        { name: 'firstName', start: [1, 0], end: [1, 0] },
                         { name: 'lastLabel', start: [0, 1], end: [0, 1] },
-                        { name: 'last', start: [1, 1], end: [1, 1] },
+                        { name: 'lastName', start: [1, 1], end: [1, 1] },
                         { name: 'emailLabel', start: [0, 2], end: [0, 2] },
                         { name: 'email', start: [1, 2], end: [1, 2] },
-                        {
-                            name: 'registerDateLabel',
-                            start: [0, 3],
-                            end: [0, 3],
-                        },
-                        { name: 'registerDate', start: [1, 3], end: [1, 3] },
-                        {
-                            name: 'moviesWatchedLabel',
-                            start: [0, 4],
-                            end: [0, 4],
-                        },
-                        { name: 'moviesWatched', start: [1, 4], end: [1, 4] },
-                        { name: 'visitsLabel', start: [0, 5], end: [0, 5] },
-                        { name: 'visits', start: [1, 5], end: [1, 5] },
                     ]}
                 >
                     {/*User Information display*/}
@@ -66,27 +52,6 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
                         {this.props.user.email}
-                    </Text>
-
-                    <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
-                        Register Date
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'registerDate'}>
-                        {this.props.user.registerDate}
-                    </Text>
-
-                    <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
-                        Movies Watched
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'moviesWatched'}>
-                        {this.props.user.totalMoviesWatched}
-                    </Text>
-
-                    <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
-                        Visits
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'visits'}>
-                        {this.props.user.visits}
                     </Text>
                 </Grid>
 

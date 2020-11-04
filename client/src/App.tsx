@@ -33,7 +33,7 @@ function App() {
     console.log(store.getState());
 
     // Dispatch the getUsers action to the store.
-    store.dispatch(getUsers());
+    store.dispatch(getUsers(0, 1000));
 
     // print out the store a display the list of users
     console.log(store.getState());

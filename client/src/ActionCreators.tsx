@@ -12,9 +12,11 @@ export function getUser(userId: number): ActionTypes {
     };
 }
 
-export function getUsers(): ActionTypes {
+export function getUsers(idOffset: number, limit: number): ActionTypes {
     return {
         type: GET_USERS,
+        idOffset: idOffset,
+        limit: limit,
     };
 }
 

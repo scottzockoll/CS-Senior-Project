@@ -20,9 +20,6 @@ export interface User {
     firstName: string;
     lastName: string;
     email: string;
-    registerDate: string;
-    visits: number;
-    totalMoviesWatched: number;
     watchedMovies: Record<number, RatedMovie>;
     tags: Record<number, Tag>;
 }
@@ -43,6 +40,8 @@ export interface GetUserAction {
 
 export interface GetUsersAction {
     type: typeof GET_USERS;
+    idOffset: number;
+    limit: number;
 }
 
 export interface GetMovieAction {
