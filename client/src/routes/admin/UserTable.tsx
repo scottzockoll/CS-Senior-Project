@@ -2,6 +2,8 @@ import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
 import { User } from '../../Types';
+import { UserRecord } from './UserRecord';
+import en from '../../en.json';
 
 interface UserTableProps {
     /**
@@ -49,26 +51,26 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                     columns={[
                         {
                             property: 'userId',
-                            header: 'User ID',
+                            header: en.UI_LABELS.userId,
                             primary: true,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'firstName',
-                            header: 'First',
+                            header: en.UI_LABELS.firstName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'lastName',
-                            header: 'Last',
+                            header: en.UI_LABELS.lastName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'email',
-                            header: 'Email',
+                            header: en.UI_LABELS.email,
                             sortable: true,
                             search: true,
                         },

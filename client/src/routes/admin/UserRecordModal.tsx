@@ -1,6 +1,8 @@
 import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
 import React from 'react';
 import { User } from '../../Types';
+import { UserRecord } from './UserRecord';
+import en from '../../en.json';
 
 interface UserRecordModalProps {
     user: User;
@@ -16,7 +18,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
         return (
             <Box height={'large'} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
-                    User Record
+                    {en.UI_LABELS.userRecord}
                 </Heading>
                 <hr style={{ width: '90%' }} />
                 <Grid
@@ -34,21 +36,19 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 >
                     {/*User Information display*/}
                     <Text textAlign={'center'} gridArea={'firstLabel'} weight={'bold'}>
-                        First
+                        {en.UI_LABELS.firstName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'firstName'}>
                         {this.props.user.firstName}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
-                        Last
+                        {en.UI_LABELS.lastName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastName'}>
                         {this.props.user.lastName}
                     </Text>
-
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
-                        Email
+                        {en.UI_LABELS.email}
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
                         {this.props.user.email}
@@ -59,19 +59,19 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
 
                 {/* Table containing the list of movies watched by the user*/}
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
-                    Movies Watched
+                    {en.UI_LABELS.moviesWatched}
                 </Heading>
                 <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
-                                property: 'movieName',
-                                header: 'Title',
+                                property: 'title',
+                                header: en.UI_LABELS.title,
                                 sortable: true,
                             },
                             {
-                                property: 'genres',
-                                header: 'Genre',
+                                property: 'genre',
+                                header: en.UI_LABELS.genre,
                                 sortable: true,
                                 render: (datum) => {
                                     // retrieve the all the genres
@@ -88,7 +88,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                             },
                             {
                                 property: 'userRating',
-                                header: 'User Rating',
+                                header: en.UI_LABELS.userRating,
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
