@@ -15,7 +15,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-// Shouldn't store it like this
+// What is the proper way to store this?
 const clientId = '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com';
 
 export const refreshTokenSetup = (res: any) => {
