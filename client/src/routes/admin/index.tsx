@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
-import { UserRecord } from './UserRecord';
+import { User } from '../../Types';
 import UserTable from './UserTable';
+import { useSelector } from 'react-redux';
 
-interface AdminPageProps {
-    userRecords: UserRecord[];
-}
+export default function AdminPage() {
+    // retrieve the state of the store
+    const state = useSelector((state: any) => state);
 
-export default function AdminPage(props: AdminPageProps) {
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -24,7 +24,7 @@ export default function AdminPage(props: AdminPageProps) {
                 <Button secondary label={'Download All'} alignSelf={'start'} />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable userRecords={props.userRecords} />
+                <UserTable users={state.users} />
             </Box>
         </Grid>
     );
