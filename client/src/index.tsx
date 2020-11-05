@@ -13,7 +13,7 @@ import { apiMiddleware } from './store/api';
 import { requestSingleUser, userLogin } from './store/user/actions';
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
+export const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
 );
@@ -30,9 +30,9 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-setTimeout(() => {
-    store.dispatch(userLogin(1));
-}, 1000);
+// setTimeout(() => {
+//     store.dispatch(userLogin(1));
+// }, 1000);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

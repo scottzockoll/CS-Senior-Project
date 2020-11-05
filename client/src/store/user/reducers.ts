@@ -21,6 +21,16 @@ export function userAuthReducer(state = initialUserAuthState, action: UserAuthAc
     }
 }
 
+const initialUserTokenState: string = '';
+export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): string {
+    switch (action.type) {
+        case 'TOKEN_UPDATE':
+            return action.token;
+        default:
+            return state;
+    }
+}
+
 const initialUserEntitiesState: Paginated<User> = {
     ids: [],
     entities: {},

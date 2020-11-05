@@ -6,14 +6,31 @@ import {
     RECEIVE_USER_SUCCESS,
     REQUEST_USER_STARTED,
     RequestUserStarted,
+    TOKEN_UPDATE,
+    TokenUpdate,
     USER_LOGIN,
+    USER_LOGOUT,
     UserLogin,
+    UserLogout,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
     return {
         type: USER_LOGIN,
         id,
+    };
+}
+
+export function userLogout(): UserLogout {
+    return {
+        type: USER_LOGOUT,
+    };
+}
+
+export function updateToken(token: string): TokenUpdate {
+    return {
+        type: TOKEN_UPDATE,
+        token: token,
     };
 }
 

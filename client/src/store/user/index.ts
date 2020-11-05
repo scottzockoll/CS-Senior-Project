@@ -12,9 +12,11 @@ export type UserEntitiesTypes = REQUEST_USER_STARTED | RECEIVE_USER_SUCCESS | RE
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
+export const TOKEN_UPDATE = 'TOKEN_UPDATE';
 
 export type USER_LOGIN = typeof USER_LOGIN;
 export type USER_LOGOUT = typeof USER_LOGOUT;
+export type TOKEN_UPDATE = typeof TOKEN_UPDATE;
 
 export type UserAuthTypes = USER_LOGIN | USER_LOGOUT;
 
@@ -87,6 +89,14 @@ export interface UserLogout {
 }
 
 /**
+ * Action that occurs when a new token is received or old token is refreshed
+ */
+export interface TokenUpdate {
+    type: TOKEN_UPDATE;
+    token: string;
+}
+
+/**
  * Any user authentication action, that is either Login or Logout
  */
-export type UserAuthActions = UserLogin | UserLogout;
+export type UserAuthActions = UserLogin | UserLogout | TokenUpdate;
