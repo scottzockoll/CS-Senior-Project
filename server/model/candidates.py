@@ -1,106 +1,91 @@
+import os, csv
+import scipy
+import numpy as np
+from typing import Set, Dict, Tuple
+from scipy.sparse import lil_matrix, csr_matrix
+from sklearn.decomposition import NMF
+from tqdm import tqdm
 
 
+def collect_metadata(file_path: str) -> (int, Set[int], Set[int]):
+    items = 0
+    users = set()
+    movies = set()
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)
 
-def factorize(output_folder: str, output_name: str, dataset_size: str):
+        try:
+            while True:
+                user_id, movie_id, rating, timestamp = next(reader)
+                users.add(int(user_id))
+                movies.add(int(movie_id))
+                items += 1
+        except StopIteration:
+            return items, users, movies
 
-    assert dataset_size in ['100k', '25m'], 'Dataset size must be one of [100k, 25m].'
+
+def construct_matrix(
+        file_path: str,
+        n_users: int,
+        n_movies: int,
+        n_items: int,
+        movie_map: Dict[int, int]) -> scipy.sparse.csr_matrix:
+
+    # lil is optimized for incremental assignments
+    matrix = lil_matrix((n_users, n_movies), dtype='int8')
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)
+        for user_id, movie_id, rating, timestamp in tqdm(reader, total=n_items, desc='Loading data...', unit='sample'):
+            matrix[int(user_id)-1, movie_map.get(int(movie_id))] = 1
+
+    # csr is more efficient once constructed
+    return csr_matrix(matrix)
+
+
+def train_mf(output_folder: str, output_name: str, dataset_size: str):
 
     print(f'Generating FlickPick candidate selection model.')
+    path = os.path.join('dataset', 'movie_lens', dataset_size, 'ratings.csv')
 
-    meta_data = Metadata(f'dataset/processed/{dataset_size}')
-    train_data = ChainDataset([
-        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_train_pos.csv'),
-        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_train_neg.csv')
-    ])
-    train_gen = DataLoader(train_data, batch_size=256, num_workers=0)
+    print(f'Collecting dataset metadata...')
+    n_items, users, movies = collect_metadata(path)
+    n_users = len(users)
+    n_movies = len(movies)
 
-    test_data = ChainDataset([
-        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_test_pos.csv'),
-        MovieLens(f'dataset/processed/{dataset_size}', 'ratings_test_neg.csv')
-    ])
-    test_gen = DataLoader(test_data, batch_size=256, num_workers=0)
+    mapped_ids = dict()
+    for entry in movies:
+        mapped_ids[entry] = len(mapped_ids)-1
 
-    num_users = meta_data.n_users
-    num_movies = meta_data.n_movies
+    print(f"{n_items} items, {len(users)} users, {len(movies)} movies")
 
-    path = os.path.abspath(output_folder)
-    os.makedirs(path, exist_ok=True)
+    # construct the matrix incrementally, using an lil matrix which is designed for incremental construction
+    matrix = construct_matrix(path, len(users), len(movies), n_items, mapped_ids)
 
-    model = FPNet(num_users, num_movies)
-    # we're using binary-cross entropy; which has been noted to be good for this
-    loss_fn = torch.nn.BCELoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=lr, weight_decay=0.001)
+    print(f"Matrix is {(1-(matrix.nnz / (matrix.shape[0] * matrix.shape[1])))*100:0.3f}% empty.")
 
-    for current_epoch in range(1, epochs + 1):
-        print('-' * 50)
-        print(f'Beginning epoch {current_epoch}')
-        print('-' * 50)
+    mem_path = os.path.join('temp', 'memmap')
+    os.makedirs(mem_path, exist_ok=True)
 
-        t0 = time()
-        train_losses: [float] = []
+    output_path = os.path.join(output_folder, f"{output_name}.npy")
 
-        model.train()
+    n_components = 20
+    w_shape = (n_users, n_components)
+    # h_shape = (n_components, n_movies)
+    r_shape = (n_users, n_movies)
 
-        # actual model training
-        pbar = tqdm(train_gen,
-                    total=meta_data.train_size // train_gen.batch_size,
-                    unit_scale=train_gen.batch_size,
-                    unit='sample')
-        for inputs in pbar:
-            if device.type == 'cuda':
-                inputs = push_to_device(inputs, device)
+    print('Training model, this may take awhile...')
+    model = NMF(n_components=n_components, init='random', random_state=0, max_iter=5000, verbose=True)
 
-            # forward pass
-            prediction = model(inputs)
+    w = model.fit_transform(matrix)
+    h = model.components_
+    h_t = h.T
 
-            # get the target values
-            y = inputs['rating']
-            # convert to float and match dim
-            y = y.float().view(prediction.size())
+    # clear old map/create empty file
+    open(output_path, 'w').close()
+    r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32)
+    for w_i in tqdm(range(w_shape[0]), total=w_shape[0], desc='Computing and saving matrix...', unit='user'):
+        r[w_i] = np.inner(w[w_i], h_t)
+        r.flush()
 
-            # calculate loss for this input
-            loss = loss_fn(prediction, y)
-
-            # backwards pass
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-
-            # accumulate the loss for monitoring
-            train_losses.append(loss.item())
-            pbar.set_description(f'Epoch {current_epoch} :: Train Loss {np.mean(train_losses)*100:.02f}%')
-
-        print(f'Finished training epoch {current_epoch}')
-        print('Beginning model evaluation')
-        model.eval()
-        epoch_accuracy = evaluate_model(model, test_gen, meta_data)
-
-        # print epoch statistics
-        train_loss = np.mean(train_losses)
-        print('-' * 50)
-        print(f"Training Loss: {train_loss}")
-        print(f"Test Loss: {epoch_accuracy[0]:.6f}")
-        print(epoch_accuracy[1])
-        print(f"Epoch {current_epoch} completed {time() - t0:.1f}s")
-        print('-' * 50)
-        print()
-
-        chkpt_path = os.path.join(path, "checkpoints", output_name)
-        os.makedirs(chkpt_path, exist_ok=True)
-        chkpt_path = os.path.join(chkpt_path, f"{output_name}-{current_epoch:04}.mdl")
-
-        if os.path.exists(chkpt_path):
-            os.unlink(chkpt_path)
-
-        chkpt_handle = open(chkpt_path, 'wb')
-        torch.save(model, chkpt_handle)
-        chkpt_handle.close()
-
-    path = os.path.join(path, f"{output_name}.mdl")
-
-    if os.path.exists(path):
-        os.unlink(path)
-
-    file_handle = open(path, 'wb')
-    torch.save(model, file_handle)
-    file_handle.close()
