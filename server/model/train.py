@@ -36,7 +36,8 @@ def evaluate_model(model: FPNet, test_gen: DataLoader, meta_data: Metadata):
     pbar = tqdm(test_gen,
                 total=meta_data.test_size // test_gen.batch_size,
                 unit_scale=test_gen.batch_size,
-                unit='sample')
+                unit='sample',
+                desc='Testing...')
     for inputs in pbar:
         if device.type == 'cuda':
             inputs = push_to_device(inputs, device)
@@ -54,9 +55,7 @@ def evaluate_model(model: FPNet, test_gen: DataLoader, meta_data: Metadata):
 
         loss = loss_fn(prediction, y)
         losses.append(loss.item())
-        pbar.set_description(f'Test Loss {np.mean(losses)*100:.02f}%')
 
-    # TODO: Implement NDCG scoring
     return np.mean(losses), confusion_matrix(real_y, pred_y)
 
 
@@ -134,19 +133,26 @@ def train_nn(output_folder: str, output_name: str, dataset_size: str, epochs: in
 
             # accumulate the loss for monitoring
             train_losses.append(loss.item())
-            pbar.set_description(f'Epoch {current_epoch} :: Train Loss {np.mean(train_losses)*100:.02f}%')
+            pbar.set_description(f'Epoch {current_epoch} :: Loss {np.mean(train_losses):.04f}')
 
         print(f'Finished training epoch {current_epoch}')
         print('Beginning model evaluation')
         model.eval()
-        epoch_accuracy = evaluate_model(model, test_gen, meta_data)
+        test_loss, test_confusion = evaluate_model(model, test_gen, meta_data)
+        tn, fp, fn, tp = test_confusion.ravel()
+
+        test_precision = tn / (tn + fp)
+        test_recall = tp / (tp + fn)
 
         # print epoch statistics
         train_loss = np.mean(train_losses)
         print('-' * 50)
         print(f"Training Loss: {train_loss}")
-        print(f"Test Loss: {epoch_accuracy[0]:.6f}")
-        print(epoch_accuracy[1])
+        print(f"Test Loss: {test_loss:.6f}")
+        print(f"{'TN':>12}{'FP':>12}{'FN':>12}{'TP':>12}")
+        print(f"{tn:>12}{fp:>12}{fn:>12}{tp:>12}")
+        print(f"{'Precision':>24}{'Recall':>24}")
+        print(f"{test_precision:>24}{test_recall:>24}")
         print(f"Epoch {current_epoch} completed {time() - t0:.1f}s")
         print('-' * 50)
         print()
