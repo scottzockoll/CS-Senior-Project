@@ -72,7 +72,6 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
 
     n_components = 20
     w_shape = (n_users, n_components)
-    # h_shape = (n_components, n_movies)
     r_shape = (n_users, n_movies)
 
     print('Training model, this may take awhile...')
@@ -83,9 +82,9 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
     h_t = h.T
 
     # clear old map/create empty file
-    open(output_path, 'w').close()
-    r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32)
+    r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32, mode='w+')
     for w_i in tqdm(range(w_shape[0]), total=w_shape[0], desc='Computing and saving matrix...', unit='user'):
         r[w_i] = np.inner(w[w_i], h_t)
         r.flush()
+
 
