@@ -1,6 +1,4 @@
-import json
-
-from flask import Flask, Response
+from flask import Flask
 
 
 def register_api_routes(app: Flask):
@@ -32,18 +30,13 @@ def get_user(id: int):
     :param int id: The user id to retrieve
     :return: JSON object with user firstName, lastName, and isAdmin
     """
-
-    data = []
-    for idx in range(id, id + 50):
-        data.append({
-            "id": idx,
-            "email": f"example{idx}@example.com",
-            "firstName": f"First_{idx}",
-            "lastName": f"Last_{idx}",
-            "isAdmin": idx % 2 == 0
-        })
-
-    return Response(json.dumps(data), status=200)
+    return {
+        "id": id,
+        "email": "example@example.com",
+        "firstName": "Joe",
+        "lastName": "Smith",
+        "isAdmin": True
+    }, 200
 
 
 def del_user(id: int):

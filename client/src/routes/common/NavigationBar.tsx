@@ -1,12 +1,10 @@
 import React from 'react';
-import { Button, Header, Menu, Box } from 'grommet';
-import { Login } from './Login';
+import { Button, Grommet, Header, Menu, Image, Box } from 'grommet';
 
 function NavigationBar() {
     return (
         <Box>
-            <Login />
-            <Header style={{ height: 60 }} background={{ color: 'brand' }}>
+            <Header style={{ height: 60 }} background="brand">
                 <Button plain={true} label="FlickPick" hoverIndicator />
                 <Menu
                     dropBackground="white"
