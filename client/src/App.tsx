@@ -17,7 +17,7 @@ function App() {
                 </Route>
                 <Route path="/client">
                     <NavigationBar />
-                    <ClientPage userRecord={sampleRecord} />
+                    <ClientPage />
                 </Route>
                 <Route path="/">
                     <NavigationBar />
