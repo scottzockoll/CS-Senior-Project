@@ -7,6 +7,7 @@ import {
     GET_USERS,
     GET_MOVIE,
     GET_RECOMMENDATIONS,
+    SEARCH_MOVIE,
 } from './Types';
 
 // Reducers take state and an action and then returns a new state after the
@@ -122,6 +123,39 @@ export function movieReducer(state = initialMovieState, action: ActionTypes): Mo
                 movieName: 'Terminator',
                 genres: ['Action', 'Science Fiction'],
             };
+        default:
+            return state;
+    }
+}
+
+const initialSearchMovieStates: Movie[] = [];
+
+export function searchMovieReducer(state = initialSearchMovieStates, action: ActionTypes): Movie[] {
+    switch (action.type) {
+        case SEARCH_MOVIE:
+            return [
+                {
+                    ...state,
+                    // This is where the API request would be made
+                    movieId: 109,
+                    movieName: 'Wolf of Wall St.',
+                    genres: ['Comedy'],
+                },
+                {
+                    ...state,
+                    // This is where the API request would be made
+                    movieId: 110,
+                    movieName: 'The Mandalorian',
+                    genres: ['Action', 'Science Fiction'],
+                },
+                {
+                    ...state,
+                    // This is where the API request would be made
+                    movieId: 111,
+                    movieName: 'The Other Guys',
+                    genres: ['Action', 'Comedy'],
+                },
+            ];
         default:
             return state;
     }

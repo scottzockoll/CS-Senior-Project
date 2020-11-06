@@ -3,10 +3,47 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { Grommet, ResponsiveContext } from 'grommet';
+
+const customBreakpoints = {
+    global: {
+        breakpoints: {
+            small: {
+                value: 568,
+                edgeSize: {
+                    none: '0px',
+                    small: '6px',
+                    medium: '12px',
+                    large: '24px',
+                },
+            },
+            medium: {
+                value: 1100,
+                edgeSize: {
+                    none: '0px',
+                    small: '12px',
+                    medium: '24px',
+                    large: '48px',
+                },
+            },
+            large: {
+                value: 1600,
+                edgeSize: {
+                    none: '0px',
+                    small: '12px',
+                    medium: '24px',
+                    large: '48px',
+                },
+            },
+        },
+    },
+};
 
 ReactDOM.render(
     <React.StrictMode>
-        <App />
+        <Grommet theme={customBreakpoints} full>
+            <App />
+        </Grommet>
     </React.StrictMode>,
     document.getElementById('root')
 );

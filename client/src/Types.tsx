@@ -32,6 +32,7 @@ export const GET_USER = 'GET_USER';
 export const GET_USERS = 'GET_USERS';
 export const GET_MOVIE = 'GET_MOVIE';
 export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
+export const SEARCH_MOVIE = 'SEARCH_MOVIE';
 
 export interface GetUserAction {
     type: typeof GET_USER;
@@ -54,6 +55,11 @@ export interface GetRecommendationAction {
     userId: number;
 }
 
+export interface SearchMovieAction {
+    type: typeof SEARCH_MOVIE;
+    title: string;
+}
+
 // The "|" operator is a union. This means ActionTypes can be any one of the
 // types on the right hand side.
-export type ActionTypes = GetUserAction | GetUsersAction | GetMovieAction | GetRecommendationAction;
+export type ActionTypes = GetUserAction | GetUsersAction | GetMovieAction | GetRecommendationAction | SearchMovieAction;

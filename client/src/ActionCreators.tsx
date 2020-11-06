@@ -1,4 +1,4 @@
-import { GET_USER, GET_USERS, GET_MOVIE, GET_RECOMMENDATIONS, ActionTypes } from './Types';
+import { GET_USER, GET_USERS, GET_MOVIE, GET_RECOMMENDATIONS, ActionTypes, SEARCH_MOVIE } from './Types';
 
 // Actions are object literals that contain a type field specifying the action.
 // The literal also contains any data needed to make the change to the store.
@@ -31,5 +31,12 @@ export function getRecommendations(userId: number): ActionTypes {
     return {
         type: GET_RECOMMENDATIONS,
         userId: userId,
+    };
+}
+
+export function searchMovie(movieTitle: string): ActionTypes {
+    return {
+        type: SEARCH_MOVIE,
+        title: movieTitle,
     };
 }
