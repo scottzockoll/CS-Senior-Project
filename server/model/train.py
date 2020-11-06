@@ -60,7 +60,7 @@ def evaluate_model(model: FPNet, test_gen: DataLoader, meta_data: Metadata):
     return np.mean(losses), confusion_matrix(real_y, pred_y)
 
 
-def train_model(output_folder: str, output_name: str, dataset_size: str, epochs: int = 5, lr: float = 1e-5):
+def train_nn(output_folder: str, output_name: str, dataset_size: str, epochs: int = 5, lr: float = 1e-5):
     """
     Train the model.
     :param output_folder: Output folder path
@@ -70,8 +70,6 @@ def train_model(output_folder: str, output_name: str, dataset_size: str, epochs:
     :param lr: Learning rate to use.
     :return:
     """
-
-    assert dataset_size in ['100k', '25m'], 'Dataset size must be one of [100k, 25m].'
 
     print(f'Running FlickPick model on {device}.')
 
