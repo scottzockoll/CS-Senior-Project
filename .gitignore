@@ -7,8 +7,11 @@ coverage
 build
 
 # dataset
-dataset
-temp
+dataset/**/*
+temp/**/*
+
+# built models
+model/**/*
 
 # misc
 .DS_Store
