@@ -6,8 +6,8 @@ function NavigationBar() {
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
-                <Box margin={{ left: '1%' }}>
-                    <Button plain={true} label="FlickPick" hoverIndicator href="/" />
+                <Box style={{ height: 57 }} margin={{ left: '.5%' }}>
+                    <Button plain={true} label={<Image height="50" src="images/FlickPickSmall.png" />} href="/" />
                 </Box>
                 <Box margin={{ left: 'auto' }}>
                     <TextInput

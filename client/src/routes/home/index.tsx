@@ -30,6 +30,8 @@ export default class Homepage extends React.Component<HomepageProperties, Homepa
                         <Image fit={'cover'} src="images/movie1.jpg" />
                         <Image fit={'cover'} src="images/movie2.jpg" />
                         <Image fit={'cover'} src="images/movie3.jpg" />
+                        <Image fit={'cover'} src="images/movie4.jpg" />
+                        <Image fit={'cover'} src="images/movie5.jpg" />
                     </Carousel>
                     <Button
                         primary
