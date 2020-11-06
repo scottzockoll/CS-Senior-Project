@@ -26,7 +26,7 @@ def train_test_split(positives: np.ndarray, user_id: int, n_rows: int, n_train: 
     Split test and train data, generate negative samples for each subset.
     """
     positives = np.sort(positives)
-    negatives = negative_sample(positives, n_rows, len(positives)*10)
+    negatives = negative_sample(positives, n_rows, len(positives)*3)
 
     # assert we have no overlap in our sets
     assert len(set(negatives).intersection(set(positives))) == 0
