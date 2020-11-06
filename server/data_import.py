@@ -92,7 +92,7 @@ first = fName_df['name'].tolist()
 last = lName_df['name'].tolist()
 
 # Creates user data tuples using the lists
-for i in range(1, 162542):  # (1, 611) for 100K ---- (1, 162542) for 25M
+for i in range(1, 611):  # (1, 611) for 100K ---- (1, 162542) for 25M
     first_name = str(random.choice(first))
     last_name = str(random.choice(last)).lower().title()
     email = first_name.lower() + last_name.lower() + "@s.r.e"  # s.r.e = students.rowan.edu
