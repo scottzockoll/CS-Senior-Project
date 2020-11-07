@@ -1,17 +1,17 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
-import { UserRecord } from './UserRecord';
+import { User } from '../../Types';
 import UserTable from './UserTable';
+import { useSelector } from 'react-redux';
 
-interface AdminPageProps {
-    userRecords: UserRecord[];
-}
+export default function AdminPage() {
+    // retrieve the state of the store
+    const state = useSelector((state: any) => state);
 
 /***
- * Exports all the user records to a CSV file. This function will output a csv file
- * with the current date attached to the filename.
+ * Exports all the user records to a CSV file. Redirects the
+ * user to the location of the CSV file.       
  *
- * @param userRecords The Object containing all the user records.
  */
 function downloadAllToCSV(userRecords: Object) {
     if (window.confirm('Download records to CSV?')) {
@@ -43,7 +43,7 @@ export default function AdminPage(props: AdminPageProps) {
                 />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable userRecords={props.userRecords} />
+                <UserTable users={state.users} />
             </Box>
         </Grid>
     );

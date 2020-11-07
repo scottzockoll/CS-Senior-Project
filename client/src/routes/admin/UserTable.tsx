@@ -1,13 +1,15 @@
 import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
+import { User } from '../../Types';
 import { UserRecord } from './UserRecord';
+import en from '../../en.json';
 
 interface UserTableProps {
     /**
      * A list of UserRecords to be display in the UserTable.
      */
-    userRecords: UserRecord[];
+    users: User[];
 }
 
 interface UserTableState {
@@ -22,7 +24,7 @@ interface UserTableState {
  */
 export default class UserTable extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
-    selectedUser: UserRecord; // The reference to the selected user record in the UserTable
+    selectedUser: User; // The reference to the selected user record in the UserTable
 
     constructor(props: UserTableProps) {
         super(props);
@@ -32,14 +34,13 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
 
         // initialize our instance variables
         this.selectedUser = {
+            userId: 0,
+            isAdmin: false,
             email: '',
             firstName: '',
             lastName: '',
-            moviesWatched: 0,
-            registerDate: '',
-            userId: 0,
-            visits: 0,
             watchedMovies: [],
+            tags: [],
         };
     }
 
@@ -50,47 +51,31 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                     columns={[
                         {
                             property: 'userId',
-                            header: 'User ID',
+                            header: en.UI_LABELS.userId,
                             primary: true,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'firstName',
-                            header: 'First',
+                            header: en.UI_LABELS.firstName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'lastName',
-                            header: 'Last',
+                            header: en.UI_LABELS.lastName,
                             sortable: true,
                             search: true,
                         },
                         {
                             property: 'email',
-                            header: 'Email',
+                            header: en.UI_LABELS.email,
                             sortable: true,
                             search: true,
-                        },
-                        {
-                            property: 'registerDate',
-                            header: 'Register Date',
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'moviesWatched',
-                            header: 'Movies Watched',
-                            sortable: true,
-                        },
-                        {
-                            property: 'visits',
-                            header: 'Visits',
-                            sortable: true,
                         },
                     ]}
-                    data={this.props.userRecords}
+                    data={this.props.users}
                     onClickRow={(row) => {
                         // On click row, show modal and set the selected user
                         this.selectedUser = row.datum;
@@ -114,7 +99,7 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             this.setState({ showModal: false });
                         }}
                     >
-                        <UserRecordModal userRecord={this.selectedUser} />
+                        <UserRecordModal user={this.selectedUser} />
                     </Layer>
                 )}
             </Box>
