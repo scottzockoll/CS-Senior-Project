@@ -1,16 +1,11 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
-import { User } from '../../Types';
 import UserTable from './UserTable';
 import { useSelector } from 'react-redux';
 
-export default function AdminPage() {
-    // retrieve the state of the store
-    const state = useSelector((state: any) => state);
-
 /***
  * Exports all the user records to a CSV file. Redirects the
- * user to the location of the CSV file.       
+ * user to the location of the CSV file.
  *
  */
 function downloadAllToCSV(userRecords: Object) {
@@ -20,7 +15,9 @@ function downloadAllToCSV(userRecords: Object) {
     }
 }
 
-export default function AdminPage(props: AdminPageProps) {
+export default function AdminPage() {
+    // retrieve the state of the store
+    const state = useSelector((state: any) => state);
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -38,7 +35,7 @@ export default function AdminPage(props: AdminPageProps) {
                     label={'Download All'}
                     alignSelf={'start'}
                     onClick={() => {
-                        downloadAllToCSV(props.userRecords);
+                        downloadAllToCSV(state.user.userRecords);
                     }}
                 />
             </Box>

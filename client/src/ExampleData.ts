@@ -129,8 +129,10 @@ for (let i = 0; i < 10000; i++) {
         id: i,
         firstName: `First${i}`,
         lastName: `Last${i}`,
+        email: 'exampleemail@email.com',
         isAdmin: i % 2 === 0,
         movies: [],
+        ratings: [],
         tags: [],
     });
 }

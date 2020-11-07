@@ -1,8 +1,7 @@
 import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
-import { User } from '../../Types';
-import { UserRecord } from './UserRecord';
+import { User } from '../../store/user';
 import en from '../../en.json';
 
 interface UserTableProps {
@@ -34,12 +33,13 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
 
         // initialize our instance variables
         this.selectedUser = {
-            userId: 0,
+            id: 0,
             isAdmin: false,
             email: '',
             firstName: '',
             lastName: '',
-            watchedMovies: [],
+            movies: [],
+            ratings: [],
             tags: [],
         };
     }

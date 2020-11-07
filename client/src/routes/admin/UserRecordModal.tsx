@@ -1,6 +1,6 @@
 import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
 import React from 'react';
-import { User } from '../../Types';
+import { User } from '../../store/user';
 import { UserRecord } from './UserRecord';
 import { CSVParser } from '../common/CSVParser';
 import en from '../../en.json';
@@ -99,17 +99,8 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 property: 'genre',
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
-                                render: (datum) => {
-                                    // retrieve the all the genres
-                                    let genres: string = '';
-
-                                    for (let i = 0; i < datum.genres.length; i++) {
-                                        // add the seperator if there's more than one genre
-                                        if (i > 0) genres += '/';
-                                        genres += datum.genres[i];
-                                    }
-
-                                    return <Text>{genres}</Text>;
+                                render: (datum: string[]) => {
+                                    return <Text>{datum.join('/')}</Text>;
                                 },
                             },
                             {
@@ -118,23 +109,23 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <Meter
-                                            background={'light-4'}
-                                            values={[
-                                                {
-                                                    value: datum.userRating * 20,
-                                                },
-                                            ]}
-                                            thickness="small"
-                                            size="small"
-                                        />
+                                        {/*<Meter*/}
+                                        {/*    background={'light-4'}*/}
+                                        {/*    values={[*/}
+                                        {/*        {*/}
+                                        {/*            value: datum.ratings * 20,*/}
+                                        {/*        },*/}
+                                        {/*    ]}*/}
+                                        {/*    thickness="small"*/}
+                                        {/*    size="small"*/}
+                                        {/*/>*/}
                                     </Box>
                                 ),
                             },
                         ]}
                         sortable={true}
                         style={{ width: '100%' }}
-                        data={Object.values(this.props.user.watchedMovies)}
+                        data={Object.values([])}
                         size={'medium'}
                     />
                 </Box>
@@ -143,7 +134,8 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         primary
                         label={'Download to CSV'}
                         onClick={() => {
-                            exportUserRecordToCSV(this.props.userRecord);
+                            //TODO reimplement user record data
+                            // exportUserRecordToCSV(this.props.userRecord);
                         }}
                     />
                 </Box>
