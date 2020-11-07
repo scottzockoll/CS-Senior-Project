@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import { UserRecord } from './UserRecord';
 import UserTable from './UserTable';
-import { CSVParser } from '../common/CSVParser';
 
 interface AdminPageProps {
     userRecords: UserRecord[];
@@ -16,26 +15,8 @@ interface AdminPageProps {
  */
 function downloadAllToCSV(userRecords: Object) {
     if (window.confirm('Download records to CSV?')) {
-        // check if there are user records to download
-        if (Object.keys(userRecords).length == 0) {
-            alert('There are no users available to download data from.');
-            return;
-        }
-
-        // retrieve an array of user records
-        let recordsArray = Object.values(userRecords);
-
-        // remove the watchedMovies children
-        for (let i = 0; i < recordsArray.length; i++) {
-            delete recordsArray[i].watchedMovies;
-        }
-
-        // retrieve the current datetime
-        let date = new Date();
-        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
-
-        // export user records to csv
-        CSVParser.exportToCsv('User_Records_' + datetimeStr + '.csv', recordsArray);
+        // redirect to All Users csv file
+        window.open('http://ec2-18-222-97-98.us-east-2.compute.amazonaws.com/Users/All_Users.csv');
     }
 }
 
