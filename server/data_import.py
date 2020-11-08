@@ -95,7 +95,7 @@ last = lName_df['name'].tolist()
 for i in range(1, 611):  # (1, 611) for 100K ---- (1, 162542) for 25M
     first_name = str(random.choice(first))
     last_name = str(random.choice(last)).lower().title()
-    email = first_name.lower() + last_name.lower() + "@s.r.e"  # s.r.e = students.rowan.edu
+    email = first_name.lower() + last_name.lower() + "@students.rowan.edu"
     ut = [first_name, last_name, email, 1]  # everyone is made an admin for time being
     userTable.append(ut)
     if len(userTable) % 100000 == 0 and len(userTable) != 0:
