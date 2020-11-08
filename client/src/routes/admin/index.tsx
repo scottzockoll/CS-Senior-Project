@@ -1,23 +1,28 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state: RootState) => ({
+    users: state.users.entities,
+});
 
 /***
  * Exports all the user records to a CSV file. Redirects the
  * user to the location of the CSV file.
  *
  */
-function downloadAllToCSV(userRecords: Object) {
+function downloadAllToCSV() {
     if (window.confirm('Download records to CSV?')) {
         // redirect to All Users csv file
         window.open('http://ec2-18-222-97-98.us-east-2.compute.amazonaws.com/Users/All_Users.csv');
     }
 }
 
-export default function AdminPage() {
-    // retrieve the state of the store
-    const state = useSelector((state: any) => state);
+type AdminProps = ReturnType<typeof mapStateToProps>;
+
+const AdminPage: React.FC<AdminProps> = ({ users }) => {
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -35,13 +40,15 @@ export default function AdminPage() {
                     label={'Download All'}
                     alignSelf={'start'}
                     onClick={() => {
-                        downloadAllToCSV(state.user.userRecords);
+                        downloadAllToCSV();
                     }}
                 />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable users={state.users} />
+                <UserTable users={Object.values(users)} />
             </Box>
         </Grid>
     );
-}
+};
+
+export const Admin = connect(mapStateToProps)(AdminPage);

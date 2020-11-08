@@ -3,7 +3,7 @@ import ClientPage from './routes/client/index';
 import './App.css';
 import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
-import AdminPage from './routes/admin';
+import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
 import { records, sampleRecord } from './ExampleData';
 
@@ -13,7 +13,7 @@ function App() {
             <Switch>
                 <Route path="/admin">
                     <NavigationBar />
-                    <AdminPage />
+                    <Admin />
                 </Route>
                 <Route path="/client">
                     <NavigationBar />

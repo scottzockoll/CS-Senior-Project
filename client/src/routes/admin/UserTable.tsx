@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
+import { connect } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
 import { User } from '../../store/user';
 import en from '../../en.json';
+import { requestUsers } from '../../store/user/actions';
 
 interface UserTableProps {
     /**
@@ -18,10 +21,16 @@ interface UserTableState {
     showModal: boolean;
 }
 
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    loadMore: (idOffset: number, limit: number) => {
+        dispatch(requestUsers(idOffset, limit));
+    },
+});
+
 /**
  * React Component for UseTable displaying all the records for each user.
  */
-export default class UserTable extends React.Component<UserTableProps, UserTableState> {
+export class UserTableComponent extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
     selectedUser: User; // The reference to the selected user record in the UserTable
 
@@ -50,7 +59,7 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                 <DataTable
                     columns={[
                         {
-                            property: 'userId',
+                            property: 'id',
                             header: en.UI_LABELS.userId,
                             primary: true,
                             sortable: true,
@@ -75,6 +84,7 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             search: true,
                         },
                     ]}
+                    onMore={() => {}}
                     data={this.props.users}
                     onClickRow={(row) => {
                         // On click row, show modal and set the selected user
@@ -106,3 +116,5 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
         );
     }
 }
+
+export default connect()(UserTableComponent);

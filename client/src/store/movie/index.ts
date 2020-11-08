@@ -4,6 +4,8 @@ export interface Movie {
     genres: Array<string>;
 }
 
+export interface RatedMovie extends Movie {}
+
 export const GET_MOVIE = 'GET_MOVIE';
 
 export interface GetMovieAction {

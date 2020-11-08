@@ -6,6 +6,10 @@ import {
     RECEIVE_USER_SUCCESS,
     REQUEST_USER_STARTED,
     RequestUserStarted,
+    RECEIVE_USERS_FAILURE,
+    RECEIVE_USERS_SUCCESS,
+    REQUEST_USERS_STARTED,
+    RequestUsersStarted,
     USER_LOGIN,
     UserLogin,
 } from './index';
@@ -28,6 +32,24 @@ export function requestSingleUser(id: number): RequestUserStarted {
                 [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
                 [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
                 [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
+            },
+        },
+    };
+}
+
+export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
+    return {
+        idOffset,
+        limit,
+        type: REQUEST_USERS_STARTED,
+        [CALL_API]: {
+            // TODO use 'user/idOffset/limit' when it's implemented
+            endpoint: `user/${idOffset}`,
+            schema: SCHEMAS['USER_ARRAY'],
+            types: {
+                [AsyncActionStatus.Request]: REQUEST_USERS_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_USERS_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_USERS_FAILURE,
             },
         },
     };
