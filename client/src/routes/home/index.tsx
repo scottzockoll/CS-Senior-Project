@@ -2,10 +2,9 @@ import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React from 'react';
 import InitialSurveyModal from './InitialSurveyModal';
 import en from '../../en.json';
+import { toggleInitialSurveyModal } from '../../ActionCreators';
 
-interface HomepageProperties {
-    //
-}
+interface HomepageProperties {}
 
 interface HomepageState {
     showInitialSurvey: boolean;
@@ -51,6 +50,7 @@ export default class Homepage extends React.Component<HomepageProperties, Homepa
                     <Layer
                         onEsc={() => {
                             this.setState({ showInitialSurvey: false });
+                            // store.dispatch(toggleInitialSurveyModal())
                         }}
                         onClickOutside={() => {
                             this.setState({ showInitialSurvey: false });

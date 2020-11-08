@@ -33,6 +33,7 @@ export const GET_USERS = 'GET_USERS';
 export const GET_MOVIE = 'GET_MOVIE';
 export const GET_RECOMMENDATIONS = 'GET_RECOMMENDATIONS';
 export const SEARCH_MOVIE = 'SEARCH_MOVIE';
+export const TOGGLE_INITIAL_SURVEY_MODAL = 'TOGGLE_INITIAL_SURVEY_MODAL';
 
 export interface GetUserAction {
     type: typeof GET_USER;
@@ -60,6 +61,17 @@ export interface SearchMovieAction {
     title: string;
 }
 
+export interface ToggleInitialSurveyModal {
+    type: typeof TOGGLE_INITIAL_SURVEY_MODAL;
+    shouldBeVisible: boolean;
+}
+
 // The "|" operator is a union. This means ActionTypes can be any one of the
 // types on the right hand side.
-export type ActionTypes = GetUserAction | GetUsersAction | GetMovieAction | GetRecommendationAction | SearchMovieAction;
+export type ActionTypes =
+    | GetUserAction
+    | GetUsersAction
+    | GetMovieAction
+    | GetRecommendationAction
+    | SearchMovieAction
+    | ToggleInitialSurveyModal;

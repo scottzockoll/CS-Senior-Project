@@ -8,6 +8,7 @@ import {
     GET_MOVIE,
     GET_RECOMMENDATIONS,
     SEARCH_MOVIE,
+    TOGGLE_INITIAL_SURVEY_MODAL,
 } from './Types';
 
 // Reducers take state and an action and then returns a new state after the
@@ -173,6 +174,15 @@ export function recommendationsReducer(state = initialRecommendationState, actio
                 // This is where the API request would be made
                 recommendations: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             };
+        default:
+            return state;
+    }
+}
+
+export function toggleInitialSurveyModalReducer(state = false, action: ActionTypes): boolean {
+    switch (action.type) {
+        case TOGGLE_INITIAL_SURVEY_MODAL:
+            return action.shouldBeVisible;
         default:
             return state;
     }
