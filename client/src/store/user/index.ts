@@ -78,6 +78,8 @@ export interface ReceiveUserFailure {
     id: number;
 }
 
+export type UserEntityActions = RequestUserStarted | ReceiveUserSuccess | ReceiveUserFailure;
+
 /**
  * Action that occurs when fetching a list of users starts.
  */
@@ -110,7 +112,7 @@ export interface ReceiveUsersFailure {
 /**
  * Any user entities retrieval action, that is a user entities Request {Start, Success, Failure}.
  */
-export type UserEntitiesActions = RequestUserStarted | ReceiveUserSuccess | ReceiveUserFailure;
+export type UserEntitiesActions = RequestUsersStarted | ReceiveUsersSuccess | ReceiveUsersFailure;
 
 /**
  * Action that occurs when the user logins in.

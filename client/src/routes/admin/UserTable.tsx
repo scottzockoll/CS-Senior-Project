@@ -22,9 +22,7 @@ interface UserTableState {
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    loadMore: (idOffset: number, limit: number) => {
-        dispatch(requestUsers(idOffset, limit));
-    },
+    loadMore: (idOffset: number, limit: number) => dispatch(requestUsers(idOffset, limit)),
 });
 
 /**

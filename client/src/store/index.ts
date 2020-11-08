@@ -22,16 +22,6 @@ export enum AsyncActionStatus {
     Failure = '@@FAILURE',
 }
 
-export interface RequestAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Request;
-}
-export interface SuccessAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Success;
-}
-export interface FailureAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Failure;
-}
-
 // The store needs to be passed a single reducer. We can create this by calling combineReducers
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,

@@ -8,18 +8,18 @@ const mapStateToProps = (state: RootState) => ({
     user: state.users.entities[state.activeUser],
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUsers: (id: number) => dispatch(requestSingleUser(id)),
+    getUser: (id: number) => dispatch(requestSingleUser(id)),
 });
 
 type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers }) => {
+const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUser }) => {
     const [count, setCount] = React.useState(0);
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUsers(count + 50);
-        setCount(count + 50);
+        getUser(count + 1);
+        setCount(count + 1);
     };
 
     return (
