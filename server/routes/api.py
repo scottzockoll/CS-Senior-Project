@@ -14,6 +14,7 @@ def register_api_routes(app: Flask):
     :param Flask app: The Flask app to prep
     :return: Nothing
     """
+    app.route('/api/v1/auth/<str:email>', methods=['POST'])(email)
     app.route('/api/v1/user/<int:id>', methods=['GET'])(get_user)
     app.route('/api/v1/user/<int:id>', methods=['DELETE'])(del_user)
     app.route('/api/v1/user/<int:id>', methods=['PATCH'])(update_user)
