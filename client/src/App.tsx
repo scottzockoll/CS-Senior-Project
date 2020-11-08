@@ -9,7 +9,7 @@ import NavigationBar from './routes/common/NavigationBar';
 import AdminPage from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
 import { records, sampleRecord } from './ExampleData';
-import ClientPage from './routes/Client';
+import ClientPage from './routes/client';
 
 function App() {
     return (
