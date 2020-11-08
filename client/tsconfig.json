@@ -11,6 +11,7 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
+    "downlevelIteration": true,
 
     "skipLibCheck": true,
     "esModuleInterop": true,

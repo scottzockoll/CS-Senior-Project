@@ -1,11 +1,37 @@
-import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
+import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
 import React from 'react';
-import { User } from '../../Types';
+import { User } from '../../store/user';
 import { UserRecord } from './UserRecord';
+import { CSVParser } from '../common/CSVParser';
 import en from '../../en.json';
 
 interface UserRecordModalProps {
     user: User;
+}
+
+/***
+ * Exports all of user's watched movie data to a CSV file.
+ *
+ * @param userRecord The current user's record.
+ */
+function exportUserRecordToCSV(userRecord: UserRecord) {
+    if (window.confirm('Download the selected user record to CSV?')) {
+        // check if the user has at least one movie watched
+        if (userRecord.watchedMovies.length < 1) {
+            alert('User has no data to export. Cancelling download.');
+            return;
+        }
+
+        // retrieve the current datetime
+        let date = new Date();
+        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+        // format the filename
+        let filename = `${userRecord.firstName}_${userRecord.lastName}_${datetimeStr}.csv`;
+
+        // export user records to csv
+        CSVParser.exportToCsv(filename, userRecord.watchedMovies);
+    }
 }
 
 /**
@@ -16,7 +42,7 @@ interface UserRecordModalProps {
 export default class userRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
-            <Box height={'large'} width={'large'}>
+            <Box style={{ height: '80%' }} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
                     {en.UI_LABELS.userRecord}
                 </Heading>
@@ -61,7 +87,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
                     {en.UI_LABELS.moviesWatched}
                 </Heading>
-                <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
+                <Box background={'light-2'} style={{ width: '90%', height: '50%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
@@ -73,17 +99,8 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 property: 'genre',
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
-                                render: (datum) => {
-                                    // retrieve the all the genres
-                                    let genres: string = '';
-
-                                    for (let i = 0; i < datum.genres.length; i++) {
-                                        // add the seperator if there's more than one genre
-                                        if (i > 0) genres += '/';
-                                        genres += datum.genres[i];
-                                    }
-
-                                    return <Text>{genres}</Text>;
+                                render: (datum: string[]) => {
+                                    return <Text>{datum.join('/')}</Text>;
                                 },
                             },
                             {
@@ -92,24 +109,34 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <Meter
-                                            background={'light-4'}
-                                            values={[
-                                                {
-                                                    value: datum.userRating * 20,
-                                                },
-                                            ]}
-                                            thickness="small"
-                                            size="small"
-                                        />
+                                        {/*<Meter*/}
+                                        {/*    background={'light-4'}*/}
+                                        {/*    values={[*/}
+                                        {/*        {*/}
+                                        {/*            value: datum.ratings * 20,*/}
+                                        {/*        },*/}
+                                        {/*    ]}*/}
+                                        {/*    thickness="small"*/}
+                                        {/*    size="small"*/}
+                                        {/*/>*/}
                                     </Box>
                                 ),
                             },
                         ]}
                         sortable={true}
                         style={{ width: '100%' }}
-                        data={Object.values(this.props.user.watchedMovies)}
+                        data={Object.values([])}
                         size={'medium'}
+                    />
+                </Box>
+                <Box width={'small'} margin={{ top: '10px', left: 'auto', right: 'auto', bottom: '5px' }}>
+                    <Button
+                        primary
+                        label={'Download to CSV'}
+                        onClick={() => {
+                            //TODO reimplement user record data
+                            // exportUserRecordToCSV(this.props.userRecord);
+                        }}
                     />
                 </Box>
             </Box>

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, Grommet, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
 import en from '../../en.json';
+import { Login } from './Login';
 
 function NavigationBar() {
     return (
         <Box>
+            <Login />
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 57 }} margin={{ left: '.5%' }}>
                     <Button plain={true} label={<Image height="50" src="images/FlickPickSmall.png" />} href="/" />
