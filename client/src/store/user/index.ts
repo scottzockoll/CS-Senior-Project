@@ -27,14 +27,17 @@ export interface User {
     id: number;
     firstName: string;
     lastName: string;
+    email: string;
     isAdmin: boolean;
     /**
-     * TODO: Should this be "ratings"?
      * An array of all movie ids that the user has rated.
      */
     movies: number[];
     /**
-     * TODO: Should this change with "ratings" above?
+     * An array of all ratings for the corresponding movies.
+     */
+    ratings: number[];
+    /**
      * An array of all tag ids that the user has rated.
      */
     tags: number[];

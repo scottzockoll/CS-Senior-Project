@@ -1,9 +1,37 @@
-import { Box, DataTable, Grid, Heading, Text, Meter } from 'grommet';
+import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
 import React from 'react';
+import { User } from '../../store/user';
 import { UserRecord } from './UserRecord';
+import { CSVParser } from '../common/CSVParser';
 import en from '../../en.json';
+
 interface UserRecordModalProps {
-    userRecord: UserRecord;
+    user: User;
+}
+
+/***
+ * Exports all of user's watched movie data to a CSV file.
+ *
+ * @param userRecord The current user's record.
+ */
+function exportUserRecordToCSV(userRecord: UserRecord) {
+    if (window.confirm('Download the selected user record to CSV?')) {
+        // check if the user has at least one movie watched
+        if (userRecord.watchedMovies.length < 1) {
+            alert('User has no data to export. Cancelling download.');
+            return;
+        }
+
+        // retrieve the current datetime
+        let date = new Date();
+        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+        // format the filename
+        let filename = `${userRecord.firstName}_${userRecord.lastName}_${datetimeStr}.csv`;
+
+        // export user records to csv
+        CSVParser.exportToCsv(filename, userRecord.watchedMovies);
+    }
 }
 
 /**
@@ -14,13 +42,13 @@ interface UserRecordModalProps {
 export default class userRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
-            <Box height={'large'} width={'large'}>
+            <Box style={{ height: '80%' }} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
                     {en.UI_LABELS.userRecord}
                 </Heading>
                 <hr style={{ width: '90%' }} />
                 <Grid
-                    rows={['xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall', 'xxxsmall']}
+                    rows={['xxxsmall', 'xxxsmall', 'xxxsmall']}
                     columns={['small', 'small']}
                     alignSelf={'center'}
                     areas={[
@@ -30,20 +58,6 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         { name: 'lastName', start: [1, 1], end: [1, 1] },
                         { name: 'emailLabel', start: [0, 2], end: [0, 2] },
                         { name: 'email', start: [1, 2], end: [1, 2] },
-                        {
-                            name: 'registerDateLabel',
-                            start: [0, 3],
-                            end: [0, 3],
-                        },
-                        { name: 'registerDate', start: [1, 3], end: [1, 3] },
-                        {
-                            name: 'moviesWatchedLabel',
-                            start: [0, 4],
-                            end: [0, 4],
-                        },
-                        { name: 'moviesWatched', start: [1, 4], end: [1, 4] },
-                        { name: 'visitsLabel', start: [0, 5], end: [0, 5] },
-                        { name: 'visits', start: [1, 5], end: [1, 5] },
                     ]}
                 >
                     {/*User Information display*/}
@@ -51,37 +65,19 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         {en.UI_LABELS.firstName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'firstName'}>
-                        {this.props.userRecord.firstName}
+                        {this.props.user.firstName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastLabel'} weight={'bold'}>
                         {en.UI_LABELS.lastName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'lastName'}>
-                        {this.props.userRecord.lastName}
+                        {this.props.user.lastName}
                     </Text>
                     <Text textAlign={'center'} gridArea={'emailLabel'} weight={'bold'}>
                         {en.UI_LABELS.email}
                     </Text>
                     <Text textAlign={'center'} gridArea={'email'}>
-                        {this.props.userRecord.email}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'registerDateLabel'} weight={'bold'}>
-                        {en.UI_LABELS.registerDate}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'registerDate'}>
-                        {this.props.userRecord.registerDate}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'moviesWatchedLabel'} weight={'bold'}>
-                        {en.UI_LABELS.moviesWatched}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'moviesWatched'}>
-                        {this.props.userRecord.moviesWatched}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'visitsLabel'} weight={'bold'}>
-                        {en.UI_LABELS.visits}
-                    </Text>
-                    <Text textAlign={'center'} gridArea={'visits'}>
-                        {this.props.userRecord.visits}
+                        {this.props.user.email}
                     </Text>
                 </Grid>
 
@@ -91,7 +87,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                 <Heading alignSelf={'center'} level={'3'} margin={'none'}>
                     {en.UI_LABELS.moviesWatched}
                 </Heading>
-                <Box background={'light-2'} style={{ width: '90%' }} alignSelf={'center'}>
+                <Box background={'light-2'} style={{ width: '90%', height: '50%' }} alignSelf={'center'}>
                     <DataTable
                         columns={[
                             {
@@ -103,6 +99,9 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 property: 'genre',
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
+                                render: (datum: string[]) => {
+                                    return <Text>{datum.join('/')}</Text>;
+                                },
                             },
                             {
                                 property: 'userRating',
@@ -110,24 +109,34 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <Meter
-                                            background={'light-4'}
-                                            values={[
-                                                {
-                                                    value: datum.userRating * 20,
-                                                },
-                                            ]}
-                                            thickness="small"
-                                            size="small"
-                                        />
+                                        {/*<Meter*/}
+                                        {/*    background={'light-4'}*/}
+                                        {/*    values={[*/}
+                                        {/*        {*/}
+                                        {/*            value: datum.ratings * 20,*/}
+                                        {/*        },*/}
+                                        {/*    ]}*/}
+                                        {/*    thickness="small"*/}
+                                        {/*    size="small"*/}
+                                        {/*/>*/}
                                     </Box>
                                 ),
                             },
                         ]}
                         sortable={true}
                         style={{ width: '100%' }}
-                        data={this.props.userRecord.watchedMovies}
+                        data={Object.values([])}
                         size={'medium'}
+                    />
+                </Box>
+                <Box width={'small'} margin={{ top: '10px', left: 'auto', right: 'auto', bottom: '5px' }}>
+                    <Button
+                        primary
+                        label={'Download to CSV'}
+                        onClick={() => {
+                            //TODO reimplement user record data
+                            // exportUserRecordToCSV(this.props.userRecord);
+                        }}
                     />
                 </Box>
             </Box>

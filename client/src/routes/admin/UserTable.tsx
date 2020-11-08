@@ -1,14 +1,14 @@
 import React from 'react';
 import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
-import { UserRecord } from './UserRecord';
+import { User } from '../../store/user';
 import en from '../../en.json';
 
 interface UserTableProps {
     /**
      * A list of UserRecords to be display in the UserTable.
      */
-    userRecords: UserRecord[];
+    users: User[];
 }
 
 interface UserTableState {
@@ -23,7 +23,7 @@ interface UserTableState {
  */
 export default class UserTable extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
-    selectedUser: UserRecord; // The reference to the selected user record in the UserTable
+    selectedUser: User; // The reference to the selected user record in the UserTable
 
     constructor(props: UserTableProps) {
         super(props);
@@ -33,14 +33,14 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
 
         // initialize our instance variables
         this.selectedUser = {
+            id: 0,
+            isAdmin: false,
             email: '',
             firstName: '',
             lastName: '',
-            moviesWatched: 0,
-            registerDate: '',
-            userId: 0,
-            visits: 0,
-            watchedMovies: [],
+            movies: [],
+            ratings: [],
+            tags: [],
         };
     }
 
@@ -74,24 +74,8 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             sortable: true,
                             search: true,
                         },
-                        {
-                            property: 'registerDate',
-                            header: en.UI_LABELS.registerDate,
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'moviesWatched',
-                            header: en.UI_LABELS.moviesWatched,
-                            sortable: true,
-                        },
-                        {
-                            property: 'visits',
-                            header: en.UI_LABELS.visits,
-                            sortable: true,
-                        },
                     ]}
-                    data={this.props.userRecords}
+                    data={this.props.users}
                     onClickRow={(row) => {
                         // On click row, show modal and set the selected user
                         this.selectedUser = row.datum;
@@ -115,7 +99,7 @@ export default class UserTable extends React.Component<UserTableProps, UserTable
                             this.setState({ showModal: false });
                         }}
                     >
-                        <UserRecordModal userRecord={this.selectedUser} />
+                        <UserRecordModal user={this.selectedUser} />
                     </Layer>
                 )}
             </Box>

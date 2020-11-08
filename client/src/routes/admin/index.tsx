@@ -1,13 +1,23 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
-import { UserRecord } from './UserRecord';
 import UserTable from './UserTable';
+import { useSelector } from 'react-redux';
 
-interface AdminPageProps {
-    userRecords: UserRecord[];
+/***
+ * Exports all the user records to a CSV file. Redirects the
+ * user to the location of the CSV file.
+ *
+ */
+function downloadAllToCSV(userRecords: Object) {
+    if (window.confirm('Download records to CSV?')) {
+        // redirect to All Users csv file
+        window.open('http://ec2-18-222-97-98.us-east-2.compute.amazonaws.com/Users/All_Users.csv');
+    }
 }
 
-export default function AdminPage(props: AdminPageProps) {
+export default function AdminPage() {
+    // retrieve the state of the store
+    const state = useSelector((state: any) => state);
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -20,11 +30,17 @@ export default function AdminPage(props: AdminPageProps) {
             ]}
         >
             <Box gridArea="header">
-                {/*TODO implement download all button. Will be hanled in a different branch.*/}
-                <Button secondary label={'Download All'} alignSelf={'start'} />
+                <Button
+                    secondary
+                    label={'Download All'}
+                    alignSelf={'start'}
+                    onClick={() => {
+                        downloadAllToCSV(state.user.userRecords);
+                    }}
+                />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable userRecords={props.userRecords} />
+                <UserTable users={state.users} />
             </Box>
         </Grid>
     );

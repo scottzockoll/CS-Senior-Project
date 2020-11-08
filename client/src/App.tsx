@@ -13,7 +13,7 @@ function App() {
             <Switch>
                 <Route path="/admin">
                     <NavigationBar />
-                    <AdminPage userRecords={records} />
+                    <AdminPage />
                 </Route>
                 <Route path="/client">
                     <NavigationBar />
