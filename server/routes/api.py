@@ -48,8 +48,6 @@ def get_user(id: int):
             "isAdmin": idx % 2 == 0
         })
 
-    return Response(json.dumps(data), status=200)
-
 
 def update_user(id: int):
     """
