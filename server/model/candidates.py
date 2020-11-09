@@ -1,7 +1,10 @@
-import os, csv
-import scipy
+import csv
+import os
+import pickle
+from typing import Set, Dict
+
 import numpy as np
-from typing import Set, Dict, Tuple
+import scipy
 from scipy.sparse import lil_matrix, csr_matrix
 from sklearn.decomposition import NMF
 from tqdm import tqdm
@@ -68,8 +71,6 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
     # mem_path = os.path.join('temp', 'memmap')
     # os.makedirs(mem_path, exist_ok=True)
 
-    output_path = os.path.join(output_folder, f"{output_name}.npy")
-
     n_components = 20
     # w_shape = (n_users, n_components)
     # r_shape = (n_users, n_movies)
@@ -81,7 +82,13 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
     h = model.components_
 
     r = np.dot(w, h)
-    np.save(output_path, r)
+    print('Saving factored matrix...')
+    np.save(os.path.join(output_folder, f"{output_name}_r.npy"), r)
+    print('Saving sparse user data...')
+    with open(os.path.join(output_folder, f"{output_name}_d.mat.pickle"), 'wb') as file:
+        file.write(pickle.dumps(matrix))
+
+    print('Done!')
 
     # clear old map/create empty file
     # r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32, mode='w+')
