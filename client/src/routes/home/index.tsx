@@ -2,27 +2,26 @@ import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React from 'react';
 import InitialSurveyModal from './InitialSurveyModal';
 import en from '../../en.json';
-import { toggleInitialSurveyModal } from '../../ActionCreators';
+import { store } from '../../index';
+import { toggleInitialSurveyModal } from './actions';
+import { Login } from '../common/Login';
 
 interface HomepageProperties {}
 
-interface HomepageState {
-    showInitialSurvey: boolean;
-}
-
-export default class Homepage extends React.Component<HomepageProperties, HomepageState> {
+export default class Homepage extends React.Component<HomepageProperties> {
     constructor(props: HomepageProperties) {
         super(props);
-        this.state = {
-            showInitialSurvey: false,
-        };
     }
 
     render() {
+        let { initialSurveyVisible } = store.getState();
+        console.log('initialSurveyVisible var', initialSurveyVisible);
+        // remove this before PR
         return (
             <Box background="light-3" height={'xxlarge'}>
                 <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                     <Heading margin="large">Welcome to FlickPick! </Heading>
+                    <Login />
                 </Box>
                 <Box margin={{ left: 'auto', right: 'auto' }} height="40%" width="medium">
                     <Carousel fill play={5000}>
@@ -38,22 +37,18 @@ export default class Homepage extends React.Component<HomepageProperties, Homepa
                         label={en.UI_LABELS.takeAMovieSurvey}
                         hoverIndicator
                         onClick={() => {
-                            this.setState({
-                                ...this.state,
-                                showInitialSurvey: true,
-                            });
+                            store.dispatch(toggleInitialSurveyModal(true));
                         }}
-                    ></Button>
+                    />
                 </Box>
                 {/* User Modal displayed when row is clicked */}
-                {this.state.showInitialSurvey && (
+                {initialSurveyVisible && (
                     <Layer
                         onEsc={() => {
-                            this.setState({ showInitialSurvey: false });
-                            // store.dispatch(toggleInitialSurveyModal())
+                            store.dispatch(toggleInitialSurveyModal());
                         }}
                         onClickOutside={() => {
-                            this.setState({ showInitialSurvey: false });
+                            store.dispatch(toggleInitialSurveyModal());
                         }}
                     >
                         <InitialSurveyModal />

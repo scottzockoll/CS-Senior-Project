@@ -1,24 +1,20 @@
 import { Box, Button, Heading, Layer, TextInput } from 'grommet';
 import React from 'react';
+import { store } from '../..';
+import { toggleInitialSurveyModal } from './actions';
 
 interface InitialSurveyModalProps {}
 
-interface InitialSurveyModalState {
-    showInitialSurvey: boolean;
-}
-
-export default class openInitialSurvey extends React.Component<InitialSurveyModalProps, InitialSurveyModalState> {
+export default class openInitialSurvey extends React.Component<InitialSurveyModalProps> {
     constructor(props: InitialSurveyModalProps) {
         super(props);
-        this.state = {
-            showInitialSurvey: true,
-        };
     }
     render() {
         const numberOfChildren: number[] = [1, 2, 3, 4, 5];
+        let { initialSurveyVisible } = store.getState();
         return (
             <Box>
-                {this.state.showInitialSurvey && (
+                {initialSurveyVisible && (
                     <Box height={'auto'} width={'large'}>
                         <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                             <Heading>Initial Survey</Heading>
@@ -43,7 +39,7 @@ export default class openInitialSurvey extends React.Component<InitialSurveyModa
                                     primary
                                     label="Submit Survey"
                                     onClick={() => {
-                                        this.setState({ showInitialSurvey: false });
+                                        store.dispatch(toggleInitialSurveyModal(true));
                                     }}
                                 />
                             </Box>
@@ -52,7 +48,7 @@ export default class openInitialSurvey extends React.Component<InitialSurveyModa
                                 <Button
                                     label="Close"
                                     onClick={() => {
-                                        this.setState({ showInitialSurvey: false });
+                                        store.dispatch(toggleInitialSurveyModal(true));
                                     }}
                                 />
                             </Box>

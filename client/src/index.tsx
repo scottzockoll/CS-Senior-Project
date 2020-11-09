@@ -47,7 +47,7 @@ const customBreakpoints = {
     },
 };
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
+export const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
 );
