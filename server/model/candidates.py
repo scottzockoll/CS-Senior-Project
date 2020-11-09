@@ -51,8 +51,8 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
 
     print(f'Collecting dataset metadata...')
     n_items, users, movies = collect_metadata(path)
-    n_users = len(users)
-    n_movies = len(movies)
+    # n_users = len(users)
+    # n_movies = len(movies)
 
     mapped_ids = dict()
     for entry in movies:
@@ -65,26 +65,28 @@ def train_mf(output_folder: str, output_name: str, dataset_size: str):
 
     print(f"Matrix is {(1-(matrix.nnz / (matrix.shape[0] * matrix.shape[1])))*100:0.3f}% empty.")
 
-    mem_path = os.path.join('temp', 'memmap')
-    os.makedirs(mem_path, exist_ok=True)
+    # mem_path = os.path.join('temp', 'memmap')
+    # os.makedirs(mem_path, exist_ok=True)
 
     output_path = os.path.join(output_folder, f"{output_name}.npy")
 
     n_components = 20
-    w_shape = (n_users, n_components)
-    r_shape = (n_users, n_movies)
+    # w_shape = (n_users, n_components)
+    # r_shape = (n_users, n_movies)
 
     print('Training model, this may take awhile...')
     model = NMF(n_components=n_components, init='random', random_state=0, max_iter=5000, verbose=True)
 
     w = model.fit_transform(matrix)
     h = model.components_
-    h_t = h.T
+
+    r = np.dot(w, h)
+    np.save(output_path, r)
 
     # clear old map/create empty file
-    r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32, mode='w+')
-    for w_i in tqdm(range(w_shape[0]), total=w_shape[0], desc='Computing and saving matrix...', unit='user'):
-        r[w_i] = np.inner(w[w_i], h_t)
-        r.flush()
+    # r: np.memmap = np.memmap(output_path, shape=r_shape, dtype=np.float32, mode='w+')
+    # for w_i in tqdm(range(w_shape[0]), total=w_shape[0], desc='Computing and saving matrix...', unit='user'):
+    #     r[w_i] = np.inner(w[w_i], h_t)
+    #     r.flush()
 
 
