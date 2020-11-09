@@ -1,7 +1,7 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, combineReducers } from 'redux';
 import { UserEntitiesActions, UserEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer } from './user/reducers';
+import { userAuthReducer, usersReducer, tokenReducer } from './user/reducers';
 
 export type AppAction = UserEntitiesActions;
 
@@ -36,6 +36,7 @@ export interface FailureAsyncAction<T> extends Action<T> {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    token: tokenReducer,
 });
 
 /**
