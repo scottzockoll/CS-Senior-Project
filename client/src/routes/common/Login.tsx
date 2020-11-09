@@ -2,7 +2,13 @@ import { Box, Button, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { requestSingleUser, updateToken, userLogin, userLogout } from '../../store/user/actions';
+import {
+    requestSingleUser,
+    updateToken,
+    userLogin,
+    userLogout,
+    requestAuthenticateUser,
+} from '../../store/user/actions';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { store } from '../../index';
 
@@ -38,17 +44,15 @@ export const refreshTokenSetup = (res: any) => {
 function LoginButton() {
     const onSuccess = (res: any) => {
         console.log('Login Success: currentUser:', res.profileObj);
-
-        alert(`Logged in successfully welcome ${res.profileObj.name}`);
         refreshTokenSetup(res);
         console.log(res);
         store.dispatch(userLogin(1));
+        store.dispatch(requestAuthenticateUser(res.profileObj.email, res.tokenId));
         store.dispatch(updateToken(res.tokenId));
     };
 
     const onFailure = (res: any) => {
         console.log('Login failed: res:', res);
-        alert(`Failed to login`);
     };
 
     return (
@@ -69,7 +73,6 @@ function LoginButton() {
 function LogoutButton() {
     const onSuccess = () => {
         console.log('Logout was successful');
-        alert('Logout was successful');
         store.dispatch(userLogout());
         store.dispatch(updateToken(''));
     };

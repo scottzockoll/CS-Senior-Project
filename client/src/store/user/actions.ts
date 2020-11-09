@@ -5,6 +5,10 @@ import {
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
     REQUEST_USER_STARTED,
+    RECEIVE_AUTH_USER_FAILURE,
+    RECEIVE_AUTH_USER_SUCCESS,
+    REQUEST_AUTH_USER_STARTED,
+    RequestAuthUserStarted,
     RequestUserStarted,
     TOKEN_UPDATE,
     TokenUpdate,
@@ -41,10 +45,32 @@ export function requestSingleUser(id: number): RequestUserStarted {
         [CALL_API]: {
             endpoint: `user/${id}`,
             schema: SCHEMAS['USER_ARRAY'],
+            method: 'GET',
+            body: {},
             types: {
                 [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
                 [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
                 [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
+            },
+        },
+    };
+}
+
+export function requestAuthenticateUser(email: string, authToken: string): RequestAuthUserStarted {
+    return {
+        email,
+        type: REQUEST_AUTH_USER_STARTED,
+        [CALL_API]: {
+            endpoint: `auth/${email}`,
+            schema: SCHEMAS['USER'],
+            method: 'POST',
+            body: {
+                auth_token: authToken,
+            },
+            types: {
+                [AsyncActionStatus.Request]: REQUEST_AUTH_USER_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_AUTH_USER_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_AUTH_USER_FAILURE,
             },
         },
     };

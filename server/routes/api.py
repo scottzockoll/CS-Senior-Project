@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, Response
+from flask import Flask, Response, request
 
 
 def register_api_routes(app: Flask):
@@ -9,6 +9,7 @@ def register_api_routes(app: Flask):
     :param Flask app: The Flask app to prep
     :return: Nothing
     """
+    app.route('/api/v1/auth/<string:email>', methods=['POST'])(auth_user)
     app.route('/api/v1/user/<int:id>', methods=['GET'])(get_user)
     app.route('/api/v1/user/<int:id>', methods=['DELETE'])(del_user)
     app.route('/api/v1/user/<int:id>', methods=['PATCH'])(update_user)
@@ -25,6 +26,11 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])(create_feedback_tag)
     app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations)
 
+# This is just for testing right now
+def auth_user(email: str):
+    # the token will be in the request.form under auth_token
+    print('form: {}'.format(request.form))
+    return json.dumps({'message': 'success'})
 
 def get_user(id: int):
     """
@@ -32,7 +38,6 @@ def get_user(id: int):
     :param int id: The user id to retrieve
     :return: JSON object with user firstName, lastName, and isAdmin
     """
-
     data = []
     for idx in range(id, id + 50):
         data.append({
