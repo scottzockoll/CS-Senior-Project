@@ -1,11 +1,11 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, combineReducers } from 'redux';
-import { UserEntitiesActions, UserEntitiesTypes } from './user';
+import { UserEntitiesActions, UsersEntitiesTypes } from './user';
 import { userAuthReducer, usersReducer } from './user/reducers';
 
 export type AppAction = UserEntitiesActions;
 
-export type ActionType = UserEntitiesTypes;
+export type ActionType = UsersEntitiesTypes;
 
 /**
  * Alias for app-specific redux store dispatch function.

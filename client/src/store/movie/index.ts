@@ -1,10 +1,12 @@
-export interface Movie {
-    movieId: number;
-    movieName: string;
-    genres: Array<string>;
-}
+import { Tag } from '../tag';
 
-export interface RatedMovie extends Movie {}
+export interface Movie {
+    movie_Id: number;
+    title: string;
+    genres: Record<number, string>;
+    rating: number;
+    tags: Record<number, Tag>;
+}
 
 export const GET_MOVIE = 'GET_MOVIE';
 

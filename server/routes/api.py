@@ -40,7 +40,22 @@ def get_user(id: int):
             "email": f"example{idx}@example.com",
             "firstName": f"First_{idx}",
             "lastName": f"Last_{idx}",
-            "isAdmin": idx % 2 == 0
+            "isAdmin": idx % 2 == 0,
+            "movies": [
+                {
+                    "movie_id": 1,
+                    "title": "Step Brothers (2008)",
+                    "genres": ["Comedy"],
+                    "rating": 5,
+                    "tags": [
+                        {
+                           "tag_id": "1",
+                           "rating": "5",
+                           "name": "funny"
+                        }
+                    ]
+                }
+            ]
         })
 
     return Response(json.dumps(data), status=200)

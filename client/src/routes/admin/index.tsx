@@ -1,12 +1,7 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
-import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
-
-const mapStateToProps = (state: RootState) => ({
-    users: state.users.entities,
-});
 
 /***
  * Exports all the user records to a CSV file. Redirects the
@@ -20,9 +15,7 @@ function downloadAllToCSV() {
     }
 }
 
-type AdminProps = ReturnType<typeof mapStateToProps>;
-
-const AdminPage: React.FC<AdminProps> = ({ users }) => {
+const AdminPage: React.FC = () => {
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -45,10 +38,10 @@ const AdminPage: React.FC<AdminProps> = ({ users }) => {
                 />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable users={Object.values(users)} />
+                <UserTable />
             </Box>
         </Grid>
     );
 };
 
-export const Admin = connect(mapStateToProps)(AdminPage);
+export const Admin = connect()(AdminPage);

@@ -1,41 +1,44 @@
 import React from 'react';
-import { Box, DataTable, Layer } from 'grommet';
+import { Box, Button, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { User } from '../../store/user';
 import en from '../../en.json';
 import { requestUsers } from '../../store/user/actions';
 
-interface UserTableProps {
-    /**
-     * A list of UserRecords to be display in the UserTable.
-     */
-    users: User[];
+interface UserTableState {
+    showModal: boolean;
+    idOffset: number;
+    count: number;
 }
 
-interface UserTableState {
-    /**
-     * triggers the UserRecordModal when set to true.
-     */
-    showModal: boolean;
-}
+const mapStateToProps = (state: RootState) => ({
+    users: state.users.entities,
+});
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    loadMore: (idOffset: number, limit: number) => dispatch(requestUsers(idOffset, limit)),
+    getUsers: (idOffset: number, limit: number) => {
+        dispatch(requestUsers(idOffset, limit));
+    },
 });
+
+type UserTableProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 /**
  * React Component for UseTable displaying all the records for each user.
  */
-export class UserTableComponent extends React.Component<UserTableProps, UserTableState> {
+class UserTableComponent extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
     selectedUser: User; // The reference to the selected user record in the UserTable
 
-    constructor(props: UserTableProps) {
+    constructor(props: UserTableProps, state: RootState) {
         super(props);
         this.state = {
             showModal: false,
+            idOffset: 1,
+            count: 1,
+            // users: {},
         };
 
         // initialize our instance variables
@@ -46,9 +49,26 @@ export class UserTableComponent extends React.Component<UserTableProps, UserTabl
             firstName: '',
             lastName: '',
             movies: [],
-            ratings: [],
             tags: [],
         };
+
+        // bind the load more function to the constructor
+        this.loadMore = this.loadMore.bind(this);
+
+        // load users
+        this.loadMore(null);
+    }
+
+    loadMore(event: any) {
+        this.props.getUsers(this.state.idOffset, 50);
+        this.setState({
+            ...this.state,
+            count: this.state.count + 50,
+        });
+        this.setState({
+            ...this.state,
+            idOffset: this.state.idOffset + 50,
+        });
     }
 
     render() {
@@ -82,8 +102,7 @@ export class UserTableComponent extends React.Component<UserTableProps, UserTabl
                             search: true,
                         },
                     ]}
-                    onMore={() => {}}
-                    data={this.props.users}
+                    data={Object.values(this.props.users)}
                     onClickRow={(row) => {
                         // On click row, show modal and set the selected user
                         this.selectedUser = row.datum;
@@ -115,4 +134,4 @@ export class UserTableComponent extends React.Component<UserTableProps, UserTabl
     }
 }
 
-export default connect()(UserTableComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(UserTableComponent);
