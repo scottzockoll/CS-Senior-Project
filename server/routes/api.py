@@ -14,6 +14,7 @@ from server.api.v1.update.update_feedback_tag import update_feedback_tag
 from server.api.v1.create.create_feedback import create_feedback
 from server.api.v1.create.create_feedback_tag import create_feedback_tag
 # from server.api.v1.get.get_recommendations import get_recommendations
+from server.api.v1.auth.auth_user import auth_user
 
 
 def register_api_routes(app: Flask):
@@ -22,6 +23,7 @@ def register_api_routes(app: Flask):
     :param Flask app: The Flask app to prep
     :return: Nothing
     """
+    app.route('/api/v1/auth/<string:email>', methods=['POST'])(auth_user)
     app.route('/api/v1/user/<int:id>', methods=['GET'])(get_user)
     app.route('/api/v1/user/<int:id>', methods=['DELETE'])(del_user)
     app.route('/api/v1/user/<int:id>', methods=['PATCH'])(update_user)
