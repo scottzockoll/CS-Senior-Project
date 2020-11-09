@@ -1,15 +1,11 @@
 import React from 'react';
+import ClientPage from './routes/client/index';
 import './App.css';
-import { createStore, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import { getUser, getUsers, getMovie, getRecommendations } from './ActionCreators';
-import { userReducer, usersReducer, movieReducer, recommendationsReducer } from './Reducers';
 import Homepage from './routes/home/index';
 import NavigationBar from './routes/common/NavigationBar';
 import AdminPage from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
 import { records, sampleRecord } from './ExampleData';
-import ClientPage from './routes/client';
 
 function App() {
     return (
