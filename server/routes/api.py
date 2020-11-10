@@ -2,7 +2,6 @@ from flask import Flask
 from server.api.v1.get.get_user import get_user
 from server.api.v1.delete.del_user import del_user
 # from server.api.v1.update.update_user import update_user
-# from server.api.v1.create.create_user import create_user
 from server.api.v1.get.get_movie import get_movie
 from server.api.v1.get.get_movie_autocomplete import get_movie_autocomplete
 from server.api.v1.get.get_tag import get_tag
@@ -27,7 +26,6 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/user/<int:id>', methods=['GET'])(get_user)
     app.route('/api/v1/user/<int:id>', methods=['DELETE'])(del_user)
     app.route('/api/v1/user/<int:id>', methods=['PATCH'])(update_user)
-    app.route('/api/v1/user', methods=['POST'])(create_user)
     app.route('/api/v1/movie/<int:id>', methods=['GET'])(get_movie)
     app.route('/api/v1/movie/search/<string:name>', methods=['GET'])(get_movie_autocomplete)
     app.route('/api/v1/tag/<int:id>', methods=['GET'])(get_tag)
@@ -51,18 +49,6 @@ def update_user(id: int):
         "id": id,
         "result": "OK"
     }, 200
-
-
-def create_user():
-    """
-    Create a new user
-    :param: Nothing
-    :return: JSON object of user id
-    """
-    return {
-        "id": 999,
-        "result": "Created"
-    }, 201
 
 
 def get_tag_autocomplete(name: str, movieId: int):

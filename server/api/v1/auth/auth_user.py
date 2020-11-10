@@ -1,9 +1,10 @@
 import json
 
-from flask import session, request
+from flask import session, request, make_response
 from google.auth.transport import requests
 from google.oauth2 import id_token
-from server.api.v1.create.create_user import create_user
+from server.utilities import db_connection
+from flask import Response
 
 
 def google_info(token: str):
@@ -24,14 +25,56 @@ def google_info(token: str):
         pass
 
 
+def verify_user(firstName: str, lastName: str, email: str):
+    con, cursor = db_connection()
+
+    try:
+        if not isinstance(firstName, str) or not isinstance(lastName, str) or not isinstance(email, str):
+            return Response({
+            }, mimetype='application/json', status=400)
+        else:
+            cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+            result = cursor.fetchmany(size=1)
+
+            if len(result) == 1:
+                return Response({
+                }, mimetype='application/json', status=200)
+            else:
+                cursor.execute("INSERT INTO users (firstName, lastName, email, isAdmin) VALUES (%s, %s, %s, 0)",
+                               (firstName, lastName, email))
+                con.commit()
+                return Response({
+                }, mimetype='application/json', status=200)
+    except Exception:
+        return Response({
+        }, mimetype='application/json', status=500)
+    finally:
+        cursor.close()
+        con.close()
+
+
 def auth_user(email: str):
     # print('form: {}'.format(request.form))
     # if session['email'] == request.form['email']:
+    #session["email"] = email
     token = request.form['auth_token']
     given_name, family_name, email, name, exp = google_info(token)
 
-    create_user(given_name, family_name, email)
+    verify_user(given_name, family_name, email)
 
-    # create session here
+    #res = make_response()
+    #res.set_cookie('user_token', token, domain='127.0.0.1')
+    #return session["email"]
 
-    return json.dumps({'message': 'success'})
+'''
+    if "email" in session:
+        test = session["email"]
+        #res = make_response(Response({}, mimetype='application/json', status=200))
+        #res.set_cookie('email', test)
+        #return res
+        return Response({
+        }, mimetype='application/json', status=200)
+    else:
+        return Response({
+        }, mimetype='application/json', status=404)
+'''
