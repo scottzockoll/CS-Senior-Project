@@ -1,5 +1,4 @@
 import { UserRecord } from './routes/admin/UserRecord';
-import { User } from './store/user';
 
 /**
  * Sample user records for the admin page

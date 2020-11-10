@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Button, DataTable, Layer } from 'grommet';
+import { Box, DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { User } from '../../store/user';
 import en from '../../en.json';
@@ -34,6 +34,10 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
 
     constructor(props: UserTableProps, state: RootState) {
         super(props);
+
+        // load users
+        this.props.getUsers(1, 50);
+
         this.state = {
             showModal: false,
             idOffset: 1,
@@ -54,9 +58,6 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
 
         // bind the load more function to the constructor
         this.loadMore = this.loadMore.bind(this);
-
-        // load users
-        this.loadMore(null);
     }
 
     loadMore(event: any) {
