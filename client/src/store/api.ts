@@ -34,17 +34,19 @@ const callApi = async (
 
     let form_data = new FormData();
 
-    for (var key in body) {
+    for (const key in body) {
         form_data.append(key, body[key]);
     }
 
     fetchParam = {
         method: method,
         body: form_data,
+        credentials: 'include',
     };
 
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
+    console.log(json);
 
     if (!response.ok) {
         throw new Error(json);
