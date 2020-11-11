@@ -1,28 +1,15 @@
 import json
 
-from flask import session, request, make_response
-from google.auth.transport import requests
-from google.oauth2 import id_token
+from flask import session, request
+
 from server.utilities import db_connection
 from flask import Response
+from server.auth import authenticate
+from time import time
 
 
-def google_info(token: str):
-    c_id = "962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com"
-
-    try:
-        id_info = id_token.verify_oauth2_token(token, requests.Request(), c_id)
-
-        exp = id_info['exp']
-        email = id_info['email']
-        name = id_info['name']
-        given_name = id_info['given_name']
-        family_name = id_info['family_name']
-
-        return given_name, family_name, email, name, exp
-
-    except ValueError:
-        pass
+# session cookies will last 24 hours
+SESSION_MAX_AGE = 60*60*24
 
 
 def verify_user(firstName: str, lastName: str, email: str):
@@ -54,27 +41,21 @@ def verify_user(firstName: str, lastName: str, email: str):
 
 
 def auth_user(email: str):
-    # print('form: {}'.format(request.form))
-    # if session['email'] == request.form['email']:
-    #session["email"] = email
-    token = request.form['auth_token']
-    given_name, family_name, email, name, exp = google_info(token)
+    session_id = request.cookies.get('session')
+    if session_id:
+        user = session.get('user')
 
-    verify_user(given_name, family_name, email)
+        if user['expiration'] > time():
+            session.pop('user')
+        else:
+            return Response(json.dumps(user), status=200)
 
-    #res = make_response()
-    #res.set_cookie('user_token', token, domain='127.0.0.1')
-    #return session["email"]
+    user = authenticate(email, request.form['auth_token'])
 
-'''
-    if "email" in session:
-        test = session["email"]
-        #res = make_response(Response({}, mimetype='application/json', status=200))
-        #res.set_cookie('email', test)
-        #return res
-        return Response({
-        }, mimetype='application/json', status=200)
+    if user is None:
+        return Response({}, status=401)
     else:
-        return Response({
-        }, mimetype='application/json', status=404)
-'''
+        response = Response(json.dumps(user), status=200)
+        response.set_cookie("session", user['email'], max_age=SESSION_MAX_AGE)
+        session['user'] = user
+        return response

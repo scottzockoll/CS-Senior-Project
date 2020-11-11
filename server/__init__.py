@@ -1,9 +1,10 @@
 from server.routes.api import register_api_routes
-from flask import Flask
+from flask import Flask, session
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
+# Flask signs cookies to detect tampering
 app.secret_key = "h5t4h-G^DTkHdyx&_xJP@uB%UdE3sbhnC-6#bjubekx&jt2zFxg$kzcGea%8EtyQ" \
                  "pFd+u#FczG7=mWN7^n*G*gvTZQhd=nv!Ga9vcr6XD%zr6PNsQ?$h&!8D%Nw5G+C!" \
                  "_G4gThMxD9gtrYmz-m%UrTs9^vB+r95XJzaT4cUb@NMZCqJ73u4Rs?BGB*UWsTzN" \
@@ -15,4 +16,3 @@ app.secret_key = "h5t4h-G^DTkHdyx&_xJP@uB%UdE3sbhnC-6#bjubekx&jt2zFxg$kzcGea%8Et
 app.session_cookie_name = "session"
 
 register_api_routes(app)
-# app.secret_key = "test"        # this is needed for cookies
