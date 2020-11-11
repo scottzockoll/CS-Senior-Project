@@ -1,10 +1,10 @@
 import React from 'react';
 import { Box, DataTable, Text, Button, Layer, Select, Grommet } from 'grommet';
-import { UserRecord, WatchedMovie } from '../admin/UserRecord';
-import { combineReducers, createStore } from 'redux';
-import { useSelector } from 'react-redux';
-import en from '../../en.json'
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import en from '../../en.json';
+import { AppDispatch, RootState } from '../../store';
+import { getMovie } from '../../store/movie/actions';
 
 export default function ClientPage() {
     // retrieve the state of the store
@@ -15,31 +15,33 @@ export default function ClientPage() {
     const [showDeleteAccount, setShowDeleteAccount] = React.useState<boolean>();
     const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
 
+    const dispatch = useDispatch();
+    //let user = state.users.entities[state.activeUser];
+
     return (
         <Grommet>
             <Box pad="medium" align="start">
-                <Text>
-                    {en.UI_LABELS.fullName}: {state.user.firstName} {state.user.lastName}
-                </Text>
-                <Text>
-                    {en.UI_LABELS.email}: {state.user.email}
-                </Text>
+                <Text>{en.UI_LABELS.fullName}:</Text>
+
+                <Text>{en.UI_LABELS.email}:</Text>
             </Box>
             <Box width="large" pad="medium">
                 <DataTable
                     border={true}
                     columns={[
-                        { property: 'movieName', header: en.UI_LABELS.title, sortable: true},
-                        { property: 'userRating', header: en.UI_LABELS.userRating, sortable: true},
+                        { property: 'movieName', header: en.UI_LABELS.title, sortable: true },
+                        { property: 'userRating', header: en.UI_LABELS.userRating, sortable: true },
                     ]}
-                    sortable = {true}
-                    data={Object.values(state.user.watchedMovies)}
-                    onClickRow = {() => setShowUpdateRating(true)}
+                    sortable={true}
+                    onClickRow={() => setShowUpdateRating(true)}
                 />
-                { showUpdateRating && (
+
+                {showUpdateRating && (
                     <Layer onEsc={() => setShowUpdateRating(false)} onClickOutside={() => setShowUpdateRating(false)}>
                         <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">{en.UI_LABELS.updateRating}</Text>
+                            <Text alignSelf="center" size="xxlarge">
+                                {en.UI_LABELS.updateRating}
+                            </Text>
                             <Text alignSelf="center">----------------------------------------</Text>
                         </Box>
                         <Box direction="row" justify="center">
@@ -51,7 +53,7 @@ export default function ClientPage() {
                             />
                         </Box>
                         <Box direction="row" justify="center">
-                            <Button label= {en.UI_LABELS.confirm} onClick={() => setShowUpdateRating(false)} />
+                            <Button label={en.UI_LABELS.confirm} onClick={() => setShowUpdateRating(false)} />
                             <Button label={en.UI_LABELS.cancel} onClick={() => setShowUpdateRating(false)} />
                         </Box>
                     </Layer>
@@ -67,7 +69,9 @@ export default function ClientPage() {
                 {showResetMovies && (
                     <Layer onEsc={() => setShowResetMovies(false)} onClickOutside={() => setShowResetMovies(false)}>
                         <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">{en.UI_LABELS.resetYourMovies}</Text>
+                            <Text alignSelf="center" size="xxlarge">
+                                {en.UI_LABELS.resetYourMovies}
+                            </Text>
                             <Text alignSelf="center">----------------------------------------</Text>
                         </Box>
                         <Box direction="row" justify="center">
@@ -76,9 +80,8 @@ export default function ClientPage() {
                         </Box>
                     </Layer>
                 )}
-
             </Box>
-            <Box direction="row" alignSelf="end" justify="end" >
+            <Box direction="row" alignSelf="end" justify="end">
                 <Button
                     label={en.UI_LABELS.signOut}
                     fill={false}
@@ -88,7 +91,9 @@ export default function ClientPage() {
                 {showSignOut && (
                     <Layer onEsc={() => setShowSignOut(false)} onClickOutside={() => setShowSignOut(false)}>
                         <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">{en.UI_LABELS.signOutQuestion}</Text>
+                            <Text alignSelf="center" size="xxlarge">
+                                {en.UI_LABELS.signOutQuestion}
+                            </Text>
                             <Text alignSelf="center">----------------------------------------</Text>
                         </Box>
                         <Box direction="row" justify="center">
@@ -107,7 +112,9 @@ export default function ClientPage() {
                 {showDeleteAccount && (
                     <Layer onEsc={() => setShowDeleteAccount(false)} onClickOutside={() => setShowDeleteAccount(false)}>
                         <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">{en.UI_LABELS.deleteYourAccount}</Text>
+                            <Text alignSelf="center" size="xxlarge">
+                                {en.UI_LABELS.deleteYourAccount}
+                            </Text>
                             <Text alignSelf="center">----------------------------------------</Text>
                         </Box>
                         <Box direction="row" justify="center">
