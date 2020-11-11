@@ -3,12 +3,7 @@ import React from 'react';
 import { store } from '../..';
 import { toggleInitialSurveyModal } from './actions';
 
-interface InitialSurveyModalProps {}
-
-export default class openInitialSurvey extends React.Component<InitialSurveyModalProps> {
-    constructor(props: InitialSurveyModalProps) {
-        super(props);
-    }
+export default class openInitialSurvey extends React.Component {
     render() {
         const numberOfChildren: number[] = [1, 2, 3, 4, 5];
         let { initialSurveyVisible } = store.getState();
