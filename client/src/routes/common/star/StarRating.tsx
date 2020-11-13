@@ -1,51 +1,68 @@
 import React from 'react';
+import CSS from 'csstype';
+
+type ClickHandler = (event: React.MouseEvent) => void;
+
+interface StarRatingProps {
+    currentRating: number;
+    numberOfStars: number;
+    size: string;
+    onClick?: ClickHandler | null;
+}
+
+interface StarRatingState {
+    currentRating: number;
+}
 
 /**
  * Star Rating component that allows users to hover and click the
  * desired rating. If no onClick function is provided, the star
  * selection will be disabled.
  */
-class StarRating extends React.Component {
-    constructor(props) {
+class StarRating extends React.Component<StarRatingProps, StarRatingState> {
+    styles: CSS.Properties;
+
+    constructor(props: StarRatingProps) {
         super(props);
         this.state = {
             currentRating: this.props.currentRating,
         };
 
         // Available star sizes
-        const sizes = { small: '12px', medium: '22px', large: '32px' };
+        const sizes: Record<string, string> = { small: '12px', medium: '22px', large: '32px' };
 
-        this.style = {
+        console.log(this.props.size);
+        this.styles = {
             color: 'gray',
-            fontSize: this.props.size ? sizes['small'] : sizes[this.props.size],
+            fontSize: !this.props.size ? sizes['small'] : sizes[this.props.size],
         };
     }
 
     componentDidMount() {
-        this.setRating();
+        this.setRating(null);
     }
 
-    hoverHandler = (event) => {
+    hoverHandler = (event: any) => {
         if (this.props.onClick) {
             // Color the hovered level of stars
             const stars = event.target.parentElement.getElementsByClassName('star');
             const hoverValue = event.target.dataset.value;
 
-            Array.from(stars).forEach((star) => {
+            Array.from(stars).forEach((star: any) => {
                 star.style.color = hoverValue >= star.dataset.value ? 'yellow' : 'gray';
             });
         }
     };
 
-    setRating = (event) => {
-        const stars = this.refs.rating.getElementsByClassName('star');
+    setRating = (event: any) => {
+        const stars = (this.refs.rating as any).getElementsByClassName('star');
 
-        Array.from(stars).forEach((star) => {
+        Array.from(stars).forEach((star: any) => {
             star.style.color = this.state.currentRating >= star.dataset.value ? 'yellow' : 'gray';
         });
     };
 
-    starClickHandler = (event) => {
+    starClickHandler = (event: any) => {
         if (this.props.onClick) {
             let rating = event.target.dataset.value;
             this.setState({ currentRating: rating }); // set state so the rating stays highlighted
@@ -64,7 +81,7 @@ class StarRating extends React.Component {
                             data-value={n + 1}
                             onMouseOver={this.hoverHandler}
                             onClick={this.starClickHandler}
-                            style={this.style}
+                            style={this.styles}
                         >
                             &#9733;
                         </span>
