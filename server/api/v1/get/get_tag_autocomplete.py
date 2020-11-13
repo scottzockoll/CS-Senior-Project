@@ -21,7 +21,7 @@ def get_tag_autocomplete(name: str, movieId: int):
             cursor.execute(f"SELECT DISTINCT name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
 
             result = cursor.fetchall()
-
+            # TODO: turn result list into a set to remove duplicates
             if len(result) == 0:
                 return []
             else:
