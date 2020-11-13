@@ -11,7 +11,7 @@ def get_tag(id: int):
     con, cursor = db_connection()
 
     try:
-        if not is_user():               # TODO: Properly define in utilities.py
+        if not is_user():
             return Response({
             }, mimetype='application/json', status=403)
         if not isinstance(id, int):     # checks if id is an integer

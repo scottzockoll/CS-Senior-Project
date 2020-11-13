@@ -1,5 +1,28 @@
-from server.utilities import db_connection, current_user, is_admin
-from flask import Response
+from server.utilities import db_connection, is_admin
+from flask import Response, session, request
+from time import time
+
+
+def is_current_user(id: int):
+    """
+        Checks to see if the id of the user signed in matches
+        the id trying to be deleted.
+        NOTE: if_current_user is false, is_admin must be true
+        when checking.
+        :param id: The id of the user being deleted
+        :return: Boolean
+    """
+    session_id = request.cookies.get('session')
+    if session_id:
+        user = session.get('user')
+
+        if user['expiration'] > time():
+            session.pop('user')
+        else:
+            if user['id'] == id:
+                return True
+            else:
+                return False
 
 
 def del_user(id: int):
@@ -11,12 +34,10 @@ def del_user(id: int):
     con, cursor = db_connection()
 
     try:
-        if not current_user():  # checks if the logged in user is attempting function (will change)
-            return Response({
-            }, mimetype='application/json', status=403)
-        elif not is_admin():  # checks if the user attempting function is admin (will change)
-            return Response({
-            }, mimetype='application/json', status=401)
+        if not is_admin():
+            if not is_current_user(id):
+                return Response({
+                }, mimetype='application/json', status=401)
         elif not isinstance(id, int):  # checks if id is integer
             return Response({
             }, mimetype='application/json', status=400)

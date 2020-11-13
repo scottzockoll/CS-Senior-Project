@@ -34,16 +34,6 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/feedback/tags/<int:feedbackId>', methods=['PUT'])(update_feedback_tag)
     app.route('/api/v1/feedback/movie/<int:userId>/<int:movieId>', methods=['POST'])(create_feedback)
     app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])(create_feedback_tag)
-    app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations)
+    # app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations)
 
-
-def get_recommendations(userId: int):
-    """
-    Get the top 10 recommendations for a specified user
-    :param int userId: The user id to retrieve
-    :return: JSON object of movies int array
-    """
-    return {
-        "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
-    }, 200
 

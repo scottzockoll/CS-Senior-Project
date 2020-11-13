@@ -12,16 +12,20 @@ def get_tag_autocomplete(name: str, movieId: int):
     :return: JSON object of tags array containing tag name
     """
     con, cursor = db_connection()
+    unique = []
 
-    try:
-        if not is_user():           # TODO: Properly define in utilities.py
-            return Response({
-            }, mimetype='application/json', status=403)
-        else:
-            cursor.execute(f"SELECT DISTINCT name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
+    #try:
+    if not is_user():           # TODO: Properly define in utilities.py
+        return Response({
+        }, mimetype='application/json', status=403)
+    else:
+        cursor.execute(f"SELECT id, name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
 
-            result = cursor.fetchall()
-            # TODO: turn result list into a set to remove duplicates
+        result = cursor.fetchall()
+
+
+        # TODO: turn result list into a set to remove duplicates
+        """
             if len(result) == 0:
                 return []
             else:
@@ -37,4 +41,7 @@ def get_tag_autocomplete(name: str, movieId: int):
     finally:
         cursor.close()
         con.close()
+        """
 
+
+get_tag_autocomplete("", 240)

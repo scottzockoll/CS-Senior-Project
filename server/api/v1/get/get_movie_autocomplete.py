@@ -12,7 +12,7 @@ def get_movie_autocomplete(name: str):
     con, cursor = db_connection()
 
     try:
-        if not is_user():           # TODO: Properly define in utilities.py
+        if not is_user():
             return Response({
             }, mimetype='application/json', status=403)
         else:
