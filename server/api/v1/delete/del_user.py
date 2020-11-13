@@ -34,10 +34,9 @@ def del_user(id: int):
     con, cursor = db_connection()
 
     try:
-        if not is_admin():
-            if not is_current_user(id):
-                return Response({
-                }, mimetype='application/json', status=401)
+        if not is_admin() or not is_current_user(id):
+            return Response({
+            }, mimetype='application/json', status=401)
         elif not isinstance(id, int):  # checks if id is integer
             return Response({
             }, mimetype='application/json', status=400)
