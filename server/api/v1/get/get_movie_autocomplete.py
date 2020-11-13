@@ -35,6 +35,3 @@ def get_movie_autocomplete(name: str):
     finally:
         cursor.close()
         con.close()
-
-
-print(get_movie_autocomplete("The"))

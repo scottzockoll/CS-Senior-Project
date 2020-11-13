@@ -1,5 +1,3 @@
-import json
-
 from mysql.connector import connection
 from flask import session, request
 from time import time

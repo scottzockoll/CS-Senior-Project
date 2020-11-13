@@ -12,27 +12,29 @@ def get_tag_autocomplete(name: str, movieId: int):
     :return: JSON object of tags array containing tag name
     """
     con, cursor = db_connection()
-    unique = []
+    result_set = {}
 
-    #try:
-    if not is_user():           # TODO: Properly define in utilities.py
-        return Response({
-        }, mimetype='application/json', status=403)
-    else:
-        cursor.execute(f"SELECT id, name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
+    try:
+        if not is_user():
+            return Response({
+            }, mimetype='application/json', status=403)
+        else:
+            cursor.execute(f"SELECT id, name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
 
-        result = cursor.fetchall()
+            result = cursor.fetchall()
 
+            for a in result:        # creates a unique set from result list
+                result_set[a[1]] = a
 
-        # TODO: turn result list into a set to remove duplicates
-        """
-            if len(result) == 0:
+            result_set = list(result_set.values())  # turns set back to a list
+
+            if len(result_set) == 0:
                 return []
             else:
-                distances = [(distance(a[0], name), a[0]) for a in result]
-                tag = list(map(lambda movie: {'tag': movie[1]}, sorted(distances)))[:10]
+                distances = [(distance(a[1], name), a[1], a[0]) for a in result_set]
+                tag = list(map(lambda movie: {'id': movie[2], 'tag': movie[1]}, sorted(distances)))[:10]
 
-                return Response({            # TODO: Find out if this needs to return movie_id and id
+                return Response({
                     "tags": tag
                 }, mimetype='application/json', status=200)
     except Exception:
@@ -41,7 +43,3 @@ def get_tag_autocomplete(name: str, movieId: int):
     finally:
         cursor.close()
         con.close()
-        """
-
-
-get_tag_autocomplete("", 240)
