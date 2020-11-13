@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
 import { connect } from 'react-redux';
-import StarRating from '../common/star/StarRating';
 
 /***
  * Exports all the user records to a CSV file. Redirects the
