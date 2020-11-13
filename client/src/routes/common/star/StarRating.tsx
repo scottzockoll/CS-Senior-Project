@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import CSS from 'csstype';
 
 type ClickHandler = (event: React.MouseEvent) => void;
@@ -21,6 +21,7 @@ interface StarRatingState {
  */
 class StarRating extends React.Component<StarRatingProps, StarRatingState> {
     styles: CSS.Properties;
+    ratingDiv: RefObject<HTMLDivElement>;
 
     constructor(props: StarRatingProps) {
         super(props);
@@ -31,7 +32,10 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
         // Available star sizes
         const sizes: Record<string, string> = { small: '12px', medium: '22px', large: '32px' };
 
-        console.log(this.props.size);
+        // initialize the ref
+        this.ratingDiv = React.createRef<HTMLDivElement>();
+
+        // initialize the component's style
         this.styles = {
             color: 'gray',
             fontSize: !this.props.size ? sizes['small'] : sizes[this.props.size],
@@ -55,7 +59,8 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
     };
 
     setRating = (event: any) => {
-        const stars = (this.refs.rating as any).getElementsByClassName('star');
+        // @ts-ignore
+        const stars = this.ratingDiv.current.getElementsByClassName('star');
 
         Array.from(stars).forEach((star: any) => {
             star.style.color = this.state.currentRating >= star.dataset.value ? 'yellow' : 'gray';
@@ -72,7 +77,12 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
 
     render() {
         return (
-            <div className="rating" ref="rating" data-rating={this.state.currentRating} onMouseOut={this.setRating}>
+            <div
+                className="rating"
+                ref={this.ratingDiv}
+                data-rating={this.state.currentRating}
+                onMouseOut={this.setRating}
+            >
                 {[...Array(+this.props.numberOfStars).keys()].map((n) => {
                     return (
                         <span
