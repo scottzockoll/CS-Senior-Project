@@ -1,129 +1,301 @@
 import React from 'react';
 import { Box, DataTable, Text, Button, Layer, Select, Grommet } from 'grommet';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useSelector, useDispatch, connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { getMovie } from '../../store/movie/actions';
+import { requestUsers } from '../../store/user/actions';
 
-export default function ClientPage() {
+interface ClientPageState {
+    showUpdateRating: boolean;
+    showSignOut: boolean;
+    showDeleteAccount: boolean;
+    showResetMovies: boolean;
+}
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    getUsers: (idOffset: number, limit: number) => {
+        dispatch(requestUsers(idOffset, limit));
+    },
+});
+
+const mapStateToProps = (state: RootState) => ({
+    activeUserId: state.activeUser,
+    user: state.users.entities[state.activeUser], // TODO
+});
+
+type ClientPageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
     // retrieve the state of the store
-    const state = useSelector((state: any) => state);
-    const [value, setValue] = React.useState('3');
-    const [showUpdateRating, setShowUpdateRating] = React.useState<boolean>();
-    const [showSignOut, setShowSignOut] = React.useState<boolean>();
-    const [showDeleteAccount, setShowDeleteAccount] = React.useState<boolean>();
-    const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
+    // const state = useSelector((state: any) => state);
+    // const [showUpdateRating, setShowUpdateRating] = React.useState<boolean>();
+    // const [showSignOut, setShowSignOut] = React.useState<boolean>();
+    // const [showDeleteAccount, setShowDeleteAccount] = React.useState<boolean>();
+    // const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     //let user = state.users.entities[state.activeUser];
 
-    return (
-        <Grommet>
-            <Box pad="medium" align="start">
-                <Text>{en.UI_LABELS.fullName}:</Text>
+    constructor(props: ClientPageProps, state: RootState) {
+        super(props);
 
-                <Text>{en.UI_LABELS.email}:</Text>
-            </Box>
-            <Box width="large" pad="medium">
-                <DataTable
-                    border={true}
-                    columns={[
-                        { property: 'movieName', header: en.UI_LABELS.title, sortable: true },
-                        { property: 'userRating', header: en.UI_LABELS.userRating, sortable: true },
-                    ]}
-                    sortable={true}
-                    onClickRow={() => setShowUpdateRating(true)}
-                />
+        // retrieve the current user
+        this.props.getUsers(this.props.activeUserId, 1);
 
-                {showUpdateRating && (
-                    <Layer onEsc={() => setShowUpdateRating(false)} onClickOutside={() => setShowUpdateRating(false)}>
-                        <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">
-                                {en.UI_LABELS.updateRating}
-                            </Text>
-                            <Text alignSelf="center">----------------------------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Select
-                                options={['1', '2', '3', '4', '5']}
-                                value={value}
-                                // add update_rating change below
-                                onChange={({ option }) => setValue(option)}
-                            />
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.confirm} onClick={() => setShowUpdateRating(false)} />
-                            <Button label={en.UI_LABELS.cancel} onClick={() => setShowUpdateRating(false)} />
-                        </Box>
-                    </Layer>
-                )}
-            </Box>
-            <Box>
-                <Button
-                    label={en.UI_LABELS.resetMovieSurvey}
-                    fill={false}
-                    alignSelf="start"
-                    onClick={() => setShowResetMovies(true)}
-                />
-                {showResetMovies && (
-                    <Layer onEsc={() => setShowResetMovies(false)} onClickOutside={() => setShowResetMovies(false)}>
-                        <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">
-                                {en.UI_LABELS.resetYourMovies}
-                            </Text>
-                            <Text alignSelf="center">----------------------------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowResetMovies(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowResetMovies(false)} />
-                        </Box>
-                    </Layer>
-                )}
-            </Box>
-            <Box direction="row" alignSelf="end" justify="end">
-                <Button
-                    label={en.UI_LABELS.signOut}
-                    fill={false}
-                    alignSelf="end"
-                    onClick={() => setShowSignOut(true)}
-                />
-                {showSignOut && (
-                    <Layer onEsc={() => setShowSignOut(false)} onClickOutside={() => setShowSignOut(false)}>
-                        <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">
-                                {en.UI_LABELS.signOutQuestion}
-                            </Text>
-                            <Text alignSelf="center">----------------------------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowSignOut(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowSignOut(false)} />
-                        </Box>
-                    </Layer>
-                )}
+        this.state = {
+            showDeleteAccount: false,
+            showResetMovies: false,
+            showSignOut: false,
+            showUpdateRating: false,
+        };
+    }
 
-                <Button
-                    label={en.UI_LABELS.deleteAccount}
-                    fill={false}
-                    alignSelf="end"
-                    onClick={() => setShowDeleteAccount(true)}
-                />
-                {showDeleteAccount && (
-                    <Layer onEsc={() => setShowDeleteAccount(false)} onClickOutside={() => setShowDeleteAccount(false)}>
-                        <Box justify="center">
-                            <Text alignSelf="center" size="xxlarge">
-                                {en.UI_LABELS.deleteYourAccount}
-                            </Text>
-                            <Text alignSelf="center">----------------------------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowDeleteAccount(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowDeleteAccount(false)} />
-                        </Box>
-                    </Layer>
-                )}
-            </Box>
-        </Grommet>
-    );
+    render() {
+        return (
+            <Grommet>
+                <Box pad="medium" align="start">
+                    <Text>{en.UI_LABELS.fullName}:</Text>
+
+                    <Text>{en.UI_LABELS.email}:</Text>
+                </Box>
+                <Box width="large" pad="medium">
+                    <DataTable
+                        border={true}
+                        columns={[
+                            { property: 'movieName', header: en.UI_LABELS.title, sortable: true },
+                            { property: 'userRating', header: en.UI_LABELS.userRating, sortable: true },
+                        ]}
+                        sortable={true}
+                        onClickRow={() => {
+                            this.setState({
+                                ...this.state,
+                                showUpdateRating: true,
+                            });
+                        }}
+                    />
+
+                    {this.state.showUpdateRating && (
+                        <Layer
+                            onEsc={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showUpdateRating: false,
+                                });
+                            }}
+                            onClickOutside={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showUpdateRating: false,
+                                });
+                            }}
+                        >
+                            <Box justify="center">
+                                <Text alignSelf="center" size="xxlarge">
+                                    {en.UI_LABELS.updateRating}
+                                </Text>
+                                <hr style={{ width: '95%' }} />
+                            </Box>
+                            <Box direction="row" justify="center">
+                                {/*<Select*/}
+                                {/*    options={['1', '2', '3', '4', '5']}*/}
+                                {/*    value={value}*/}
+                                {/*    // add update_rating change below*/}
+                                {/*    onChange={({ option }) => setValue(option)}*/}
+                                {/*/>*/}
+                            </Box>
+                            <Box direction="row" justify="center">
+                                <Button
+                                    label={en.UI_LABELS.confirm}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showUpdateRating: false,
+                                        });
+                                    }}
+                                />
+                                <Button
+                                    label={en.UI_LABELS.cancel}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showUpdateRating: false,
+                                        });
+                                    }}
+                                />
+                            </Box>
+                        </Layer>
+                    )}
+                </Box>
+                <Box>
+                    <Button
+                        label={en.UI_LABELS.resetMovieSurvey}
+                        fill={false}
+                        alignSelf="start"
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                showResetMovies: true,
+                            });
+                        }}
+                    />
+                    {this.state.showResetMovies && (
+                        <Layer
+                            onEsc={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showResetMovies: false,
+                                });
+                            }}
+                            onClickOutside={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showResetMovies: false,
+                                });
+                            }}
+                        >
+                            <Box justify="center">
+                                <Text alignSelf="center" size="xxlarge">
+                                    {en.UI_LABELS.resetYourMovies}
+                                </Text>
+                                <hr style={{ width: '95%' }} />
+                            </Box>
+                            <Box direction="row" justify="center">
+                                <Button
+                                    label={en.UI_LABELS.yes}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showResetMovies: false,
+                                        });
+                                    }}
+                                />
+                                <Button
+                                    label={en.UI_LABELS.no}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showResetMovies: false,
+                                        });
+                                    }}
+                                />
+                            </Box>
+                        </Layer>
+                    )}
+                </Box>
+                <Box direction="row" alignSelf="end" justify="end">
+                    <Button
+                        label={en.UI_LABELS.signOut}
+                        fill={false}
+                        alignSelf="end"
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                showSignOut: true,
+                            });
+                        }}
+                    />
+                    {this.state.showSignOut && (
+                        <Layer
+                            onEsc={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showSignOut: false,
+                                });
+                            }}
+                            onClickOutside={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showSignOut: false,
+                                });
+                            }}
+                        >
+                            <Box justify="center">
+                                <Text alignSelf="center" size="xxlarge">
+                                    {en.UI_LABELS.signOutQuestion}
+                                </Text>
+                                <hr style={{ width: '95%' }} />
+                            </Box>
+                            <Box direction="row" justify="center">
+                                <Button
+                                    label={en.UI_LABELS.yes}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showSignOut: false,
+                                        });
+                                    }}
+                                />
+                                <Button
+                                    label={en.UI_LABELS.no}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showSignOut: false,
+                                        });
+                                    }}
+                                />
+                            </Box>
+                        </Layer>
+                    )}
+
+                    <Button
+                        label={en.UI_LABELS.deleteAccount}
+                        fill={false}
+                        alignSelf="end"
+                        onClick={() => {
+                            this.setState({
+                                ...this.state,
+                                showDeleteAccount: true,
+                            });
+                        }}
+                    />
+                    {this.state.showDeleteAccount && (
+                        <Layer
+                            onEsc={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showDeleteAccount: false,
+                                });
+                            }}
+                            onClickOutside={() => {
+                                this.setState({
+                                    ...this.state,
+                                    showDeleteAccount: true,
+                                });
+                            }}
+                        >
+                            <Box justify="center">
+                                <Text alignSelf="center" size="xxlarge">
+                                    {en.UI_LABELS.deleteYourAccount}
+                                </Text>
+                                <hr style={{ width: '95%' }} />
+                            </Box>
+                            <Box direction="row" justify="center">
+                                <Button
+                                    label={en.UI_LABELS.yes}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showDeleteAccount: false,
+                                        });
+                                    }}
+                                />
+                                <Button
+                                    label={en.UI_LABELS.no}
+                                    onClick={() => {
+                                        this.setState({
+                                            ...this.state,
+                                            showDeleteAccount: false,
+                                        });
+                                    }}
+                                />
+                            </Box>
+                        </Layer>
+                    )}
+                </Box>
+            </Grommet>
+        );
+    }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClientPage);
