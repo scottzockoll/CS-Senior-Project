@@ -1,30 +1,44 @@
 import pandas as pd
 import time
 import random
-from server.utilities import db_connection
+import pickle
+
+from mysql.connector import connection
 
 start_time = time.time()
 
 # This will change depending on dataset being used
-core_folder = '../dataset/movie_lens/100k/'
+core_size = '100k'
+core_folder = f'../dataset/movie_lens/{core_size}/'
 
 # DataFrames from CSV's
-movies = pd.read_csv(core_folder + 'movies.csv')
-movie_df = pd.DataFrame(movies, columns=['movieId', 'title', 'genres'])
+movies: pd.DataFrame = pd.read_csv(core_folder + 'movies.csv')
+movie_df: pd.DataFrame = pd.DataFrame(movies, columns=['movieId', 'title', 'genres'])
 
-ratings = pd.read_csv(core_folder + 'ratings.csv')
-rating_df = pd.DataFrame(ratings, columns=['userId', 'movieId', 'rating', 'timestamp'])
+ratings: pd.DataFrame = pd.read_csv(core_folder + 'ratings.csv')
+rating_df: pd.DataFrame = pd.DataFrame(ratings, columns=['userId', 'movieId', 'rating', 'timestamp'])
 
-tags = pd.read_csv(core_folder + 'tags.csv')
-tag_df = pd.DataFrame(tags, columns=['userId', 'movieId', 'tag']).fillna(0)
-
-# Fake User Data
-fName = pd.read_csv('../dataset/user_data/baby-names.csv')
-fName_df = pd.DataFrame(fName, columns=['name'])
+tags: pd.DataFrame = pd.read_csv(core_folder + 'tags.csv')
+tag_df: pd.DataFrame = pd.DataFrame(tags, columns=['userId', 'movieId', 'tag']).fillna(0)
 
 # Fake User Data
-lName = pd.read_csv('../dataset/user_data/surnames.csv')
-lName_df = pd.DataFrame(lName, columns=['name'])
+fName: pd.DataFrame = pd.read_csv('../dataset/user_data/baby-names.csv')
+fName_df: pd.DataFrame = pd.DataFrame(fName, columns=['name'])
+
+# Fake User Data
+lName: pd.DataFrame = pd.read_csv('../dataset/user_data/surnames.csv')
+lName_df: pd.DataFrame = pd.DataFrame(lName, columns=['name'])
+
+with open(f'../dataset/processed/{core_size}/dataset.pickle', 'rb') as file:
+    movie_map: dict = pickle.loads(file.read())['movie_ids']
+
+# ratings MUST have a valid movie, but we want to prune movies and tags without any ratings for simplicity
+# if we keep these we will encounter a "cold start" problem; we may change this later and allow cold starts
+movie_df['movieId'] = movie_df['movieId'].map(lambda movie_id: movie_map.get(movie_id))
+rating_df['movieId'] = rating_df['movieId'].map(lambda movie_id: movie_map[movie_id])
+tag_df['movieId'] = tag_df['movieId'].map(lambda movie_id: movie_map.get(movie_id))
+movie_df = movie_df.dropna()
+tag_df = tag_df.dropna()
 
 # Tuple lists per table
 movieTable = []
@@ -35,7 +49,14 @@ tag_feedbackTable = []
 movie_feedbackTable = []
 
 # Connection to Database
-d_con, cursor = db_connection()
+d_con = connection.MySQLConnection(
+    user='fp_user',
+    password='flickpick123',
+    host='ec2-18-222-97-98.us-east-2.compute.amazonaws.com',
+    database='FlickPick'
+)
+cursor = d_con.cursor()
+
 
 """
 # These need to be executed everytime a new import is attempted (or for general testing purposes)
@@ -92,10 +113,10 @@ first = fName_df['name'].tolist()
 last = lName_df['name'].tolist()
 
 # Creates user data tuples using the lists
-for i in range(1, 162542):  # (1, 611) for 100K ---- (1, 162542) for 25M
+for i in range(1, 611):  # (1, 611) for 100K ---- (1, 162542) for 25M
     first_name = str(random.choice(first))
     last_name = str(random.choice(last)).lower().title()
-    email = first_name.lower() + last_name.lower() + "@s.r.e"  # s.r.e = students.rowan.edu
+    email = first_name.lower() + last_name.lower() + "@students.rowan.edu"
     ut = [first_name, last_name, email, 1]  # everyone is made an admin for time being
     userTable.append(ut)
     if len(userTable) % 100000 == 0 and len(userTable) != 0:
@@ -140,7 +161,6 @@ for t_row in tag_df.itertuples():
 cursor.executemany("INSERT INTO tags (name, movie_id) VALUES (%s, %s)", tagsTable)
 cursor.executemany("INSERT INTO tag_feedback (rating, movie_id, user_id, tag_id) VALUES (%s, %s, %s, %s)",
                    tag_feedbackTable)
-
 
 d_con.commit()
 
