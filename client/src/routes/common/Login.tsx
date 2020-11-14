@@ -2,23 +2,23 @@ import { Box, Button, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { requestUsers } from '../../store/user/actions';
+import { requestSingleUser } from '../../store/user/actions';
 
 const mapStateToProps = (state: RootState) => ({
     user: state.users.entities[state.activeUser],
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUser: (id: number) => dispatch(requestUsers(id, 100)),
+    getUsers: (id: number) => dispatch(requestSingleUser(id)),
 });
 
 type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUser }) => {
+const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers }) => {
     const [count, setCount] = React.useState(0);
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUser(count + 50);
+        getUsers(count + 50);
         setCount(count + 50);
     };
 

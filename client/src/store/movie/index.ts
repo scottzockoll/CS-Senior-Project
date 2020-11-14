@@ -1,11 +1,7 @@
-import { Tag } from '../tag';
-
 export interface Movie {
-    movie_Id: number;
-    title: string;
-    genres: Record<number, string>;
-    rating: number;
-    tags: Record<number, Tag>;
+    movieId: number;
+    movieName: string;
+    genres: Array<string>;
 }
 
 export const GET_MOVIE = 'GET_MOVIE';

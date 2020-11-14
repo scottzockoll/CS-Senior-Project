@@ -36,54 +36,7 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/feedback/tags/<int:feedbackId>', methods=['PUT'])(update_feedback_tag)
     app.route('/api/v1/feedback/movie/<int:userId>/<int:movieId>', methods=['POST'])(create_feedback)
     app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])(create_feedback_tag)
-    app.route('/api/v1/recommendation/<int:userId>', methods=['GET'])(get_recommendations)
-
-
-def get_user(id: int):
-    """
-    Returns a single user by user id
-    :param int id: The user id to retrieve
-    :return: JSON object with user firstName, lastName, and isAdmin
-    """
-
-    data = []
-    for idx in range(id, id + 50):
-        data.append({
-            "id": idx,
-            "email": f"example{idx}@example.com",
-            "firstName": f"First_{idx}",
-            "lastName": f"Last_{idx}",
-            "isAdmin": idx % 2 == 0,
-            "movies": [
-                {
-                    "movie_id": 1,
-                    "title": "Step Brothers (2008)",
-                    "genres": ["Comedy"],
-                    "rating": 5,
-                    "tags": [
-                        {
-                           "tag_id": "1",
-                           "rating": "5",
-                           "name": "funny"
-                        }
-                    ]
-                }
-            ]
-        })
-
-    return Response(json.dumps(data), status=200)
-
-
-def del_user(id: int):
-    """
-    Delete a user by id
-    :param int id: The user id to delete
-    :return: Nothing
-    """
-    return {
-        "id": id,
-        "result": "OK"
-    }, 200
+    app.route('/api/v1/recommendation/<int:user_id>', methods=['GET'])(get_recommendations)
 
 
 def update_user(id: int):

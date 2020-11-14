@@ -1,21 +1,23 @@
 import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 /***
  * Exports all the user records to a CSV file. Redirects the
  * user to the location of the CSV file.
  *
  */
-function downloadAllToCSV() {
+function downloadAllToCSV(userRecords: Object) {
     if (window.confirm('Download records to CSV?')) {
         // redirect to All Users csv file
         window.open('http://ec2-18-222-97-98.us-east-2.compute.amazonaws.com/Users/All_Users.csv');
     }
 }
 
-const AdminPage: React.FC = () => {
+export default function AdminPage() {
+    // retrieve the state of the store
+    const state = useSelector((state: any) => state);
     return (
         <Grid
             rows={['xxsmall', 'large']}
@@ -33,15 +35,13 @@ const AdminPage: React.FC = () => {
                     label={'Download All'}
                     alignSelf={'start'}
                     onClick={() => {
-                        downloadAllToCSV();
+                        downloadAllToCSV(state.user.userRecords);
                     }}
                 />
             </Box>
             <Box gridArea="main" background="light-2">
-                <UserTable />
+                <UserTable users={state.users} />
             </Box>
         </Grid>
     );
-};
-
-export const Admin = connect()(AdminPage);
+}

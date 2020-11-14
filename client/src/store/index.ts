@@ -1,11 +1,11 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { combineReducers } from 'redux';
-import { UserEntitiesActions, UsersEntitiesTypes } from './user';
+import { Action, combineReducers } from 'redux';
+import { UserEntitiesActions, UserEntitiesTypes } from './user';
 import { userAuthReducer, usersReducer } from './user/reducers';
 
 export type AppAction = UserEntitiesActions;
 
-export type ActionType = UsersEntitiesTypes;
+export type ActionType = UserEntitiesTypes;
 
 /**
  * Alias for app-specific redux store dispatch function.
@@ -20,6 +20,16 @@ export enum AsyncActionStatus {
     Request = '@@REQUEST',
     Success = '@@SUCCESS',
     Failure = '@@FAILURE',
+}
+
+export interface RequestAsyncAction<T> extends Action<T> {
+    status: AsyncActionStatus.Request;
+}
+export interface SuccessAsyncAction<T> extends Action<T> {
+    status: AsyncActionStatus.Success;
+}
+export interface FailureAsyncAction<T> extends Action<T> {
+    status: AsyncActionStatus.Failure;
 }
 
 // The store needs to be passed a single reducer. We can create this by calling combineReducers

@@ -3,9 +3,9 @@ import ClientPage from './routes/client/index';
 import './App.css';
 import Homepage from './routes/home/Homepage';
 import NavigationBar from './routes/common/NavigationBar';
-import { Admin } from './routes/admin';
+import AdminPage from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
-import { sampleRecord } from './ExampleData';
+import { records, sampleRecord } from './ExampleData';
 
 function App() {
     return (
@@ -13,7 +13,7 @@ function App() {
             <Switch>
                 <Route path="/admin">
                     <NavigationBar />
-                    <Admin />
+                    <AdminPage />
                 </Route>
                 <Route path="/client">
                     <NavigationBar />
