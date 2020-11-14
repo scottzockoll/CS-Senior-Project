@@ -40,10 +40,12 @@ const callApi = async (
 
     fetchParam = {
         method: method,
-        body: form_data,
+        body: method == 'POST' ? form_data : null,
         credentials: 'include',
     };
 
+    console.log('FETCHING');
+    console.log(fullUrl);
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
     console.log(json);
