@@ -1,6 +1,19 @@
-import json
-
-from flask import Flask, Response
+from flask import Flask
+from server.api.v1.get.get_user import get_user
+from server.api.v1.delete.del_user import del_user
+# from server.api.v1.update.update_user import update_user
+# from server.api.v1.create.create_user import create_user
+from server.api.v1.get.get_movie import get_movie
+from server.api.v1.get.get_movie_autocomplete import get_movie_autocomplete
+from server.api.v1.get.get_tag import get_tag
+# from server.api.v1.get.get_tag_autocomplete import get_tag_autocomplete
+from server.api.v1.get.get_feedback import get_feedback
+from server.api.v1.get.get_feedback_tags import get_feedback_tags
+from server.api.v1.update.update_feedback import update_feedback
+from server.api.v1.update.update_feedback_tag import update_feedback_tag
+from server.api.v1.create.create_feedback import create_feedback
+from server.api.v1.create.create_feedback_tag import create_feedback_tag
+from server.api.v1.get.get_recommendations import get_recommendations
 
 
 def register_api_routes(app: Flask):
@@ -97,54 +110,6 @@ def create_user():
     }, 201
 
 
-def get_movie(id: int):
-    """
-    Return a movie, its genres, and its tags
-    :param int id: The movie id to retrieve
-    :return: JSON object of movie id, name, and genre tags
-    """
-    return {
-        "movie_id": id,
-        "movie_name": "Terminator",
-        "genres": ["Action", "Science Fiction"]
-    }, 200
-
-
-def get_movie_autocomplete(name: str):
-    """
-    Get a list of auto-complete suggestions for a partial movie title
-    :param str name: The movie title to find suggestions for
-    :return: JSON object of movies array containing movie id and title
-    """
-    return {
-        "movies": [{
-            "id": 11,
-            "title": "Terminator II: Judgment Day"
-        },
-            {
-            "id": 22,
-            "title": "The Truman Show"
-        },
-            {
-            "id": 33,
-            "title": "The Terminal"
-        }]
-    }, 200
-
-
-def get_tag(id: int):
-    """
-    Return a tag by id
-    :param int id: The tag id to retrieve
-    :return: JSON object of tag id, name and movie id
-    """
-    return {
-        "id": id,
-        "name": "Science Fiction",
-        "movie_id": 999
-    }, 200
-
-
 def get_tag_autocomplete(name: str, movieId: int):
     """
     Get a list of auto-complete suggestions for a partial tag. The same tag may exist across multiple movies, this method does not return every instance of a tag, only unique tags
@@ -162,106 +127,4 @@ def get_tag_autocomplete(name: str, movieId: int):
             {
             "name": "Comedy"
         }]
-    }, 200
-
-
-def get_feedback(userId: int, movieId: int):
-    """
-    Return the user’s feedback of the specified movie id
-    :param int userId: The user id to retrieve
-    :param int movieId: The movie id to retrieve
-    :return: JSON object of movie id and rating
-    """
-    return {
-        "id": 999,
-        "rating": 3.0,
-        "request": "OK"
-    }, 200
-
-
-def get_feedback_tags(userId: int, movieId: int):
-    """
-    Return the user’s feedback on tags of a specific movie
-    :param int userId: The user id to retrieve
-    :param int movieId: The movie id to retrieve
-    :return: JSON object of feedbacks array containing movie id, tag id, and rating
-    """
-    return {
-        "feedbacks": [{
-            "id": 111,
-            "tag_id": 222,
-            "rating": 3.5
-        },
-            {
-            "id": 333,
-            "tag_id": 444,
-            "rating": 1.0
-        },
-            {
-            "id": 555,
-            "tag_id": 666,
-            "rating": 4.5
-        }]
-    }, 200
-
-
-def update_feedback(feedbackId: int):
-    """
-    Replace a user's feedback of a specific movie
-    :param int feedbackId: The feedback id to retrieve
-    :return: Nothing
-    """
-    return {
-        "id": feedbackId,
-        "request": "OK"
-    }, 200
-
-
-def update_feedback_tag(feedbackId: int):
-    """
-    Replace the feedback for a specific tag id
-    :param int feedbackId: The feedback id to retrieve
-    :return: Nothing
-    """
-    return {
-        "id": feedbackId,
-        "request": "OK"
-    }, 200
-
-
-def create_feedback(userId: int, movieId: int):
-    """
-    Create a new feedback row for a movie from a user
-    :param int userId: The user id to retrieve
-    :param int movieId: The movie id to retrieve
-    :return: JSON object of feedback id
-    """
-    return {
-        "id": movieId,
-        "result": "Created"
-    }, 201
-
-
-def create_feedback_tag(userId: int, movieId: int, tagId: int):
-    """
-    Replace the feedback for a specific tag id
-    :param int userId: The user id to retrieve
-    :param int movieId: The movie id to retrieve
-    :param int tagId: The tag id to retrieve
-    :return: JSON object of feedback id
-    """
-    return {
-        "id": tagId,
-        "result": "Created"
-    }, 201
-
-
-def get_recommendations(userId: int):
-    """
-    Get the top 10 recommendations for a specified user
-    :param int userId: The user id to retrieve
-    :return: JSON object of movies int array
-    """
-    return {
-        "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
     }, 200
