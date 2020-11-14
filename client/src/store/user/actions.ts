@@ -23,7 +23,7 @@ export function requestUsers(idOffset: number, limit: number): RequestUsersStart
         limit,
         type: REQUEST_USERS_STARTED,
         [CALL_API]: {
-            endpoint: `user/${idOffset}/${limit}`,
+            endpoint: `user/${idOffset}`,
             schema: SCHEMAS['USER_ARRAY'],
             types: {
                 [AsyncActionStatus.Request]: REQUEST_USERS_STARTED,

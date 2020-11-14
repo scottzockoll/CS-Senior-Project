@@ -38,7 +38,6 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 isFetching: true,
             };
         case RECEIVE_USERS_SUCCESS:
-            console.log(action);
             return {
                 ...state,
                 ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
