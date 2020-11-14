@@ -17,7 +17,8 @@ export const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
 );
-store.dispatch(requestSingleUser(1));
+// store.dispatch(requestSingleUser(2));
+store.dispatch(requestSingleUser(614));
 
 ReactDOM.render(
     <React.StrictMode>

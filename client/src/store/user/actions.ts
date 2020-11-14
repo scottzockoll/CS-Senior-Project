@@ -44,7 +44,7 @@ export function requestSingleUser(id: number): RequestUserStarted {
         type: REQUEST_USER_STARTED,
         [CALL_API]: {
             endpoint: `user/${id}`,
-            schema: SCHEMAS['USER_ARRAY'],
+            schema: SCHEMAS['USER'],
             method: 'GET',
             body: {},
             types: {
