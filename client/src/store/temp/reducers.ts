@@ -1,5 +1,5 @@
 import { Paginated } from '../types';
-import { DeleteActions, DELETE_USER_STARTED, DELETE_USER_FAILURE, DELETE_USER_SUCCESS, DELETE_USER } from './index';
+import { DeleteActions, DELETE_USER_STARTED, DELETE_USER_FAILURE, DELETE_USER_SUCCESS } from './index';
 import { User } from '../user/index';
 
 const initialUserEntitiesState: Paginated<User> = {
@@ -13,7 +13,6 @@ const initialUserEntitiesState: Paginated<User> = {
 
 export function deleteUsersReducer(state = initialUserEntitiesState, action: DeleteActions): Paginated<User> {
     switch (action.type) {
-        /*
         case DELETE_USER_STARTED:
             return {
                 ...state,
@@ -21,15 +20,19 @@ export function deleteUsersReducer(state = initialUserEntitiesState, action: Del
             };
         case DELETE_USER_SUCCESS:
             console.log(action);
+            if (action.id == 0) {
+                return {
+                    ...state,
+                    ids: [...state.ids.slice(1)],
+                    entities: { ...state.entities.slice(1) },
+                };
+            }
             return {
                 ...state,
                 ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
                 entities: {
                     ...state.entities,
-                    ...action.response.entities.users,
                 },
-                nextPage: state.nextPage, // TODO
-                prevPage: state.prevPage, // TODO
                 isFetching: false,
             };
         case DELETE_USER_FAILURE:
@@ -37,10 +40,6 @@ export function deleteUsersReducer(state = initialUserEntitiesState, action: Del
                 ...state,
                 isFetching: false,
             };
-        */
-        case DELETE_USER:
-
-        // state.entities: new Record with user removed.
 
         default:
             return state;

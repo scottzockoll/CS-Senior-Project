@@ -4,12 +4,10 @@ import { ApiRequest } from '../api';
 export const DELETE_USER_STARTED = 'REQUEST_USER_STARTED';
 export const DELETE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
 export const DELETE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
-export const DELETE_USER = 'DELETE_USER';
 
 export type DELETE_USER_STARTED = typeof DELETE_USER_STARTED;
 export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
 export type DELETE_USER_FAILURE = typeof DELETE_USER_FAILURE;
-export type DELETE_USER = typeof DELETE_USER;
 
 export interface DeleteUserStarted extends ApiRequest {
     type: typeof DELETE_USER_STARTED;
@@ -18,11 +16,7 @@ export interface DeleteUserStarted extends ApiRequest {
 
 export interface DeleteUserSuccess {
     type: typeof DELETE_USER_SUCCESS;
-    response: {
-        entities: {
-            users: Record<number, User>;
-        };
-    };
+    id: number;
 }
 
 export interface DeleteUserFailure {
@@ -30,9 +24,4 @@ export interface DeleteUserFailure {
     id: number;
 }
 
-export interface DeleteUser {
-    type: typeof DELETE_USER;
-    id: number;
-}
-
-export type DeleteActions = DeleteUserStarted | DeleteUserSuccess | DeleteUserFailure | DeleteUser;
+export type DeleteActions = DeleteUserStarted | DeleteUserSuccess | DeleteUserFailure;
