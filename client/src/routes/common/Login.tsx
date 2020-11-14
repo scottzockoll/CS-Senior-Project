@@ -46,9 +46,9 @@ function LoginButton() {
         console.log('Login Success: currentUser:', res.profileObj);
         refreshTokenSetup(res);
         console.log(res);
-        // store.dispatch(userLogin(2));
-        // store.dispatch(requestAuthenticateUser(res.profileObj.email, res.tokenId));
-        // store.dispatch(updateToken(res.tokenId));
+        store.dispatch(userLogin(1));
+        store.dispatch(requestAuthenticateUser(res.profileObj.email, res.tokenId));
+        store.dispatch(updateToken(res.tokenId));
     };
 
     const onFailure = (res: any) => {
