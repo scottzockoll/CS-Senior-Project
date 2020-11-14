@@ -1,7 +1,7 @@
 import {
-    RECEIVE_USERS_FAILURE,
-    RECEIVE_USERS_SUCCESS,
-    REQUEST_USERS_STARTED,
+    RECEIVE_USER_FAILURE,
+    RECEIVE_USER_SUCCESS,
+    REQUEST_USER_STARTED,
     User,
     UserAuthActions,
     UserEntitiesActions,
@@ -32,12 +32,12 @@ const initialUserEntitiesState: Paginated<User> = {
 
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
-        case REQUEST_USERS_STARTED:
+        case REQUEST_USER_STARTED:
             return {
                 ...state,
                 isFetching: true,
             };
-        case RECEIVE_USERS_SUCCESS:
+        case RECEIVE_USER_SUCCESS:
             console.log(action);
             return {
                 ...state,
@@ -50,7 +50,7 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 prevPage: state.prevPage, // TODO
                 isFetching: false,
             };
-        case RECEIVE_USERS_FAILURE:
+        case RECEIVE_USER_FAILURE:
             return {
                 ...state,
                 isFetching: false,
