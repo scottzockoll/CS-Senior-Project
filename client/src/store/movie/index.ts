@@ -1,7 +1,11 @@
+import { Tag } from '../tag';
+
 export interface Movie {
-    movieId: number;
-    movieName: string;
-    genres: Array<string>;
+    movie_Id: number;
+    title: string;
+    genres: Record<number, string>;
+    rating: number;
+    tags: Record<number, Tag>;
 }
 export const REQUEST_MOVIE_STARTED = 'REQUEST_MOVIE_STARTED';
 export const RECEIVE_MOVIE_SUCCESS = 'RECEIVE_MOVIE_SUCCESS';
