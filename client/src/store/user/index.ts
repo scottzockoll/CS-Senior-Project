@@ -100,10 +100,10 @@ export interface ReceiveAuthUserFailure {
 export type UserEntitiesActions =
     | RequestAuthUserStarted
     | ReceiveAuthUserSuccess
-    | ReceiveUserFailure
-    | RequestUserStarted
-    | ReceiveUserSuccess
-    | ReceiveUserFailure
+    | ReceiveUsersFailure
+    | RequestUsersStarted
+    | ReceiveUsersSuccess
+    | ReceiveUsersFailure
     | UserLogin
     | UserLogout
     | TokenUpdate;

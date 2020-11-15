@@ -2,20 +2,15 @@ import { Box, Button, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import {
-    requestSingleUser,
-    updateToken,
-    userLogin,
-    userLogout,
-    requestAuthenticateUser,
-} from '../../store/user/actions';
+import { requestUsers, updateToken, userLogin, userLogout, requestAuthenticateUser } from '../../store/user/actions';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 
 const mapStateToProps = (state: RootState) => ({
     user: state.users.entities[state.activeUser],
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUsers: (id: number) => dispatch(requestSingleUser(id)),
+    // TODO: endpoint has not been implemented so the parameter is ignored for right now
+    getUsers: (id: number) => dispatch(requestUsers(id, -1)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
     requestAuthenticateUser: (email: string, tokenId: string) => dispatch(requestAuthenticateUser(email, tokenId)),
@@ -53,8 +48,8 @@ function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken
         refreshTokenSetup(res, requestAuthenticateUser);
         requestAuthenticateUser(res.profileObj.email, res.tokenId);
         // TODO: need to get valid id from server
-        userLogin(2);
-        getUsers(2);
+        userLogin(613);
+        getUsers(613);
         updateToken(res.tokenId);
     };
 
@@ -103,7 +98,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUser(count + 50);
+        getUsers(count + 50);
         setCount(count + 50);
     };
 
