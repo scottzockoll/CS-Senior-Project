@@ -1,7 +1,7 @@
 import { Tag } from '../tag';
 
 export interface Movie {
-    movie_Id: number;
+    id: number;
     title: string;
     genres: Record<number, string>;
     rating: number;
