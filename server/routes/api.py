@@ -14,6 +14,7 @@ from server.api.v1.create.create_feedback_tag import create_feedback_tag
 from server.api.v1.auth.auth_user import auth_user
 from server.api.v1.get.get_recommendations import get_recommendations
 
+
 def register_api_routes(app: Flask):
     """
     Registers all app API routes
