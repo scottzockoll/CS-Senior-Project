@@ -1,4 +1,4 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, is_user
 from flask import Response
 
 
@@ -17,8 +17,8 @@ def update_feedback_tag(feedbackId: int):
     rating = 1
     
     try:
-        # TODO: Validate user permission level (eventually will come from OAuth)
-        if not True:
+        # Validate user permission level
+        if not is_user():
             return Response({}, mimetype='application/json', status=403)
         
         # Validate input parameters
