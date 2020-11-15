@@ -88,6 +88,7 @@ export interface RequestAuthUserStarted extends ApiRequest {
 
 export interface ReceiveAuthUserSuccess {
     type: RECEIVE_AUTH_USER_SUCCESS;
+    id: number;
 }
 
 export interface ReceiveAuthUserFailure {
@@ -104,7 +105,10 @@ export type UserEntitiesActions =
     | ReceiveUserFailure
     | RequestUserStarted
     | ReceiveUserSuccess
-    | ReceiveUserFailure;
+    | ReceiveUserFailure
+    | UserLogin
+    | UserLogout
+    | TokenUpdate;
 
 /**
  * Action that occurs when the user logins in.
