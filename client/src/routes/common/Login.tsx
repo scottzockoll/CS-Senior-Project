@@ -41,8 +41,8 @@ export const refreshTokenSetup = (res: any, authFunc: Function) => {
     setTimeout(refreshToken, refreshTiming);
 };
 
-// @ts-ignore
-function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }) {
+type LoginButtonProps = Omit<ReturnType<typeof mapDispatchToProps>, 'userLogout'>;
+function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }: LoginButtonProps) {
     const onSuccess = (res: any) => {
         refreshTokenSetup(res, requestAuthenticateUser);
         requestAuthenticateUser(res.profileObj.email, res.tokenId);
@@ -71,7 +71,8 @@ function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken
     );
 }
 
-function LogoutButton({ userLogout, updateToken }: { userLogout: any; updateToken: any }) {
+type LogoutButtonProps = Pick<ReturnType<typeof mapDispatchToProps>, 'userLogout' | 'updateToken'>;
+function LogoutButton({ userLogout, updateToken }: LogoutButtonProps) {
     const onSuccess = () => {
         userLogout();
         updateToken('');
