@@ -1,4 +1,5 @@
 import {
+    RECEIVE_AUTH_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
     REQUEST_USERS_STARTED,
@@ -10,7 +11,7 @@ import { Paginated } from '../types';
 
 const initialUserAuthState: number = -1;
 
-export function userAuthReducer(state = initialUserAuthState, action: UserAuthActions): number {
+export function userAuthReducer(state = initialUserAuthState, action: UserEntitiesActions): number {
     switch (action.type) {
         case 'USER_LOGIN':
             return action.id;

@@ -39,7 +39,7 @@ def verify_user(firstName: str, lastName: str, email: str):
                            (firstName, lastName, email))
             con.commit()
             return Response({
-            }, mimetype='application/json', status=200)
+            }, mimetype='application/json', status=201)
     except Exception:
         return Response({
         }, mimetype='application/json', status=500)

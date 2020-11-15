@@ -1,7 +1,7 @@
 import React from 'react';
 import ClientPage from './routes/client/index';
 import './App.css';
-import Homepage from './routes/home/Homepage';
+import { Homepage } from './routes/home/index';
 import NavigationBar from './routes/common/NavigationBar';
 import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
