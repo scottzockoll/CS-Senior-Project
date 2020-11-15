@@ -35,9 +35,6 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
     constructor(props: UserTableProps, state: RootState) {
         super(props);
 
-        // load users
-        this.props.getUsers(2, 50);
-
         this.state = {
             showModal: false,
             idOffset: 1,
@@ -58,6 +55,10 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
 
         // bind the load more function to the constructor
         this.loadMore = this.loadMore.bind(this);
+    }
+
+    componentDidMount() {
+        this.props.getUsers(2, 50);
     }
 
     loadMore(event: any) {
@@ -104,14 +105,14 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
                         },
                     ]}
                     data={Object.values(this.props.users)}
-                    onClickRow={(row) => {
-                        // On click row, show modal and set the selected user
-                        this.selectedUser = row.datum;
-                        this.setState({
-                            ...this.state,
-                            showModal: true,
-                        });
-                    }}
+                    // onClickRow={(row) => {
+                    //     // On click row, show modal and set the selected user
+                    //     this.selectedUser = row.datum;
+                    //     this.setState({
+                    //         ...this.state,
+                    //         showModal: true,
+                    //     });
+                    // }}
                     sortable={true}
                     size={'large'}
                     background="light-2"
