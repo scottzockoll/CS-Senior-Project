@@ -1,10 +1,24 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, combineReducers } from 'redux';
 import { UserEntitiesActions, UserEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer, tokenReducer } from './user/reducers';
-export type AppAction = UserEntitiesActions;
+import { userAuthReducer, usersReducer, tokenReducer, toggleInitialSurveyModalReducer } from './user/reducers';
+export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
 
-export type ActionType = UsersEntitiesTypes;
+export type ActionType = UsersEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
+
+export const TOGGLE_INITIAL_SURVEY_MODAL = 'TOGGLE_INITIAL_SURVEY_MODAL';
+export type TOGGLE_INITIAL_SURVEY_MODAL = typeof TOGGLE_INITIAL_SURVEY_MODAL;
+export interface ToggleInitialSurveyModal {
+    type: TOGGLE_INITIAL_SURVEY_MODAL;
+    shouldBeVisible: boolean;
+}
+
+export const SEARCH_MOVIE = 'SEARCH_MOVIE';
+export type SEARCH_MOVIE = typeof SEARCH_MOVIE;
+export interface SearchMovie {
+    type: SEARCH_MOVIE;
+    title: string;
+}
 
 /**
  * Alias for app-specific redux store dispatch function.
@@ -26,6 +40,7 @@ export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
     token: tokenReducer,
+    initialSurveyVisible: toggleInitialSurveyModalReducer,
 });
 
 /**

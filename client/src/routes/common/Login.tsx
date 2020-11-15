@@ -108,10 +108,10 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
     };
 
     return (
-        <Box align={'center'} pad={{ top: 'large' }}>
+        <Box align={'center'} margin={{ top: '-50px' }}>
             {user && (
                 <Header>
-                    Welcome {user.firstName} {user.lastName}
+                    {`Welcome, ${user.firstName} ${user.lastName}`}
                     <Button onClick={handleClick}>Get New Users</Button>
                     <LogoutButton userLogout={userLogout} updateToken={updateToken} />
                 </Header>
@@ -127,6 +127,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
                     />
                 </Header>
             )}
+            {!user && <Header>Welcome, Guest! Sign up or Login.</Header>}
         </Box>
     );
 };
