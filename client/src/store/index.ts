@@ -1,5 +1,5 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { Action, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { UserEntitiesActions, UsersEntitiesTypes } from './user';
 import { userAuthReducer, usersReducer, tokenReducer } from './user/reducers';
 import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
