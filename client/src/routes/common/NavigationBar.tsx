@@ -21,7 +21,7 @@ function NavigationBar() {
                         <Box>
                             {size === 'large' && (
                                 <Box margin={{ right: 'auto', left: 'auto' }}>
-                                    <Nav direction="row" background="brand">
+                                    <Nav direction="row" background="brand" margin={{ right: '15px' }}>
                                         <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp} />
                                         <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn} />
                                         <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin} href="/admin" />

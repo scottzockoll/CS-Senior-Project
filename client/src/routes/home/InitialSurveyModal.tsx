@@ -24,7 +24,7 @@ export default class openInitialSurvey extends React.Component {
                                             // onChange={event => setValue(event.target.value)}
                                         />
                                     </Box>
-                                    <Box>{/*star rating goes here*/}</Box>
+                                    <Box>{/* star rating class-based component goes here<StarRating />*/}</Box>
                                 </Box>
                             );
                         })}

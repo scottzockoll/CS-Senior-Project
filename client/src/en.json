@@ -1,5 +1,6 @@
 {
   "UI_LABELS": {
+    "welcomeToFlickPick": "Welcome to FlickPick!",
     "userRecord": "User Record",
     "userId": "User ID",
     "firstName": "First Name",

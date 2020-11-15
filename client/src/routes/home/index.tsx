@@ -20,10 +20,12 @@ export default class Homepage extends React.Component<HomepageProperties> {
         return (
             <Box background="light-3" height={'xxlarge'}>
                 <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
-                    <Heading margin="large">Welcome to FlickPick! </Heading>
+                    <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
+                </Box>
+                <Box margin={{ top: '20px', bottom: '20px' }}>
                     <Login />
                 </Box>
-                <Box margin={{ left: 'auto', right: 'auto' }} height="40%" width="medium">
+                <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} height="40%" width="medium">
                     <Carousel fill play={5000}>
                         <Image fit={'cover'} src="images/movie1.jpg" />
                         <Image fit={'cover'} src="images/movie2.jpg" />
