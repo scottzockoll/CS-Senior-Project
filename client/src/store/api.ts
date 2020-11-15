@@ -44,11 +44,8 @@ const callApi = async (
         credentials: 'include',
     };
 
-    console.log('FETCHING');
-    console.log(fullUrl);
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
-    console.log(json);
 
     if (!response.ok) {
         throw new Error(json);
@@ -62,7 +59,6 @@ const callApi = async (
 
     // Read more about Normalizr: https://github.com/paularmstrong/normalizr
     const normalized = normalize(json, schema);
-    console.log(normalized);
     return normalized;
 };
 
