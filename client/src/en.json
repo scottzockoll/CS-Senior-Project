@@ -1,5 +1,6 @@
 {
   "UI_LABELS": {
+    "welcomeToFlickPick": "Welcome to FlickPick!",
     "userRecord": "User Record",
     "userId": "User ID",
     "firstName": "First Name",
@@ -11,6 +12,14 @@
     "title": "Title",
     "genre": "Genre",
     "userRating": "User Rating",
+    "takeAMovieSurvey": "Take a Movie Survey",
+    "NAVIGATION_BAR_LABELS": {
+      "signIn": "Sign In",
+      "signUp": "Sign Up",
+      "home": "Home",
+      "admin": "Admin",
+      "client": "Client"
+    },
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",
     "deleteAccount": "Delete Account",
