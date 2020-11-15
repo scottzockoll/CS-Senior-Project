@@ -6,10 +6,10 @@ function NavigationBar() {
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
-                <Box style={{ height: 57 }} margin={{ left: '.5%' }}>
-                    <Button plain={true} label={<Image height="50" src="images/FlickPickSmall.png" />} href="/" />
+                <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
+                    <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
                 </Box>
-                <Box margin={{ left: 'auto' }}>
+                <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
                     <TextInput
                         placeholder="Movie search"
                         // value={value}
