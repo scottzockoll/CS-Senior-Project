@@ -14,6 +14,7 @@ from server.api.v1.update.update_feedback_tag import update_feedback_tag
 from server.api.v1.create.create_feedback import create_feedback
 from server.api.v1.create.create_feedback_tag import create_feedback_tag
 from server.api.v1.get.get_recommendations import get_recommendations
+from server.api.v1.get.get_users import get_users
 
 
 def register_api_routes(app: Flask):
