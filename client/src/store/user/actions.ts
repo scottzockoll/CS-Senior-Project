@@ -2,14 +2,14 @@ import { CALL_API } from '../api';
 import { SCHEMAS } from '../schema';
 import { AsyncActionStatus } from '../index';
 import {
-    RECEIVE_USER_FAILURE,
-    RECEIVE_USER_SUCCESS,
-    REQUEST_USER_STARTED,
+    RECEIVE_USERS_FAILURE,
+    RECEIVE_USERS_SUCCESS,
+    REQUEST_USERS_STARTED,
     RECEIVE_AUTH_USER_FAILURE,
     RECEIVE_AUTH_USER_SUCCESS,
     REQUEST_AUTH_USER_STARTED,
     RequestAuthUserStarted,
-    RequestUserStarted,
+     RequestUsersStarted,
     TOKEN_UPDATE,
     TokenUpdate,
     USER_LOGIN,
@@ -38,19 +38,20 @@ export function updateToken(token: string): TokenUpdate {
     };
 }
 
-export function requestSingleUser(id: number): RequestUserStarted {
+export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
     return {
-        id,
-        type: REQUEST_USER_STARTED,
+        idOffset,
+        limit,
+        type: REQUEST_USERS_STARTED,
         [CALL_API]: {
-            endpoint: `user/${id}`,
-            schema: SCHEMAS['USER'],
+            endpoint: `user/${idOffset}/${limit}`,
+            schema: SCHEMAS['USER_ARRAY'],
             method: 'GET',
             body: {},
             types: {
-                [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
-                [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
-                [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
+                [AsyncActionStatus.Request]: REQUEST_USERS_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_USERS_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_USERS_FAILURE,
             },
         },
     };

@@ -103,7 +103,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUsers(count + 50);
+        getUser(count + 50);
         setCount(count + 50);
     };
 
