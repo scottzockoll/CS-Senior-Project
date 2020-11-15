@@ -1,7 +1,8 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Action, combineReducers } from 'redux';
-import { UserEntitiesActions, UserEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer, tokenReducer, toggleInitialSurveyModalReducer } from './user/reducers';
+import { UserEntitiesActions, UsersEntitiesTypes } from './user';
+import { userAuthReducer, usersReducer, tokenReducer } from './user/reducers';
+import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
 export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
 
 export type ActionType = UsersEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
