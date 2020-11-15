@@ -40,7 +40,7 @@ const callApi = async (
 
     fetchParam = {
         method: method,
-        body: method == 'POST' ? form_data : null,
+        body: method === 'POST' ? form_data : null,
         credentials: 'include',
     };
 
