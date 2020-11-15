@@ -35,8 +35,9 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
                     <Image fit={'cover'} src="images/movie5.jpg" />
                 </Carousel>
                 <Button
+                    style={{ width: 300 }}
                     primary
-                    margin={{ top: 'medium' }}
+                    margin={{ top: 'medium', left: 'auto', right: 'auto' }}
                     label={en.UI_LABELS.takeAMovieSurvey}
                     hoverIndicator
                     onClick={() => {

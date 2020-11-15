@@ -3,6 +3,7 @@ import React from 'react';
 import { toggleInitialSurveyModal } from './actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
+import StarRating from '../common/star/StarRating';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -33,7 +34,7 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                                         // onChange={event => setValue(event.target.value)}
                                     />
                                 </Box>
-                                <Box>{/* star rating class-based component goes here<StarRating />*/}</Box>
+                                <Box>{/*<StarRating />*/}</Box>
                             </Box>
                         );
                     })}
