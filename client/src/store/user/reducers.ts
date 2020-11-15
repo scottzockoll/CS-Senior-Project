@@ -7,6 +7,8 @@ import {
     UserEntitiesActions,
 } from './index';
 import { Paginated } from '../types';
+import { Movie } from '../movie';
+import { Tag } from '../tag';
 
 const initialUserAuthState: number = -1;
 
@@ -48,18 +50,103 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 isFetching: true,
             };
         case RECEIVE_USERS_SUCCESS:
-            console.log(action);
+            if (action.response.entities.users) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.users,
+                    },
+                    nextPage: state.nextPage, // TODO
+                    prevPage: state.prevPage, // TODO
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
-                ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
-                entities: {
-                    ...state.entities,
-                    ...action.response.entities.users,
-                },
-                nextPage: state.nextPage, // TODO
-                prevPage: state.prevPage, // TODO
                 isFetching: false,
             };
+        default:
+            return state;
+    }
+}
+
+const initialMovieEntitiesState: Paginated<Movie> = {
+    ids: [],
+    entities: {},
+    pages: [],
+    prevPage: '',
+    nextPage: '',
+    isFetching: false,
+};
+export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
+    switch (action.type) {
+        case REQUEST_USERS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_USERS_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.movies,
+                    },
+                    nextPage: state.nextPage, // TODO
+                    prevPage: state.prevPage, // TODO
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_USERS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
+        default:
+            return state;
+    }
+}
+
+const initialTagEntitiesState: Paginated<Tag> = {
+    ids: [],
+    entities: {},
+    pages: [],
+    prevPage: '',
+    nextPage: '',
+    isFetching: false,
+};
+export function usersTagsReducer(state = initialTagEntitiesState, action: UserEntitiesActions): Paginated<Tag> {
+    switch (action.type) {
+        case REQUEST_USERS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_USERS_SUCCESS:
+            if (action.response.entities.tags) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.tags).map((tag) => tag.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.tags,
+                    },
+                    nextPage: state.nextPage, // TODO
+                    prevPage: state.prevPage, // TODO
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,

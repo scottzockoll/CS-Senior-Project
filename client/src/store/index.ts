@@ -1,7 +1,7 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { UserEntitiesActions, UsersEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer, tokenReducer } from './user/reducers';
+import { userAuthReducer, usersReducer, tokenReducer, usersMoviesReducer, usersTagsReducer } from './user/reducers';
 import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
 export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
 
@@ -40,6 +40,8 @@ export enum AsyncActionStatus {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    movies: usersMoviesReducer,
+    tags: usersTagsReducer,
     token: tokenReducer,
     initialSurveyVisible: toggleInitialSurveyModalReducer,
 });

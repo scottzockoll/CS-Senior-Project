@@ -61,7 +61,7 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
         this.props.getUsers(2, 50);
     }
 
-    loadMore(event: any) {
+    loadMore() {
         this.props.getUsers(this.state.idOffset, 50);
         this.setState({
             ...this.state,

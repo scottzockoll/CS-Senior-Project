@@ -61,7 +61,9 @@ const callApi = async (
     // and keep it updated as we fetch more data.
 
     // Read more about Normalizr: https://github.com/paularmstrong/normalizr
-    return normalize(json, schema);
+    const normalized = normalize(json, schema);
+    console.log(normalized);
+    return normalized;
 };
 
 export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: AppAction) => {
