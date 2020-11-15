@@ -1,7 +1,8 @@
 import {
-    RECEIVE_USER_FAILURE,
-    RECEIVE_USER_SUCCESS,
-    REQUEST_USER_STARTED,
+    RECEIVE_AUTH_USER_SUCCESS,
+    RECEIVE_USERS_FAILURE,
+    RECEIVE_USERS_SUCCESS,
+    REQUEST_USERS_STARTED,
     User,
     UserAuthActions,
     UserEntitiesActions,
@@ -10,12 +11,22 @@ import { Paginated } from '../types';
 
 const initialUserAuthState: number = -1;
 
-export function userAuthReducer(state = initialUserAuthState, action: UserAuthActions): number {
+export function userAuthReducer(state = initialUserAuthState, action: UserEntitiesActions): number {
     switch (action.type) {
         case 'USER_LOGIN':
             return action.id;
         case 'USER_LOGOUT':
             return -1;
+        default:
+            return state;
+    }
+}
+
+const initialUserTokenState: string = '';
+export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): string {
+    switch (action.type) {
+        case 'TOKEN_UPDATE':
+            return action.token;
         default:
             return state;
     }
@@ -32,12 +43,12 @@ const initialUserEntitiesState: Paginated<User> = {
 
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
-        case REQUEST_USER_STARTED:
+        case REQUEST_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
             };
-        case RECEIVE_USER_SUCCESS:
+        case RECEIVE_USERS_SUCCESS:
             console.log(action);
             return {
                 ...state,
@@ -50,7 +61,7 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 prevPage: state.prevPage, // TODO
                 isFetching: false,
             };
-        case RECEIVE_USER_FAILURE:
+        case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,

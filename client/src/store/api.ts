@@ -9,6 +9,8 @@ export interface ApiRequest {
     [CALL_API]: {
         endpoint: string | Function;
         schema: schema.Entity | schema.Entity[];
+        method: string;
+        body: Record<string, string>;
         types: {
             [AsyncActionStatus.Request]: string;
             [AsyncActionStatus.Success]: string;
@@ -19,11 +21,34 @@ export interface ApiRequest {
 
 // Fetches an API response and normalizes the result JSON according to schema.
 // This makes every API response have the same shape, regardless of how nested it was.
-const callApi = async (endpoint: string, schema: schema.Entity | schema.Entity[]) => {
+// TODO I should change the type of 'method' to an actual type and not just string
+const callApi = async (
+    endpoint: string,
+    schema: schema.Entity | schema.Entity[],
+    method: string,
+    body?: Record<string, string>
+) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
-    const response = await fetch(fullUrl);
+    let fetchParam = {};
+
+    let form_data = new FormData();
+
+    for (const key in body) {
+        form_data.append(key, body[key]);
+    }
+
+    fetchParam = {
+        method: method,
+        body: method == 'POST' ? form_data : null,
+        credentials: 'include',
+    };
+
+    console.log('FETCHING');
+    console.log(fullUrl);
+    const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
+    console.log(json);
 
     if (!response.ok) {
         throw new Error(json);
@@ -49,7 +74,7 @@ export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (ac
         }
 
         let { endpoint } = callAPI;
-        const { schema, types } = callAPI;
+        const { schema, types, body, method } = callAPI;
 
         if (typeof endpoint === 'function') {
             endpoint = endpoint(store.getState());
@@ -73,8 +98,7 @@ export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (ac
         const failureType = types[AsyncActionStatus.Failure];
 
         next(actionWith({ type: requestType }));
-
-        return callApi(endpoint, schema).then(
+        return callApi(endpoint, schema, method, body).then(
             (response) =>
                 next(
                     actionWith({
