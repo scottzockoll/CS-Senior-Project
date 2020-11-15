@@ -1,9 +1,8 @@
-import { Box, Button, Heading, Layer, TextInput } from 'grommet';
+import { Box, Button, Heading, TextInput } from 'grommet';
 import React from 'react';
 import { toggleInitialSurveyModal } from './actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
-import StarRating from '../common/star/StarRating';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
