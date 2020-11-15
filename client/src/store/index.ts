@@ -1,12 +1,12 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { Action, combineReducers } from 'redux';
-import { UserEntitiesActions, UserEntitiesTypes } from './user';
+import { combineReducers } from 'redux';
+import { UserEntitiesActions, UsersEntitiesTypes } from './user';
 import { userAuthReducer, usersReducer } from './user/reducers';
 import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
 
 export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
 
-export type ActionType = UserEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
+export type ActionType = UsersEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
 
 export const TOGGLE_INITIAL_SURVEY_MODAL = 'TOGGLE_INITIAL_SURVEY_MODAL';
 export type TOGGLE_INITIAL_SURVEY_MODAL = typeof TOGGLE_INITIAL_SURVEY_MODAL;
@@ -35,16 +35,6 @@ export enum AsyncActionStatus {
     Request = '@@REQUEST',
     Success = '@@SUCCESS',
     Failure = '@@FAILURE',
-}
-
-export interface RequestAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Request;
-}
-export interface SuccessAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Success;
-}
-export interface FailureAsyncAction<T> extends Action<T> {
-    status: AsyncActionStatus.Failure;
 }
 
 // The store needs to be passed a single reducer. We can create this by calling combineReducers

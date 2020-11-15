@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import { rootReducer } from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { apiMiddleware } from './store/api';
-import { requestSingleUser, userLogin } from './store/user/actions';
+import { userLogin } from './store/user/actions';
 
 const customBreakpoints = {
     global: {
@@ -51,7 +51,6 @@ export const store = createStore(
     rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
 );
-store.dispatch(requestSingleUser(1));
 
 ReactDOM.render(
     <React.StrictMode>

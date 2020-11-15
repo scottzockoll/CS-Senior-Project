@@ -13,7 +13,7 @@ from server.api.v1.update.update_feedback import update_feedback
 from server.api.v1.update.update_feedback_tag import update_feedback_tag
 from server.api.v1.create.create_feedback import create_feedback
 from server.api.v1.create.create_feedback_tag import create_feedback_tag
-# from server.api.v1.get.get_recommendations import get_recommendations
+from server.api.v1.get.get_recommendations import get_recommendations
 
 
 def register_api_routes(app: Flask):
@@ -81,15 +81,3 @@ def get_tag_autocomplete(name: str, movieId: int):
             "name": "Comedy"
         }]
     }, 200
-
-
-def get_recommendations(userId: int):
-    """
-    Get the top 10 recommendations for a specified user
-    :param int userId: The user id to retrieve
-    :return: JSON object of movies int array
-    """
-    return {
-        "movies": [10, 1, 9, 2, 8, 3, 7, 4, 6, 5]
-    }, 200
-
