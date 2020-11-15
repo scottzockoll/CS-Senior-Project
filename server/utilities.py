@@ -55,3 +55,25 @@ def is_admin():
                 return True
             else:
                 return False
+
+
+def is_current_user(id: int):
+    """
+        Checks to see if the id of the user signed in matches
+        the id trying to be deleted.
+        NOTE: if_current_user is false, is_admin must be true
+        when checking.
+        :param id: The id of the user being deleted
+        :return: Boolean
+    """
+    session_id = request.cookies.get('session')
+    if session_id:
+        user = session.get('user')
+
+        if user['expiration'] > time():
+            session.pop('user')
+        else:
+            if user['id'] == id:
+                return True
+            else:
+                return False
