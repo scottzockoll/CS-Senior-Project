@@ -22,7 +22,7 @@ def auth_user(email: str):
 
     user = authenticate(email, request.form['auth_token'])
 
-    check_update(user['first_name'], user['last_name'], user['email'])
+    check_update(user['firstName'], user['lastName'], user['email'])
 
     if user is None:
         return Response({}, status=401)
