@@ -9,7 +9,7 @@ import {
     RECEIVE_AUTH_USER_SUCCESS,
     REQUEST_AUTH_USER_STARTED,
     RequestAuthUserStarted,
-     RequestUsersStarted,
+    RequestUsersStarted,
     TOKEN_UPDATE,
     TokenUpdate,
     USER_LOGIN,
@@ -38,14 +38,34 @@ export function updateToken(token: string): TokenUpdate {
     };
 }
 
+// export function requestSingleUser(id: number): RequestUserStarted {
+//     return {
+//         id,
+//         type: REQUEST_USER_STARTED,
+//         [CALL_API]: {
+//             endpoint: `user/${id}`,
+//             schema: SCHEMAS['USER'],
+//             method: 'GET',
+//             body: {},
+//             types: {
+//                 [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
+//                 [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
+//                 [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
+//             },
+//         },
+//     };
+// }
+
 export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
     return {
         idOffset,
         limit,
         type: REQUEST_USERS_STARTED,
         [CALL_API]: {
-            endpoint: `user/${idOffset}/${limit}`,
-            schema: SCHEMAS['USER_ARRAY'],
+            // TODO: this endpoint is not implemented yet
+            // endpoint: `user/${idOffset}/${limit}`,
+            endpoint: `user/${idOffset}`,
+            schema: SCHEMAS['USER'],
             method: 'GET',
             body: {},
             types: {
