@@ -14,8 +14,9 @@ def auth_user(email: str):
     if session_id:
         user = session.get('user')
 
-        if user['expiration'] > time():
+        if time() > user['expiration']:
             session.pop('user')
+            session.clear()
         else:
             return Response(json.dumps(user), status=200)
 

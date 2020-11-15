@@ -13,7 +13,7 @@ def get_user(id: int):
     def process_single_tag(tag: str):
         split = tag.split(',')
         return {
-            'id': split[0],
+            'tag_id': split[0],
             'rating': split[1],
             'name': split[2]
         }
@@ -38,7 +38,7 @@ def get_user(id: int):
                 return Response({
                 }, mimetype='application/json', status=404)
             else:
-                movie_info = [{'id': i[5], 'title': i[6], 'rating': i[7],
+                movie_info = [{'movie_id': i[5], 'title': i[6], 'rating': i[7],
                                'tags': process_movie_tags(i[8])
                                } for i in result]
                 data = {
