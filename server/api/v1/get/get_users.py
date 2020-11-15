@@ -22,7 +22,7 @@ def get_users(limit: int, offset: int):
         a dictionary for each tag. It turns the list indice
         from the prior function into a dictionary wherein the
         id, user's rating, and the name of the tag are contained.
-        :param tag: The string from the list created by process_movie_tags
+        :param str tag: The string from the list created by process_movie_tags
         :return: A dictionary with key, value pairs for
         'tag_id', 'rating', and 'name'
         """
@@ -39,7 +39,7 @@ def get_users(limit: int, offset: int):
         It splits at the ';' character to create a list where each
         indice has a single tag's info. It is further processed by
         process_single_tag.
-        :param movie: This is a string of all the tags and their info
+        :param str movie: This is a string of all the tags and their info
          for a movie.
         :return: A list of dictionaries with key, value pairs for
         'tag_id', 'rating', and 'name'.
@@ -52,10 +52,7 @@ def get_users(limit: int, offset: int):
         if not server.utilities.is_user():
             return Response({
             }, mimetype='application/json', status=403)
-        if not isinstance(offset, int):  # checks if id is an integer
-            return Response({
-            }, mimetype='application/json', status=400)
-        if not isinstance(limit, int):  # checks if id is an integer
+        if not isinstance(limit, int) and not isinstance(offset, int):  # checks if id is an integer
             return Response({
             }, mimetype='application/json', status=400)
         else:
