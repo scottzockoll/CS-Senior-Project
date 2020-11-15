@@ -1,14 +1,14 @@
 import { schema } from 'normalizr';
 
 const tagSchema = new schema.Entity(
-    'tag',
+    'tags',
     {},
     {
         idAttribute: (tag) => tag.id,
     }
 );
 const movieSchema = new schema.Entity(
-    'movie',
+    'movies',
     {
         tags: [tagSchema],
     },
