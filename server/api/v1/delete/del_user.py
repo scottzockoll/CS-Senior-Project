@@ -1,4 +1,4 @@
-from server.utilities import db_connection, current_user, is_admin
+from server.utilities import db_connection, is_admin, is_current_user
 from flask import Response
 
 
@@ -11,10 +11,7 @@ def del_user(id: int):
     con, cursor = db_connection()
 
     try:
-        if not current_user():  # checks if the logged in user is attempting function (will change)
-            return Response({
-            }, mimetype='application/json', status=403)
-        elif not is_admin():  # checks if the user attempting function is admin (will change)
+        if not is_admin() or not is_current_user(id):
             return Response({
             }, mimetype='application/json', status=401)
         elif not isinstance(id, int):  # checks if id is integer
