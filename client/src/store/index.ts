@@ -1,9 +1,7 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import { combineReducers } from 'redux';
-import { UserEntitiesActions, UsersEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer } from './user/reducers';
-import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
-
+import { Action, combineReducers } from 'redux';
+import { UserEntitiesActions, UserEntitiesTypes } from './user';
+import { userAuthReducer, usersReducer, tokenReducer, toggleInitialSurveyModalReducer } from './user/reducers';
 export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
 
 export type ActionType = UsersEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
@@ -41,6 +39,7 @@ export enum AsyncActionStatus {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    token: tokenReducer,
     initialSurveyVisible: toggleInitialSurveyModalReducer,
 });
 
