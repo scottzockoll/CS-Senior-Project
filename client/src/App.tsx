@@ -10,17 +10,15 @@ import { sampleRecord } from './ExampleData';
 function App() {
     return (
         <div className="App">
+            <NavigationBar />
             <Switch>
                 <Route path="/admin">
-                    <NavigationBar />
                     <Admin />
                 </Route>
                 <Route path="/client">
-                    <NavigationBar />
                     <ClientPage userRecord={sampleRecord} />
                 </Route>
                 <Route path="/">
-                    <NavigationBar />
                     <Homepage />
                 </Route>
             </Switch>
