@@ -52,7 +52,7 @@ def get_users(limit: int, offset: int):
         if not server.utilities.is_user():
             return Response({
             }, mimetype='application/json', status=403)
-        if not isinstance(limit, int) and not isinstance(offset, int):  # checks if id is an integer
+        if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
             return Response({
             }, mimetype='application/json', status=400)
         else:
