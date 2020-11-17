@@ -26,7 +26,7 @@ def get_user(id: int):
                 return Response({
                 }, mimetype='application/json', status=404)
             else:
-                movie_info = [{'id': i[5], 'title': i[6], 'rating': i[7],
+                movie_info = [{'id': i[6], 'title': i[5], 'rating': i[7],
                                'tags': server.utilities.process_movie_tags(i[8])
                                } for i in result]
                 data = {

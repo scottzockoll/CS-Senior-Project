@@ -47,12 +47,12 @@ def get_users(limit: int, offset: int):
                         filter_dict["last_name"] = row[2]
                         filter_dict["is_admin"] = row[4]
                         filter_dict["movies"] = [
-                            {"movie_id": row[5], "title": row[6], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
+                            {"movie_id": row[6], "title": row[5], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
                         users_list.append(filter_dict)
                         filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
                     # if there is, just append the movie information to the existing dictionary for that user
                     else:
-                        filter_dict["movies"] = {"movie_id": row[5], "title": row[6], "rating": row[7],
+                        filter_dict["movies"] = {"movie_id": row[6], "title": row[5], "rating": row[7],
                                                  "tags": server.utilities.process_movie_tags(row[8])}
                         for dicts in users_list:
                             if dicts["id"] == row[0]:

@@ -109,5 +109,8 @@ def process_movie_tags(movie: str):
         :return: A list of dictionaries with key, value pairs for
         'tag_id', 'rating', and 'name'.
     """
-    tag_data = movie.split(';')
-    return [process_single_tag(tag) for tag in tag_data]
+    if movie is None:
+        pass
+    else:
+        tag_data = movie.split(';')
+        return [process_single_tag(tag) for tag in tag_data]
