@@ -110,7 +110,7 @@ def process_movie_tags(movie: str):
         'tag_id', 'rating', and 'name'.
     """
     if movie is None:
-        pass
+        tag_data = []
     else:
         tag_data = movie.split(';')
-        return [process_single_tag(tag) for tag in tag_data]
+    return [process_single_tag(tag) for tag in tag_data]
