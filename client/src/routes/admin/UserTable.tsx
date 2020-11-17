@@ -111,7 +111,7 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
                         //         showModal: true,
                         //     });
                         // }}
-                        size="medium"
+                        size="large"
                         sortable={true}
                         step={20}
                         background="light-2"
