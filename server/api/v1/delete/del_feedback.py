@@ -14,7 +14,7 @@ def del_feedback(userId: int):
         if not isinstance(userId, int):
             return Response({
             }, mimetype='application/json', status=400)
-        elif not is_admin() or not is_current_user(userId):
+        elif not is_current_user(userId):
             return Response({
             }, mimetype='application/json', status=401)
         else:
