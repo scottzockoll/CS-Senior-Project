@@ -14,6 +14,7 @@ from server.api.v1.create.create_feedback_tag import create_feedback_tag
 from server.api.v1.auth.auth_user import auth_user
 from server.api.v1.get.get_recommendations import get_recommendations
 from server.api.v1.get.get_users import get_users
+from server.api.v1.delete.del_feedback import del_feedback
 
 
 def register_api_routes(app: Flask):
@@ -37,4 +38,6 @@ def register_api_routes(app: Flask):
     app.route('/api/v1/feedback/tags/<int:userId>/<int:movieId>/<int:tagId>', methods=['POST'])(create_feedback_tag)
     app.route('/api/v1/recommendation/<int:user_id>', methods=['GET'])(get_recommendations)
     app.route('/api/v1/user/<int:limit>/<int:offset>', methods=['GET'])(get_users)
+    app.route('/api/v1/feedback/<int:userId>', methods=['DELETE'])(del_feedback)
+
 
