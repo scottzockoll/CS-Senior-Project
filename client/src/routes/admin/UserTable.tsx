@@ -70,7 +70,6 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
     };
 
     render() {
-        console.log(`${this.props.users.length} users.`);
         return (
             <React.Fragment>
                 {this.props.users.length > 0 && (
