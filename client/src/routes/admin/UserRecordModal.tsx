@@ -11,7 +11,7 @@ interface UserRecordModalProps {
 /***
  * Exports all of user's watched movie data to a CSV file.
  *
- * @param userRecord The current user's record.
+ * @param user
  */
 function exportUserRecordToCSV(user: User) {
     const movies = Object.values(user.movies);

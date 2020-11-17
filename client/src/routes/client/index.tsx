@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, DataTable, Text, Button, Layer, Grommet } from 'grommet';
+import { Box, DataTable, Text, Button, Layer } from 'grommet';
 import { UserRecord } from '../admin/UserRecord';
 import en from '../../en.json';
 
@@ -13,7 +13,7 @@ export default function ClientPage(props: ClientPageProps) {
     const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
 
     return (
-        <Grommet>
+        <React.Fragment>
             <Box pad="medium" align="start">
                 <Text>
                     {en.UI_LABELS.fullName}: {props.userRecord.firstName} {props.userRecord.lastName}
@@ -92,6 +92,6 @@ export default function ClientPage(props: ClientPageProps) {
                     </Layer>
                 )}
             </Box>
-        </Grommet>
+        </React.Fragment>
     );
 }

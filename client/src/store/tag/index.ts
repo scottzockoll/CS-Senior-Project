@@ -1,5 +1,5 @@
 export interface Tag {
-    tag_id: number;
+    id: number;
     rating: number;
     name: string;
 }

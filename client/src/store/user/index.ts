@@ -1,5 +1,6 @@
 import { ApiRequest } from '../api';
 import { Movie } from '../movie';
+import { Tag } from '../tag';
 
 export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';
@@ -66,7 +67,9 @@ export interface ReceiveUsersSuccess {
     type: RECEIVE_USERS_SUCCESS;
     response: {
         entities: {
-            users: Record<number, User>;
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
         };
     };
 }
@@ -103,7 +106,6 @@ export type UserEntitiesActions =
     | ReceiveUsersFailure
     | RequestUsersStarted
     | ReceiveUsersSuccess
-    | ReceiveUsersFailure
     | UserLogin
     | UserLogout
     | TokenUpdate;

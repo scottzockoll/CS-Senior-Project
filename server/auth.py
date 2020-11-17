@@ -123,14 +123,14 @@ def authenticate(email: str, token: str) -> Union[Dict, None]:
 
         user = {
             'id': result[0][0],
-            'first_name': token_first_name,
-            'last_name': token_last_name,
-            'auth_status': auth_status.value[0],
+            'firstName': token_first_name,
+            'lastName': token_last_name,
+            'authStatus': auth_status.value[0],
             'email': token_email,
             'expiration': token_expiration
         }
 
-        print(f"Login success: {user['last_name']}, {user['first_name']} ({user['email']})")
+        print(f"Login success: {user['lastName']}, {user['firstName']} ({user['email']})")
         return user
     except (AssertionError, ValueError):
         print(f'Warning: Invalid login attempt for {email} from {request.remote_addr}.')

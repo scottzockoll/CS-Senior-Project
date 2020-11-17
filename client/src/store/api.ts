@@ -40,15 +40,12 @@ const callApi = async (
 
     fetchParam = {
         method: method,
-        body: method == 'POST' ? form_data : null,
+        body: method === 'POST' ? form_data : null,
         credentials: 'include',
     };
 
-    console.log('FETCHING');
-    console.log(fullUrl);
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
-    console.log(json);
 
     if (!response.ok) {
         throw new Error(json);
@@ -61,7 +58,8 @@ const callApi = async (
     // and keep it updated as we fetch more data.
 
     // Read more about Normalizr: https://github.com/paularmstrong/normalizr
-    return normalize(json, schema);
+    const normalized = normalize(json, schema);
+    return normalized;
 };
 
 export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: AppAction) => {
