@@ -3,7 +3,7 @@ import { Box, DataTable, Text, Button, Layer, Select, Grommet } from 'grommet';
 import { useSelector, useDispatch, connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { requestUsers } from '../../store/user/actions';
+import { deleteUser, requestUsers } from '../../store/user/actions';
 
 interface ClientPageState {
     showUpdateRating: boolean;
@@ -13,8 +13,11 @@ interface ClientPageState {
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUsers: (idOffset: number, limit: number) => {
-        dispatch(requestUsers(idOffset, limit));
+    getUsers: (offset: number, limit: number) => {
+        dispatch(requestUsers(offset, limit));
+    },
+    deleteUser: (id: number) => {
+        dispatch(deleteUser(id));
     },
 });
 
@@ -274,6 +277,9 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                 <Button
                                     label={en.UI_LABELS.yes}
                                     onClick={() => {
+                                        // dispatch he deleteUser action
+                                        this.props.deleteUser(this.props.activeUserId);
+
                                         this.setState({
                                             ...this.state,
                                             showDeleteAccount: false,

@@ -8,7 +8,10 @@ const userSchema = new schema.Entity(
     }
 );
 
+const nullSchema = new schema.Entity('null', {});
+
 export const SCHEMAS = {
     USER: userSchema,
     USER_ARRAY: [userSchema],
+    NULL: nullSchema,
 };

@@ -9,6 +9,14 @@ export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
 export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
 export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
 
+export const DELETE_USER_STARTED = 'DELETE_USER_STARTED';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+
+export type DELETE_USER_STARTED = typeof DELETE_USER_STARTED;
+export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
+export type DELETE_USER_FAILURE = typeof DELETE_USER_FAILURE;
+
 export type UsersEntitiesTypes = REQUEST_USERS_STARTED | RECEIVE_USERS_SUCCESS | RECEIVE_USERS_FAILURE;
 
 export const USER_LOGIN = 'USER_LOGIN';
@@ -70,7 +78,13 @@ export interface ReceiveUsersFailure {
 /**
  * Any user entities retrieval action, that is a user entities Request {Start, Success, Failure}.
  */
-export type UserEntitiesActions = RequestUsersStarted | ReceiveUsersSuccess | ReceiveUsersFailure;
+export type UserEntitiesActions =
+    | RequestUsersStarted
+    | ReceiveUsersSuccess
+    | ReceiveUsersFailure
+    | DeleteUserStarted
+    | DeleteUserSuccess
+    | DeleteUserFailure;
 
 /**
  * Action that occurs when the user logins in.
@@ -85,6 +99,24 @@ export interface UserLogin {
  */
 export interface UserLogout {
     type: USER_LOGOUT;
+}
+
+/**
+ * Action that occurs when deleting a user account.
+ */
+export interface DeleteUserStarted extends ApiRequest {
+    type: DELETE_USER_STARTED;
+    id: number;
+}
+
+export interface DeleteUserSuccess {
+    type: DELETE_USER_SUCCESS;
+    id: number;
+}
+
+export interface DeleteUserFailure {
+    type: DELETE_USER_FAILURE;
+    id: number;
 }
 
 /**
