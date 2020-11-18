@@ -1,8 +1,10 @@
 import React from 'react';
-import { Button, Grommet, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
+import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
 import en from '../../en.json';
+import { useHistory } from 'react-router-dom';
 
 function NavigationBar() {
+    const history = useHistory();
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
@@ -24,33 +26,39 @@ function NavigationBar() {
                                     <Nav direction="row" background="brand" margin={{ right: '15px' }}>
                                         <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp} />
                                         <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn} />
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin} href="/admin" />
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.client} href="/client" />
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.home} href="/" />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
+                                            onClick={() => history.push('/admin')}
+                                        />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.client}
+                                            onClick={() => history.push('/client')}
+                                        />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.home}
+                                            onClick={() => history.push('/')}
+                                        />
                                     </Nav>
                                 </Box>
                             )}
-                            {size === 'medium' && (
+                            {size !== 'large' && (
                                 <Menu
                                     dropBackground="white"
                                     items={[
                                         { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp },
                                         { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin, href: '/admin' },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client, href: '/client' },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home, href: '/' },
-                                    ]}
-                                />
-                            )}
-                            {size === 'small' && (
-                                <Menu
-                                    dropBackground="white"
-                                    items={[
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin, href: '/admin' },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client, href: '/client' },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home, href: '/' },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+                                            onClick: () => history.push('/admin'),
+                                        },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                            onClick: () => history.push('/client'),
+                                        },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                            onClick: () => history.push('/'),
+                                        },
                                     ]}
                                 />
                             )}

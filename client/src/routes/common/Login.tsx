@@ -10,7 +10,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     // TODO: endpoint has not been implemented so the parameter is ignored for right now
-    getUsers: (id: number) => dispatch(requestUsers(id, -1)),
+    getUsers: (id: number) => dispatch(requestUsers(id, 1)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
     requestAuthenticateUser: (email: string, tokenId: string) => dispatch(requestAuthenticateUser(email, tokenId)),
@@ -41,15 +41,14 @@ export const refreshTokenSetup = (res: any, authFunc: Function) => {
     setTimeout(refreshToken, refreshTiming);
 };
 
-// @ts-ignore
-function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }) {
+type LoginButtonProps = Omit<ReturnType<typeof mapDispatchToProps>, 'userLogout'>;
+function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }: LoginButtonProps) {
     const onSuccess = (res: any) => {
-        console.log('Login Success: currentUser:', res.profileObj);
         refreshTokenSetup(res, requestAuthenticateUser);
         requestAuthenticateUser(res.profileObj.email, res.tokenId);
         // TODO: need to get valid id from server
-        userLogin(613);
-        getUsers(613);
+        userLogin(614);
+        getUsers(614);
         updateToken(res.tokenId);
     };
 
@@ -72,8 +71,8 @@ function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken
     );
 }
 
-// @ts-ignore
-function LogoutButton({ userLogout, updateToken }) {
+type LogoutButtonProps = Pick<ReturnType<typeof mapDispatchToProps>, 'userLogout' | 'updateToken'>;
+function LogoutButton({ userLogout, updateToken }: LogoutButtonProps) {
     const onSuccess = () => {
         userLogout();
         updateToken('');

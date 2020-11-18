@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Interface for a single user record.
  */
