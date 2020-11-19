@@ -1,8 +1,9 @@
-import { Box, Button, Heading, TextInput } from 'grommet';
+import { Box, Button, Heading } from 'grommet';
 import React from 'react';
 import { toggleInitialSurveyModal } from './actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
+import { SearchField } from '../common/SearchField';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -27,11 +28,7 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                         return (
                             <Box>
                                 <Box width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
-                                    <TextInput
-                                        placeholder="Movie search"
-                                        // value={value}
-                                        // onChange={event => setValue(event.target.value)}
-                                    />
+                                    <SearchField />
                                 </Box>
                                 <Box>{/*<StarRating />*/}</Box>
                             </Box>

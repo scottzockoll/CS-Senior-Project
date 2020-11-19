@@ -13,6 +13,7 @@
     "genre": "Genre",
     "userRating": "User Rating",
     "takeAMovieSurvey": "Take a Movie Survey",
+    "movieSearch": "Movie search",
     "NAVIGATION_BAR_LABELS": {
       "signIn": "Sign In",
       "signUp": "Sign Up",
