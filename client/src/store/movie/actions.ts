@@ -1,36 +1,28 @@
 import {
-    GET_MOVIE,
-    GetMovieAction,
-    REQUEST_MOVIE_STARTED,
-    RECEIVE_MOVIE_SUCCESS,
-    RECEIVE_MOVIE_FAILURE,
+    UPDATE_MOVIE_RATING_FAILURE,
+    UPDATE_MOVIE_RATING_STARTED,
+    UPDATE_MOVIE_RATING_SUCCESS,
+    UpdateMovieRatingStarted,
 } from './index';
 import { CALL_API } from '../api';
-import { AsyncActionStatus } from '../index';
 import { SCHEMAS } from '../schema';
+import { AsyncActionStatus } from '../index';
 
-export function getMovie(id: number) {
+export function updateMovieRating(feedbackId: number, rating: number): UpdateMovieRatingStarted {
     return {
-        type: GET_MOVIE,
-        id,
+        feedbackId,
+        rating,
+        type: UPDATE_MOVIE_RATING_STARTED,
         [CALL_API]: {
-            endpoint: `movie/${id}`,
-            //wrong
-            schema: SCHEMAS['USER_ARRAY'],
+            endpoint: `feedback/movie/${feedbackId}`,
+            schema: SCHEMAS['NULL'],
+            method: 'PUT',
+            body: { rating: rating.toString() },
             types: {
-                [AsyncActionStatus.Request]: REQUEST_MOVIE_STARTED,
-                [AsyncActionStatus.Success]: RECEIVE_MOVIE_SUCCESS,
-                [AsyncActionStatus.Failure]: RECEIVE_MOVIE_FAILURE,
+                [AsyncActionStatus.Request]: UPDATE_MOVIE_RATING_STARTED,
+                [AsyncActionStatus.Success]: UPDATE_MOVIE_RATING_SUCCESS,
+                [AsyncActionStatus.Failure]: UPDATE_MOVIE_RATING_FAILURE,
             },
         },
     };
 }
-
-/*
-export function getUser(id: number) {
-    return {
-        type: GET_USER,
-        id
-    }
-}
-*/

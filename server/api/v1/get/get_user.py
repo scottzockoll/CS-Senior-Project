@@ -10,18 +10,6 @@ def get_user(id: int):
     :return: JSON object with user firstName, lastName, and isAdmin
     """
 
-    def process_single_tag(tag: str):
-        split = tag.split(',')
-        return {
-            'tag_id': split[0],
-            'rating': split[1],
-            'name': split[2]
-        }
-
-    def process_movie_tags(movie: str):
-        tag_data = movie.split(';')
-        return [process_single_tag(tag) for tag in tag_data]
-
     con, cursor = server.utilities.db_connection()
     try:
         if not server.utilities.is_user():
@@ -38,8 +26,8 @@ def get_user(id: int):
                 return Response({
                 }, mimetype='application/json', status=404)
             else:
-                movie_info = [{'movie_id': i[5], 'title': i[6], 'rating': i[7],
-                               'tags': process_movie_tags(i[8])
+                movie_info = [{'id': i[6], 'title': i[5], 'rating': i[7],
+                               'tags': server.utilities.process_movie_tags(i[8])
                                } for i in result]
                 data = {
                     "id": result[0][0],

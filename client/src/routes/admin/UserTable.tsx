@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, DataTable, Layer } from 'grommet';
+import { DataTable, Layer } from 'grommet';
 import UserRecordModal from './UserRecordModal';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
@@ -9,12 +9,11 @@ import { requestUsers } from '../../store/user/actions';
 
 interface UserTableState {
     showModal: boolean;
-    idOffset: number;
-    count: number;
+    offset: number;
 }
 
 const mapStateToProps = (state: RootState) => ({
-    users: state.users.entities,
+    users: Object.values(state.users.entities),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -24,6 +23,8 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 });
 
 type UserTableProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
+const PAGE_SIZE = 500;
 
 /**
  * React Component for UseTable displaying all the records for each user.
@@ -35,14 +36,9 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
     constructor(props: UserTableProps, state: RootState) {
         super(props);
 
-        // load users
-        this.props.getUsers(1, 50);
-
         this.state = {
             showModal: false,
-            idOffset: 1,
-            count: 1,
-            // users: {},
+            offset: 1,
         };
 
         // initialize our instance variables
@@ -55,67 +51,72 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
             movies: [],
             tags: [],
         };
-
-        // bind the load more function to the constructor
-        this.loadMore = this.loadMore.bind(this);
     }
 
-    loadMore(event: any) {
-        this.props.getUsers(this.state.idOffset, 50);
+    componentDidMount() {
+        this.props.getUsers(this.state.offset, PAGE_SIZE);
         this.setState({
             ...this.state,
-            count: this.state.count + 50,
-        });
-        this.setState({
-            ...this.state,
-            idOffset: this.state.idOffset + 50,
+            offset: this.state.offset + PAGE_SIZE,
         });
     }
+
+    loadMore = () => {
+        this.props.getUsers(this.state.offset, PAGE_SIZE);
+        this.setState({
+            ...this.state,
+            offset: this.state.offset + PAGE_SIZE,
+        });
+    };
 
     render() {
         return (
-            <Box>
-                <DataTable
-                    columns={[
-                        {
-                            property: 'id',
-                            header: en.UI_LABELS.userId,
-                            primary: true,
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'firstName',
-                            header: en.UI_LABELS.firstName,
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'lastName',
-                            header: en.UI_LABELS.lastName,
-                            sortable: true,
-                            search: true,
-                        },
-                        {
-                            property: 'email',
-                            header: en.UI_LABELS.email,
-                            sortable: true,
-                            search: true,
-                        },
-                    ]}
-                    data={Object.values(this.props.users)}
-                    onClickRow={(row) => {
-                        // On click row, show modal and set the selected user
-                        this.selectedUser = row.datum;
-                        this.setState({
-                            ...this.state,
-                            showModal: true,
-                        });
-                    }}
-                    sortable={true}
-                    size={'large'}
-                    background="light-2"
-                />
+            <React.Fragment>
+                {this.props.users.length > 0 && (
+                    <DataTable
+                        columns={[
+                            {
+                                property: 'id',
+                                header: en.UI_LABELS.userId,
+                                primary: true,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'firstName',
+                                header: en.UI_LABELS.firstName,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'lastName',
+                                header: en.UI_LABELS.lastName,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'email',
+                                header: en.UI_LABELS.email,
+                                sortable: true,
+                                search: true,
+                            },
+                        ]}
+                        data={this.props.users}
+                        // onClickRow={(row) => {
+                        //     // On click row, show modal and set the selected user
+                        //     this.selectedUser = row.datum;
+                        //     this.setState({
+                        //         ...this.state,
+                        //         showModal: true,
+                        //     });
+                        // }}
+                        size="large"
+                        sortable={true}
+                        step={20}
+                        background="light-2"
+                        onMore={this.loadMore}
+                    />
+                )}
 
                 {/* User Modal displayed when row is clicked */}
                 {this.state.showModal && (
@@ -130,7 +131,7 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
                         <UserRecordModal user={this.selectedUser} />
                     </Layer>
                 )}
-            </Box>
+            </React.Fragment>
         );
     }
 }

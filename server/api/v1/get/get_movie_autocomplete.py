@@ -12,7 +12,7 @@ def get_movie_autocomplete(name: str):
     con, cursor = db_connection()
 
     try:
-        if not is_user():           # TODO: Properly define in utilities.py
+        if not is_user():
             return Response({
             }, mimetype='application/json', status=403)
         else:
@@ -26,9 +26,9 @@ def get_movie_autocomplete(name: str):
                 distances = [(distance(a[1], name), a[1]) for a in result]
                 titles = list(map(lambda movie: {'id': movie[0], 'title': movie[1]}, sorted(distances)))[:10]
 
-                return {            # TODO: Update to return complete object (similar to get_movie)
+                return Response({            # TODO: Update to return complete object (similar to get_movie)
                     "movies": titles
-                }
+                }, mimetype='application/json', status=200)
     except Exception:
         return Response({
         }, mimetype='application/json', status=500)

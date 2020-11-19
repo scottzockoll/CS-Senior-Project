@@ -1,9 +1,12 @@
 import React from 'react';
 import { Box, DataTable, Text, Button, Layer, Select, Grommet } from 'grommet';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { deleteUser, requestUsers } from '../../store/user/actions';
+import { deleteUser, requestUsers, userLogout } from '../../store/user/actions';
+import StarRating from '../common/star/StarRating';
+import { updateMovieRating } from '../../store/movie/actions';
+import { withRouter } from 'react-router-dom';
 
 interface ClientPageState {
     showUpdateRating: boolean;
@@ -13,37 +16,30 @@ interface ClientPageState {
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUsers: (offset: number, limit: number) => {
-        dispatch(requestUsers(offset, limit));
+    getUser: (offset: number) => {
+        dispatch(requestUsers(offset, 1));
     },
     deleteUser: (id: number) => {
         dispatch(deleteUser(id));
+    },
+    userLogout: () => dispatch(userLogout()),
+    updateMovieRating: (feedbackId: number, rating: number) => {
+        dispatch(updateMovieRating(feedbackId, rating));
     },
 });
 
 const mapStateToProps = (state: RootState) => ({
     activeUserId: state.activeUser,
-    user: state.users.entities[state.activeUser], // TODO
+    user: state.users.entities[state.activeUser],
+    movies: Object.values(state.movies.entities),
 });
 
-type ClientPageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type ClientPageProps = ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps> & { history: any; location: any };
 
 class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
-    // retrieve the state of the store
-    // const state = useSelector((state: any) => state);
-    // const [showUpdateRating, setShowUpdateRating] = React.useState<boolean>();
-    // const [showSignOut, setShowSignOut] = React.useState<boolean>();
-    // const [showDeleteAccount, setShowDeleteAccount] = React.useState<boolean>();
-    // const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
-
-    // const dispatch = useDispatch();
-    //let user = state.users.entities[state.activeUser];
-
     constructor(props: ClientPageProps, state: RootState) {
         super(props);
-
-        // retrieve the current user
-        this.props.getUsers(this.props.activeUserId, 1);
 
         this.state = {
             showDeleteAccount: false,
@@ -53,81 +49,45 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
         };
     }
 
+    componentDidMount() {
+        this.props.getUser(this.props.activeUserId);
+    }
+
     render() {
         return (
             <Grommet>
                 <Box pad="medium" align="start">
-                    <Text>{en.UI_LABELS.fullName}:</Text>
+                    <Text>
+                        {en.UI_LABELS.fullName}: {this.props.user ? this.props.user.firstName : ''}{' '}
+                        {this.props.user ? this.props.user.lastName : ''}
+                    </Text>
 
-                    <Text>{en.UI_LABELS.email}:</Text>
+                    <Text>
+                        {en.UI_LABELS.email}: {this.props.user ? this.props.user.email : ''}
+                    </Text>
                 </Box>
                 <Box width="large" pad="medium">
                     <DataTable
                         border={true}
+                        data={this.props.movies}
                         columns={[
-                            { property: 'movieName', header: en.UI_LABELS.title, sortable: true },
-                            { property: 'userRating', header: en.UI_LABELS.userRating, sortable: true },
+                            { property: 'title', header: en.UI_LABELS.title, sortable: true },
+                            {
+                                property: 'rating',
+                                header: en.UI_LABELS.userRating,
+                                sortable: true,
+                                render: (datum) => (
+                                    <StarRating
+                                        currentRating={datum.rating}
+                                        numberOfStars={5}
+                                        size={'medium'}
+                                        onClick={() => {}}
+                                    />
+                                ),
+                            },
                         ]}
                         sortable={true}
-                        onClickRow={() => {
-                            this.setState({
-                                ...this.state,
-                                showUpdateRating: true,
-                            });
-                        }}
                     />
-
-                    {this.state.showUpdateRating && (
-                        <Layer
-                            onEsc={() => {
-                                this.setState({
-                                    ...this.state,
-                                    showUpdateRating: false,
-                                });
-                            }}
-                            onClickOutside={() => {
-                                this.setState({
-                                    ...this.state,
-                                    showUpdateRating: false,
-                                });
-                            }}
-                        >
-                            <Box justify="center">
-                                <Text alignSelf="center" size="xxlarge">
-                                    {en.UI_LABELS.updateRating}
-                                </Text>
-                                <hr style={{ width: '95%' }} />
-                            </Box>
-                            <Box direction="row" justify="center">
-                                {/*<Select*/}
-                                {/*    options={['1', '2', '3', '4', '5']}*/}
-                                {/*    value={value}*/}
-                                {/*    // add update_rating change below*/}
-                                {/*    onChange={({ option }) => setValue(option)}*/}
-                                {/*/>*/}
-                            </Box>
-                            <Box direction="row" justify="center">
-                                <Button
-                                    label={en.UI_LABELS.confirm}
-                                    onClick={() => {
-                                        this.setState({
-                                            ...this.state,
-                                            showUpdateRating: false,
-                                        });
-                                    }}
-                                />
-                                <Button
-                                    label={en.UI_LABELS.cancel}
-                                    onClick={() => {
-                                        this.setState({
-                                            ...this.state,
-                                            showUpdateRating: false,
-                                        });
-                                    }}
-                                />
-                            </Box>
-                        </Layer>
-                    )}
                 </Box>
                 <Box>
                     <Button
@@ -222,10 +182,16 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                 <Button
                                     label={en.UI_LABELS.yes}
                                     onClick={() => {
+                                        // Sign out the user
+                                        this.props.userLogout();
+
                                         this.setState({
                                             ...this.state,
                                             showSignOut: false,
                                         });
+
+                                        // redirect the user back to the home page
+                                        this.props.history.push('/');
                                     }}
                                 />
                                 <Button
@@ -284,6 +250,9 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                             ...this.state,
                                             showDeleteAccount: false,
                                         });
+
+                                        // return to the home page
+                                        // history.push('/');
                                     }}
                                 />
                                 <Button
@@ -304,4 +273,4 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ClientPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClientPage));

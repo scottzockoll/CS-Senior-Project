@@ -1,23 +1,70 @@
 import React from 'react';
-import { Button, Header, Menu, Box } from 'grommet';
-import { Login } from './Login';
+import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
+import en from '../../en.json';
+import { useHistory } from 'react-router-dom';
 
 function NavigationBar() {
+    const history = useHistory();
     return (
         <Box>
-            <Login />
-            <Header style={{ height: 60 }} background={{ color: 'brand' }}>
-                <Button plain={true} label="FlickPick" hoverIndicator />
-                <Menu
-                    dropBackground="white"
-                    label="Sign Up"
-                    items={[
-                        { label: 'Sign In' },
-                        { label: 'Home', href: '/' },
-                        { label: 'Admin', href: '/admin' },
-                        { label: 'Client', href: '/client' },
-                    ]}
-                />
+            <Header style={{ height: 60 }} background="brand">
+                <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
+                    <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
+                </Box>
+                <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
+                    <TextInput
+                        placeholder="Movie search"
+                        // value={value}
+                        // onChange={event => setValue(event.target.value)}
+                    />
+                </Box>
+                <ResponsiveContext.Consumer>
+                    {(size) => (
+                        <Box>
+                            {size === 'large' && (
+                                <Box margin={{ right: 'auto', left: 'auto' }}>
+                                    <Nav direction="row" background="brand" margin={{ right: '15px' }}>
+                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp} />
+                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn} />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
+                                            onClick={() => history.push('/admin')}
+                                        />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.client}
+                                            onClick={() => history.push('/client')}
+                                        />
+                                        <Anchor
+                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.home}
+                                            onClick={() => history.push('/')}
+                                        />
+                                    </Nav>
+                                </Box>
+                            )}
+                            {size !== 'large' && (
+                                <Menu
+                                    dropBackground="white"
+                                    items={[
+                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp },
+                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+                                            onClick: () => history.push('/admin'),
+                                        },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                            onClick: () => history.push('/client'),
+                                        },
+                                        {
+                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                            onClick: () => history.push('/'),
+                                        },
+                                    ]}
+                                />
+                            )}
+                        </Box>
+                    )}
+                </ResponsiveContext.Consumer>
             </Header>
         </Box>
     );
