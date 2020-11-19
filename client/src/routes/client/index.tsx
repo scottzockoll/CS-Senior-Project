@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from '../../store';
 import { deleteUser, requestUsers, userLogout } from '../../store/user/actions';
 import StarRating from '../common/star/StarRating';
 import { updateMovieRating } from '../../store/movie/actions';
+import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 
 interface ClientPageState {
@@ -34,8 +35,7 @@ const mapStateToProps = (state: RootState) => ({
     movies: Object.values(state.movies.entities),
 });
 
-type ClientPageProps = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps> & { history: any; location: any };
+type ClientPageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
 
 class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
     constructor(props: ClientPageProps, state: RootState) {
@@ -251,8 +251,8 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                             showDeleteAccount: false,
                                         });
 
-                                        // return to the home page
-                                        // history.push('/');
+                                        // redirect the user back to the home page
+                                        this.props.history.push('/');
                                     }}
                                 />
                                 <Button
