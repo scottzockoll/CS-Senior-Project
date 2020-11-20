@@ -17,16 +17,14 @@ type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof m
 
 const UnconnectedSearchField: React.FC<SearchFieldProps> = ({ movieSearch }) => {
     return (
-        <Box>
-            <TextInput
-                placeholder={en.UI_LABELS.movieSearch}
-                // dropProps={}
-                onInput={(event: React.SyntheticEvent) => {
-                    const input = event.target as HTMLInputElement;
-                    movieSearch(input.value);
-                }}
-            />
-        </Box>
+        <TextInput
+            placeholder={en.UI_LABELS.movieSearch}
+            // dropProps={}
+            onInput={(event: React.SyntheticEvent) => {
+                const input = event.target as HTMLInputElement;
+                movieSearch(input.value);
+            }}
+        />
     );
 };
 
