@@ -33,17 +33,6 @@ export function movieSearchReducer(state = initialSearchMovieStates, action: App
     }
 }
 
-// export function updateMovieRatingReducer(state = [], action: MovieEntitiesActions): string {
-//     switch (action.type) {
-//         case UPDATE_MOVIE_RATING_STARTED:
-//             return action.rating;
-//         case UPDATE_MOVIE_RATING_SUCCESS:
-//             return action
-//         default:
-//             return "";
-//     }
-// }
-
 export function deleteMoviesReducer(state = -1, action: MovieDeleteActions): number {
     switch (action.type) {
         case DELETE_MOVIES_STARTED:
