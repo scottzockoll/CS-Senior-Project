@@ -26,16 +26,20 @@ def is_user():
     """
 
     session_id = request.cookies.get('session')
+
     if session_id:
         user = session.get('user')
 
         if user['expiration'] > time():
             session.pop('user')
+            return False
         else:
-            if user['auth_status'] == "User":
+            if user['authStatus'] == "User":
                 return True
             else:
                 return False
+    else:
+        return False
 
 
 def is_admin():
