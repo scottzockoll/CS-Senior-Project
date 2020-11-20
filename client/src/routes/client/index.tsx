@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, DataTable, Text, Button, Layer, Select, Grommet } from 'grommet';
+import { Box, DataTable, Text, Button, Layer, Grommet } from 'grommet';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
