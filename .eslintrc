@@ -1,0 +1,18 @@
+{
+  "eslintConfig": {
+    "extends": ["react-app", "shared-config"],
+    "rules": {
+      "additional-rule": "warn",
+      "@typescript-eslint/no-redclare": "off",
+      "no-redeclare": "off"
+    },
+    "overrides": [
+      {
+        "files": ["**/*.ts?(x)"],
+        "rules": {
+          "additional-typescript-only-rule": "warn"
+        }
+      }
+    ]
+  }
+}
