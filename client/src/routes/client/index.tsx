@@ -5,15 +5,18 @@ import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { deleteUser, requestUsers, userLogout } from '../../store/user/actions';
 import StarRating from '../common/star/StarRating';
-import { updateMovieRating } from '../../store/movie/actions';
+import { updateMovieRating, deleteMovies } from '../../store/movie/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
+import { toggleInitialSurveyModal } from '../home/actions';
+import { InitialSurvey } from '../home/InitialSurveyModal';
 
 interface ClientPageState {
     showUpdateRating: boolean;
     showSignOut: boolean;
     showDeleteAccount: boolean;
     showResetMovies: boolean;
+    initialSurveyVisible: boolean;
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -27,12 +30,17 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     updateMovieRating: (feedbackId: number, rating: number) => {
         dispatch(updateMovieRating(feedbackId, rating));
     },
+    deleteMovies: (id: number) => {
+        dispatch(deleteMovies(id));
+    },
+    toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
 });
 
 const mapStateToProps = (state: RootState) => ({
     activeUserId: state.activeUser,
     user: state.users.entities[state.activeUser],
     movies: Object.values(state.movies.entities),
+    initialSurveyVisible: state.initialSurveyVisible,
 });
 
 type ClientPageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
@@ -46,6 +54,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
             showResetMovies: false,
             showSignOut: false,
             showUpdateRating: false,
+            initialSurveyVisible: false,
         };
     }
 
@@ -126,10 +135,14 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                 <Button
                                     label={en.UI_LABELS.yes}
                                     onClick={() => {
+                                        this.props.deleteMovies(this.props.activeUserId);
+
                                         this.setState({
                                             ...this.state,
+                                            initialSurveyVisible: true,
                                             showResetMovies: false,
                                         });
+                                        toggleInitialSurveyModal(true);
                                     }}
                                 />
                                 <Button
@@ -142,6 +155,26 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                     }}
                                 />
                             </Box>
+                        </Layer>
+                    )}
+                    {this.state.initialSurveyVisible && (
+                        <Layer
+                            onEsc={() => {
+                                this.setState({
+                                    ...this.state,
+                                    initialSurveyVisible: false,
+                                });
+                                toggleInitialSurveyModal(false);
+                            }}
+                            onClickOutside={() => {
+                                this.setState({
+                                    ...this.state,
+                                    initialSurveyVisible: false,
+                                });
+                                toggleInitialSurveyModal(false);
+                            }}
+                        >
+                            <InitialSurvey />
                         </Layer>
                     )}
                 </Box>
