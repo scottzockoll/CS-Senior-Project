@@ -1,9 +1,10 @@
-import { Box, Button, Heading } from 'grommet';
+import { Box, Button, Grid, Heading } from 'grommet';
 import React from 'react';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
+import StarRating from '../common/star/StarRating';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -26,11 +27,13 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                     </Box>
                     {numberOfChildren.map(() => {
                         return (
-                            <Box>
-                                <Box width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
+                            <Box direction={'row'}>
+                                <Box flex={'grow'}>
                                     <SearchField />
                                 </Box>
-                                <Box>{/*<StarRating />*/}</Box>
+                                <Box pad={{ horizontal: 'xlarge' }}>
+                                    <StarRating currentRating={0} numberOfStars={5} size={'medium'} />
+                                </Box>
                             </Box>
                         );
                     })}
