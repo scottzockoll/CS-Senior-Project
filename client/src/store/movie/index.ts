@@ -42,6 +42,7 @@ export interface SearchMovieSuccess extends ApiRequest {
         };
     };
 }
+
 export interface SearchMovieFailure extends ApiRequest {
     type: RECEIVE_MOVIE_SEARCH_FAILURE;
 }
