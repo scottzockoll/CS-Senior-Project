@@ -10,7 +10,7 @@ import {
     usersTagsReducer,
 } from './user/reducers';
 import {
-    MOVIE_SEARCH_TYPES,
+    MovieSearchTypes,
     MovieDeleteActions,
     MovieDeleteEntitiesTypes,
     MovieEntitiesActions,
@@ -19,6 +19,7 @@ import {
 } from './movie';
 import { deleteMoviesReducer, movieSearchReducer } from './movie/reducers';
 import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
+import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './common';
 
 export type AppAction =
     | UserEntitiesActions
@@ -29,17 +30,10 @@ export type AppAction =
 
 export type ActionType =
     | UsersEntitiesTypes
-    | TOGGLE_INITIAL_SURVEY_MODAL
-    | MOVIE_SEARCH_TYPES
+    | MovieSearchTypes
     | MovieUpdateEntitiesTypes
-    | MovieDeleteEntitiesTypes;
-
-export const TOGGLE_INITIAL_SURVEY_MODAL = 'TOGGLE_INITIAL_SURVEY_MODAL';
-export type TOGGLE_INITIAL_SURVEY_MODAL = typeof TOGGLE_INITIAL_SURVEY_MODAL;
-export interface ToggleInitialSurveyModal {
-    type: TOGGLE_INITIAL_SURVEY_MODAL;
-    shouldBeVisible: boolean;
-}
+    | MovieDeleteEntitiesTypes
+    | TOGGLE_INITIAL_SURVEY_MODAL;
 
 /**
  * Alias for app-specific redux store dispatch function.

@@ -42,24 +42,6 @@ export function updateToken(token: string): TokenUpdate {
     };
 }
 
-// export function requestSingleUser(id: number): RequestUserStarted {
-//     return {
-//         id,
-//         type: REQUEST_USER_STARTED,
-//         [CALL_API]: {
-//             endpoint: `user/${id}`,
-//             schema: SCHEMAS['USER'],
-//             method: 'GET',
-//             body: {},
-//             types: {
-//                 [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
-//                 [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
-//                 [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
-//             },
-//         },
-//     };
-// }
-
 export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
     return {
         idOffset,
@@ -81,7 +63,6 @@ export function requestUsers(idOffset: number, limit: number): RequestUsersStart
 
 /**
  * API request for deleting the specified user account.
- *
  * @param id The user's id
  */
 export function deleteUser(id: number): DeleteUserStarted {
