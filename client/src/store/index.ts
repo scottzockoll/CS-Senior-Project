@@ -18,8 +18,8 @@ import {
     SearchMovieActions,
 } from './movie';
 import { deleteMoviesReducer, movieSearchReducer } from './movie/reducers';
-import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
-import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './common';
+import { toggleInitialSurveyModalReducer } from './home/reducers';
+import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
 export type AppAction =
     | UserEntitiesActions

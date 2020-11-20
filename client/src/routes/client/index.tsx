@@ -8,7 +8,7 @@ import StarRating from '../common/star/StarRating';
 import { updateMovieRating, deleteMovies } from '../../store/movie/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
-import { toggleInitialSurveyModal } from '../home/actions';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { InitialSurvey } from '../home/InitialSurveyModal';
 
 interface ClientPageState {

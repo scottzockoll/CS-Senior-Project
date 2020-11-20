@@ -2,7 +2,7 @@ import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React from 'react';
 import { InitialSurvey } from './InitialSurveyModal';
 import en from '../../en.json';
-import { toggleInitialSurveyModal } from './actions';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { Login } from '../common/Login';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';

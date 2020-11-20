@@ -1,5 +1,5 @@
-import { AppAction } from '../../store';
-import { TOGGLE_INITIAL_SURVEY_MODAL } from '../../store/common';
+import { AppAction } from '../index';
+import { TOGGLE_INITIAL_SURVEY_MODAL } from './index';
 
 export function toggleInitialSurveyModalReducer(state = false, action: AppAction): boolean {
     switch (action.type) {

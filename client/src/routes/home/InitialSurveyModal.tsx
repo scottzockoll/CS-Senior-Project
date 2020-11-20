@@ -1,6 +1,6 @@
 import { Box, Button, Heading } from 'grommet';
 import React from 'react';
-import { toggleInitialSurveyModal } from './actions';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
