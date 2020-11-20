@@ -93,20 +93,11 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
     requestAuthenticateUser,
     updateToken,
 }) => {
-    const [count, setCount] = React.useState(0);
-
-    const handleClick = (event: React.MouseEvent) => {
-        event.preventDefault();
-        getUsers(count + 50);
-        setCount(count + 50);
-    };
-
     return (
         <Box align={'center'} margin={{ top: '-50px' }}>
             {user && (
                 <Header>
                     {`Welcome, ${user.firstName} ${user.lastName}`}
-                    <Button onClick={handleClick}>Get New Users</Button>
                     <LogoutButton userLogout={userLogout} updateToken={updateToken} />
                 </Header>
             )}
