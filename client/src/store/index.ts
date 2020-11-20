@@ -2,28 +2,35 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { UserEntitiesActions, UsersEntitiesTypes } from './user';
 import {
-    userAuthReducer,
-    usersReducer,
-    tokenReducer,
-    usersMoviesReducer,
-    usersTagsReducer,
     deleteUserReducer,
+    tokenReducer,
+    userAuthReducer,
+    usersMoviesReducer,
+    usersReducer,
+    usersTagsReducer,
 } from './user/reducers';
+import {
+    MOVIE_SEARCH_TYPES,
+    MovieDeleteActions,
+    MovieDeleteEntitiesTypes,
+    MovieEntitiesActions,
+    MovieUpdateEntitiesTypes,
+    SearchMovieActions,
+} from './movie';
+import { deleteMoviesReducer, movieSearchReducer } from './movie/reducers';
 import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
-import { MovieEntitiesActions, MovieUpdateEntitiesTypes, MovieDeleteActions, MovieDeleteEntitiesTypes } from './movie';
-import { deleteMoviesReducer } from './movie/reducers';
 
 export type AppAction =
     | UserEntitiesActions
     | ToggleInitialSurveyModal
-    | SearchMovie
+    | SearchMovieActions
     | MovieEntitiesActions
     | MovieDeleteActions;
 
 export type ActionType =
     | UsersEntitiesTypes
     | TOGGLE_INITIAL_SURVEY_MODAL
-    | SEARCH_MOVIE
+    | MOVIE_SEARCH_TYPES
     | MovieUpdateEntitiesTypes
     | MovieDeleteEntitiesTypes;
 
@@ -32,13 +39,6 @@ export type TOGGLE_INITIAL_SURVEY_MODAL = typeof TOGGLE_INITIAL_SURVEY_MODAL;
 export interface ToggleInitialSurveyModal {
     type: TOGGLE_INITIAL_SURVEY_MODAL;
     shouldBeVisible: boolean;
-}
-
-export const SEARCH_MOVIE = 'SEARCH_MOVIE';
-export type SEARCH_MOVIE = typeof SEARCH_MOVIE;
-export interface SearchMovie {
-    type: SEARCH_MOVIE;
-    title: string;
 }
 
 /**
@@ -66,6 +66,7 @@ export const rootReducer = combineReducers({
     initialSurveyVisible: toggleInitialSurveyModalReducer,
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
+    movieSearchResults: movieSearchReducer,
 });
 
 /**

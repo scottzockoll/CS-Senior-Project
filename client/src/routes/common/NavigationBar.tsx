@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
+import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from 'grommet';
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
+import { SearchField } from './SearchField';
 
 function NavigationBar() {
     const history = useHistory();
@@ -12,11 +13,7 @@ function NavigationBar() {
                     <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
                 </Box>
                 <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
-                    <TextInput
-                        placeholder="Movie search"
-                        // value={value}
-                        // onChange={event => setValue(event.target.value)}
-                    />
+                    <SearchField />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (

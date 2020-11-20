@@ -1,52 +1,33 @@
-import { AppAction, SEARCH_MOVIE } from '../index';
+import { AppAction } from '../index';
+import { Paginated } from '../types';
 import {
     Movie,
-    MovieEntitiesActions,
+    RECEIVE_MOVIE_SEARCH_FAILURE,
+    RECEIVE_MOVIE_SEARCH_SUCCESS,
+    REQUEST_MOVIE_SEARCH_STARTED,
     MovieDeleteActions,
-    UPDATE_MOVIE_RATING_STARTED,
-    UPDATE_MOVIE_RATING_SUCCESS,
     DELETE_MOVIES_STARTED,
     DELETE_MOVIES_SUCCESS,
     DELETE_MOVIES_FAILURE,
 } from './index';
 
-const initialSearchMovieStates: Movie[] = [];
+const initialSearchMovieStates: Paginated<Movie> = {
+    ids: [],
+    entities: {},
+    pages: [],
+    prevPage: '',
+    nextPage: '',
+    isFetching: false,
+};
 
-export function searchMovieReducer(state = initialSearchMovieStates, action: AppAction): Movie[] {
+export function movieSearchReducer(state = initialSearchMovieStates, action: AppAction): Paginated<Movie> {
     switch (action.type) {
-        case SEARCH_MOVIE:
-            return [
-                {
-                    ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 109,
-                    title: 'Wolf of Wall St.',
-                    genres: ['Comedy'],
-                    rating: 5,
-                    tags: [],
-                },
-                {
-                    ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 110,
-                    title: 'The Mandalorian',
-                    genres: ['Action', 'Science Fiction'],
-                    rating: 4,
-                    tags: [],
-                },
-                {
-                    ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 111,
-                    title: 'The Other Guys',
-                    genres: ['Action', 'Comedy'],
-                    rating: 2,
-                    tags: [],
-                },
-            ];
+        case REQUEST_MOVIE_SEARCH_STARTED:
+            return state;
+        case RECEIVE_MOVIE_SEARCH_SUCCESS:
+            return state;
+        case RECEIVE_MOVIE_SEARCH_FAILURE:
+            return state;
         default:
             return state;
     }

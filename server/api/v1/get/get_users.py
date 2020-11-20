@@ -15,6 +15,25 @@ def get_users(limit: int, offset: int):
     of dictionaries, with the 'tag' key for those also being a list of
     dictionaries.
     """
+    data = []
+    for idx in range(offset, offset + limit):
+        movies = []
+
+        for idx2 in range(5):
+            movies.append({
+                'id': idx2,
+                'title': f"Movie_{idx2}",
+                'tags': []
+            })
+
+        data.append({
+            'id': idx,
+            'firstName': f'First_{idx}',
+            'lastName': f'Last_{idx}',
+            'email': f'Email_{idx}@example.com',
+            'movies': movies
+        })
+    return Response(json.dumps(data), status=200)
 
     con, cursor = server.utilities.db_connection()
     try:
