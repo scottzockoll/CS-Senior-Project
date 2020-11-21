@@ -174,7 +174,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                 toggleInitialSurveyModal(false);
                             }}
                         >
-                            <InitialSurvey />
+                            <InitialSurvey numMovies={5} />
                         </Layer>
                     )}
                 </Box>

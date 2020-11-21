@@ -55,7 +55,7 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
                         toggleInitialSurveyModal(false);
                     }}
                 >
-                    <InitialSurvey />
+                    <InitialSurvey numMovies={5} />
                 </Layer>
             )}
         </Box>
