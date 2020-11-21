@@ -5,7 +5,6 @@ import { Homepage } from './routes/home';
 import NavigationBar from './routes/common/NavigationBar';
 import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
-import { sampleRecord } from './ExampleData';
 
 function App() {
     return (
