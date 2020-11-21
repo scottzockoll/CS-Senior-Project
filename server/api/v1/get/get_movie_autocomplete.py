@@ -28,12 +28,9 @@ def get_movie_autocomplete(name: str):
                 titles = list(map(lambda movie: {'id': movie[1], 'title': movie[2]}, sorted(distances)))[:10]
 
                 # TODO: Update to return complete object (similar to get_movie)
-                return Response(json.dumps({
-                    "movies": titles
-                }), mimetype='application/json', status=200)
+                return Response(json.dumps(titles), mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()
