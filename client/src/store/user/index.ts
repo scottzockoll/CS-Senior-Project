@@ -118,9 +118,6 @@ export type UserEntitiesActions =
     | DeleteUserFailure
     | RequestAuthUserStarted
     | ReceiveAuthUserSuccess
-    | ReceiveUsersFailure
-    | RequestUsersStarted
-    | ReceiveUsersSuccess
     | UserLogin
     | UserLogout
     | TokenUpdate;
