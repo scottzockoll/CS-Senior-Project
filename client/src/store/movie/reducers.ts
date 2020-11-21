@@ -27,7 +27,6 @@ export function movieSearchReducer(state = initialSearchMovieStates, action: App
         case RECEIVE_MOVIE_SEARCH_SUCCESS:
             if (action.response.entities.movies) {
                 return {
-                    ...state,
                     ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
                     entities: {
                         ...state.entities,
@@ -40,7 +39,8 @@ export function movieSearchReducer(state = initialSearchMovieStates, action: App
             }
         case RECEIVE_MOVIE_SEARCH_FAILURE:
             return {
-                ...state,
+                ids: [],
+                entities: {},
                 isFetching: false,
             };
         default:
