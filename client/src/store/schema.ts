@@ -29,9 +29,9 @@ const userSchema = new schema.Entity(
 const nullSchema = new schema.Entity('null', {});
 
 export const SCHEMAS = {
+    NULL: nullSchema,
     USER: userSchema,
     USER_ARRAY: [userSchema],
-    NULL: nullSchema,
     MOVIE: movieSchema,
     MOVIE_ARRAY: [movieSchema],
     TAG: tagSchema,
