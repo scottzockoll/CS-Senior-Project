@@ -14,20 +14,35 @@ import {
 const initialSearchMovieStates: Paginated<Movie> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 
 export function movieSearchReducer(state = initialSearchMovieStates, action: AppAction): Paginated<Movie> {
     switch (action.type) {
         case REQUEST_MOVIE_SEARCH_STARTED:
-            return state;
+            return {
+                ...state,
+                isFetching: true,
+            };
         case RECEIVE_MOVIE_SEARCH_SUCCESS:
-            return state;
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.movies,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
         case RECEIVE_MOVIE_SEARCH_FAILURE:
-            return state;
+            return {
+                ...state,
+                isFetching: false,
+            };
         default:
             return state;
     }

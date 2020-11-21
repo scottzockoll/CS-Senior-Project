@@ -39,9 +39,6 @@ export function tokenReducer(state = initialUserTokenState, action: UserAuthActi
 const initialUserEntitiesState: Paginated<User> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 
@@ -61,8 +58,6 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                         ...state.entities,
                         ...action.response.entities.users,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
@@ -81,9 +76,6 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
 const initialMovieEntitiesState: Paginated<Movie> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
@@ -102,8 +94,6 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
                         ...state.entities,
                         ...action.response.entities.movies,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
@@ -122,9 +112,6 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
 const initialTagEntitiesState: Paginated<Tag> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 export function usersTagsReducer(state = initialTagEntitiesState, action: UserEntitiesActions): Paginated<Tag> {
@@ -143,8 +130,6 @@ export function usersTagsReducer(state = initialTagEntitiesState, action: UserEn
                         ...state.entities,
                         ...action.response.entities.tags,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
