@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { searchMovie } from './actions';
+import { searchMovie } from '../../store/movie/actions';
 
 const mapStateToProps = (state: RootState) => ({
     // to do
