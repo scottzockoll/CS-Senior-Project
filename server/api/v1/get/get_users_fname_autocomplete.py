@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_admin, process_movie_tags
+from server.utilities import db_connection, process_movie_tags
+from server.auth import is_admin
 from flask import Response
 import json
 

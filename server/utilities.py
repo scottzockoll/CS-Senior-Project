@@ -1,8 +1,4 @@
-from flask import session
 from mysql.connector import connection
-from flask import session, request
-from time import time
-import datetime
 
 
 def db_connection():
@@ -18,100 +14,6 @@ def db_connection():
     cursor = con.cursor()
 
     return con, cursor
-
-
-def is_user():
-    """
-        Checks to see if a user is signed in.
-        :return: Boolean
-    """
-
-    print('-'*50)
-    print('Checking if login is a user!')
-    session_id = request.cookies.get('session')
-
-    if session_id:
-        print('Has a session id!')
-        user = session.get('user')
-
-        print(f"Session expiration in {datetime.timedelta(seconds=user['expiration']-time())}.")
-
-        if user['expiration'] < time():
-            session.pop('user')
-            print('Session is expired!')
-            print('-'*50)
-            return False
-        else:
-            if user['authStatus'] == "User":
-                print('Auth status is user!')
-                print('-'*50)
-                return True
-            else:
-                print('Auth status is not user!')
-                print('-'*50)
-                return False
-    else:
-        print('No session exists!')
-        print('-'*50)
-        return False
-
-
-def is_admin():
-    """
-        Checks to see if a user is signed in with
-        admin privileges.
-        :return: Boolean
-    """
-
-    print('-'*50)
-    print('Checking if login is an admin!')
-    session_id = request.cookies.get('session')
-    if session_id:
-        print('Has a session id!')
-        user = session.get('user')
-
-        print(f"Session expiration in {datetime.timedelta(seconds=user['expiration']-time())}.")
-
-        if user['expiration'] < time():
-            session.pop('user')
-            print('Session is expired!')
-            print('-'*50)
-            return False
-        else:
-            if user['auth_status'] == "Admin":
-                print('Auth status is admin!')
-                print('-'*50)
-                return True
-            else:
-                print('Auth status is not admin!')
-                print('-'*50)
-                return False
-    else:
-        print('-' * 50)
-        print('No session exists!')
-        return False
-
-
-def is_current_user(id: int):
-    """
-        Checks to see if the id of the user signed in matches
-        the id trying to be deleted.
-        NOTE: if_current_user is false, is_admin must be true
-        when checking.
-        :param id: The id of the user being deleted
-        :return: Boolean
-    """
-    session_id = request.cookies.get('session')
-    if session_id:
-        user = session.get('user')
-
-        if user['expiration'] > time():
-            session.pop('user')
-        else:
-            if user['id'] == id:
-                return True
-            else:
-                return False
 
 
 def process_single_tag(tag: str):

@@ -1,6 +1,6 @@
 import json
 
-from flask import session, request, Response
+from flask import session, request, Response, make_response
 from server.auth import authenticate, check_update
 from time import time
 
@@ -9,6 +9,8 @@ SESSION_MAX_AGE = 60 * 60 * 24
 
 
 def auth_user(email: str):
+    print(f'Authenticating: {email}')
+
     # TODO: Add better route for user logging out, cookies expiring, refreshing
     session_id = request.cookies.get('session')
     if session_id:
@@ -22,12 +24,13 @@ def auth_user(email: str):
 
     user = authenticate(email, request.form['auth_token'])
 
-    check_update(user['firstName'], user['lastName'], user['email'])
+    # check_update(user['firstName'], user['lastName'], user['email'])
 
     if user is None:
         return Response({}, status=401)
     else:
-        response = Response(json.dumps(user), status=200)
+        print(f'User is not None: {user}')
+        response = make_response(json.dumps(user), 200)
+        response.delete_cookie("session")
         response.set_cookie("session", user['email'], max_age=SESSION_MAX_AGE)
-        session['user'] = user
         return response

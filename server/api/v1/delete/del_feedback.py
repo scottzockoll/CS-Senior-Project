@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_current_user
+from server.utilities import db_connection
+from server.auth import is_current_user
 from flask import Response
 
 

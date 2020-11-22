@@ -1,5 +1,6 @@
 from server.api.queries.get_movie import query_get_movie
-from server.utilities import db_connection, is_user
+from server.utilities import db_connection
+from server.auth import is_user
 from flask import Response
 import json
 

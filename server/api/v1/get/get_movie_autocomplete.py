@@ -1,6 +1,7 @@
 import json
 
-from server.utilities import db_connection, is_user
+from server.utilities import db_connection
+from server.auth import is_user
 from Levenshtein import distance
 from flask import Response
 

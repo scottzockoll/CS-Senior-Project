@@ -1,7 +1,8 @@
 import pickle
 import json
 
-from server.utilities import db_connection, is_current_user, is_admin
+from server.utilities import db_connection
+from server.auth import is_admin, is_current_user
 from flask import Response
 import numpy as np
 

@@ -1,3 +1,4 @@
+import server.auth
 import server.utilities
 from flask import Flask, Response
 import json
@@ -12,7 +13,7 @@ def get_user(id: int):
 
     con, cursor = server.utilities.db_connection()
     try:
-        if not server.utilities.is_user():
+        if not server.auth.is_user():
             return Response({
             }, mimetype='application/json', status=403)
         if not isinstance(id, int):  # checks if id is an integer
