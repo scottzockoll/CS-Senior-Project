@@ -23,7 +23,6 @@ import {
 } from './index';
 
 export function userLogin(id: number): UserLogin {
-    console.warn(new Error().stack);
     return {
         type: USER_LOGIN,
         id,
