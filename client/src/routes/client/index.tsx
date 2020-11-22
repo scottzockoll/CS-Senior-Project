@@ -86,12 +86,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                                 header: en.UI_LABELS.userRating,
                                 sortable: true,
                                 render: (datum) => (
-                                    <StarRating
-                                        currentRating={datum.rating}
-                                        numberOfStars={5}
-                                        size={'medium'}
-                                        onClick={() => {}}
-                                    />
+                                    <StarRating current={datum.rating ?? 0} maximum={5} onClick={() => {}} />
                                 ),
                             },
                         ]}

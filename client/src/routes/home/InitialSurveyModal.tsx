@@ -34,7 +34,7 @@ const MovieSearchList = (props: { count: number }) => {
                     <SearchField />
                 </Box>
                 <Box pad={{ horizontal: 'xlarge' }}>
-                    <StarRating currentRating={0} numberOfStars={5} size={'medium'} />
+                    <StarRating current={0} maximum={5} />
                 </Box>
             </Box>
         );

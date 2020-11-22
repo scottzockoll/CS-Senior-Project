@@ -1,17 +1,18 @@
-import React, { RefObject } from 'react';
-import CSS from 'csstype';
+import React from 'react';
+import { Box } from 'grommet';
+import { Star, StarHalf } from 'grommet-icons';
 
 type ClickHandler = (event: React.MouseEvent) => void;
 
 interface StarRatingProps {
-    currentRating: number;
-    numberOfStars: number;
-    size: string;
-    onClick?: ClickHandler | null;
+    current: number;
+    maximum: number;
+    onClick?: ClickHandler;
 }
 
 interface StarRatingState {
-    currentRating: number;
+    current: number;
+    hover: number;
 }
 
 /**
@@ -20,84 +21,93 @@ interface StarRatingState {
  * selection will be disabled.
  */
 class StarRating extends React.Component<StarRatingProps, StarRatingState> {
-    styles: CSS.Properties;
-    ratingDiv: RefObject<HTMLDivElement>;
-
     constructor(props: StarRatingProps) {
         super(props);
+
         this.state = {
-            currentRating: this.props.currentRating,
-        };
-
-        // Available star sizes
-        const sizes: Record<string, string> = { small: '12px', medium: '22px', large: '32px' };
-
-        // initialize the ref
-        this.ratingDiv = React.createRef<HTMLDivElement>();
-
-        // initialize the component's style
-        this.styles = {
-            color: 'gray',
-            fontSize: !this.props.size ? sizes['small'] : sizes[this.props.size],
+            current: Math.round(this.props.current),
+            hover: -1,
         };
     }
 
-    componentDidMount() {
-        this.setRating(null);
-    }
+    stars = (count: number, max: number) => {
+        const elements: JSX.Element[] = [];
+        count = this.state.hover === -1 ? count : this.state.hover;
+        count = Math.round(count / 0.5) * 0.5;
 
-    hoverHandler = (event: any) => {
-        if (this.props.onClick) {
-            // Color the hovered level of stars
-            const stars = event.target.parentElement.getElementsByClassName('star');
-            const hoverValue = event.target.dataset.value;
+        const half = Math.abs(count - Math.floor(count));
 
-            Array.from(stars).forEach((star: any) => {
-                star.style.color = hoverValue >= star.dataset.value ? 'yellow' : 'gray';
-            });
+        if (half > Number.EPSILON) {
+            count -= 1;
+            max -= 1;
         }
+
+        for (let i = 0; i < count; i++) {
+            elements.push(<Star key={i} color={'gold'} />);
+        }
+
+        if (half > Number.EPSILON) {
+            elements.push(<StarHalf key={'half'} color={'gold'} />);
+            count += 0.5;
+        }
+
+        for (let i = count; i < max; i++) {
+            elements.push(<Star key={i} />);
+        }
+
+        return <React.Fragment>{elements}</React.Fragment>;
     };
 
-    setRating = (event: any) => {
-        // @ts-ignore
-        const stars = this.ratingDiv.current.getElementsByClassName('star');
+    positionToRating = (event: React.MouseEvent) => {
+        const target = event.currentTarget as HTMLElement;
+        const { left } = target.getBoundingClientRect();
 
-        Array.from(stars).forEach((star: any) => {
-            star.style.color = this.state.currentRating >= star.dataset.value ? 'yellow' : 'gray';
-        });
-    };
+        const percent = (event.clientX - left) / (24 * this.props.maximum);
+        let rating = Math.round((percent * this.props.maximum) / 0.5) * 0.5;
+        rating = Math.max(0, rating);
+        rating = Math.min(rating, this.props.maximum);
 
-    starClickHandler = (event: any) => {
-        if (this.props.onClick) {
-            let rating = event.target.dataset.value;
-            this.setState({ currentRating: rating }); // set state so the rating stays highlighted
-            this.props.onClick(rating); // trigger the event up to the parent
-        }
+        return rating;
     };
 
     render() {
+        const hover = (event: React.MouseEvent) => {
+            this.setState({
+                ...this.state,
+                hover: this.positionToRating(event),
+            });
+        };
+
+        const leave = (event: React.MouseEvent) => {
+            this.setState({
+                ...this.state,
+                hover: -1,
+            });
+        };
+
+        const click = (event: React.MouseEvent) => {
+            this.setState({
+                ...this.state,
+                current: this.positionToRating(event),
+            });
+
+            if (this.props.onClick) {
+                this.props.onClick(event);
+            }
+        };
+
         return (
-            <div
-                className="rating"
-                ref={this.ratingDiv}
-                data-rating={this.state.currentRating}
-                onMouseOut={this.setRating}
+            <Box
+                direction={'row'}
+                style={{
+                    minWidth: 24 * this.props.maximum,
+                }}
+                onMouseOver={hover}
+                onMouseLeave={leave}
+                onClick={click}
             >
-                {[...Array(+this.props.numberOfStars).keys()].map((n) => {
-                    return (
-                        <span
-                            className="star"
-                            key={n + 1}
-                            data-value={n + 1}
-                            onMouseOver={this.hoverHandler}
-                            onClick={this.starClickHandler}
-                            style={this.styles}
-                        >
-                            &#9733;
-                        </span>
-                    );
-                })}
-            </div>
+                {this.stars(this.state.current, this.props.maximum)}
+            </Box>
         );
     }
 }
