@@ -10,7 +10,11 @@ function NavigationBar() {
         <Box>
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
-                    <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
+                    <Button
+                        plain={true}
+                        label={<Image height="40" src="images/FlickPickSmall.png" />}
+                        onClick={() => history.push('/')}
+                    />
                 </Box>
                 <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
                     <SearchField />
@@ -21,8 +25,6 @@ function NavigationBar() {
                             {size === 'large' && (
                                 <Box margin={{ right: 'auto', left: 'auto' }}>
                                     <Nav direction="row" background="brand" margin={{ right: '15px' }}>
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp} />
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn} />
                                         <Anchor
                                             label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
                                             onClick={() => history.push('/admin')}
@@ -42,8 +44,6 @@ function NavigationBar() {
                                 <Menu
                                     dropBackground="white"
                                     items={[
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn },
                                         {
                                             label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
                                             onClick: () => history.push('/admin'),

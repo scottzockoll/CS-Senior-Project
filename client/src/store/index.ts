@@ -9,28 +9,15 @@ import {
     usersReducer,
     usersTagsReducer,
 } from './user/reducers';
-import {
-    MovieSearchTypes,
-    MovieDeleteActions,
-    MovieDeleteEntitiesTypes,
-    MovieEntitiesActions,
-    MovieUpdateEntitiesTypes,
-    SearchMovieActions,
-} from './movie';
-import { deleteMoviesReducer, movieSearchReducer } from './movie/reducers';
+import { MovieDeleteActions, MovieDeleteEntitiesTypes, MovieEntitiesActions, MovieUpdateEntitiesTypes } from './movie';
+import { deleteMoviesReducer } from './movie/reducers';
 import { toggleInitialSurveyModalReducer } from './home/reducers';
 import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
-export type AppAction =
-    | UserEntitiesActions
-    | ToggleInitialSurveyModal
-    | SearchMovieActions
-    | MovieEntitiesActions
-    | MovieDeleteActions;
+export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | MovieEntitiesActions | MovieDeleteActions;
 
 export type ActionType =
     | UsersEntitiesTypes
-    | MovieSearchTypes
     | MovieUpdateEntitiesTypes
     | MovieDeleteEntitiesTypes
     | TOGGLE_INITIAL_SURVEY_MODAL;
@@ -60,7 +47,6 @@ export const rootReducer = combineReducers({
     initialSurveyVisible: toggleInitialSurveyModalReducer,
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
-    movieSearchResults: movieSearchReducer,
 });
 
 /**

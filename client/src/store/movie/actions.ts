@@ -7,31 +7,10 @@ import {
     DELETE_MOVIES_STARTED,
     DELETE_MOVIES_SUCCESS,
     DeleteMoviesStarted,
-    REQUEST_MOVIE_SEARCH_STARTED,
-    RECEIVE_MOVIE_SEARCH_SUCCESS,
-    RECEIVE_MOVIE_SEARCH_FAILURE,
 } from './index';
 import { CALL_API } from '../api';
 import { SCHEMAS } from '../schema';
-import { AppAction, AsyncActionStatus } from '../index';
-
-export function searchMovie(movieTitle: string): AppAction {
-    return {
-        type: REQUEST_MOVIE_SEARCH_STARTED,
-        title: movieTitle,
-        [CALL_API]: {
-            endpoint: `movie/search/${movieTitle}`,
-            schema: SCHEMAS['MOVIE_ARRAY'],
-            method: 'GET',
-            body: {},
-            types: {
-                [AsyncActionStatus.Request]: REQUEST_MOVIE_SEARCH_STARTED,
-                [AsyncActionStatus.Success]: RECEIVE_MOVIE_SEARCH_SUCCESS,
-                [AsyncActionStatus.Failure]: RECEIVE_MOVIE_SEARCH_FAILURE,
-            },
-        },
-    };
-}
+import { AsyncActionStatus } from '../index';
 
 export function updateMovieRating(feedbackId: number, rating: number): UpdateMovieRatingStarted {
     return {
