@@ -26,11 +26,11 @@ export function movieSearchReducer(state = initialSearchMovieStates, action: App
         case RECEIVE_MOVIE_SEARCH_SUCCESS:
             return {
                 ...state,
-                // TODO
-                // @ts-ignore
                 ids:
                     Object.values(action.response.entities).length != 0
-                        ? [...Object.values(action.response.entities.movies).map((movie) => movie.id)]
+                        ? // TODO
+                          // @ts-ignore
+                          [...Object.values(action.response.entities.movies).map((movie) => movie.id)]
                         : [],
                 entities: {
                     ...action.response.entities.movies,
