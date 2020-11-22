@@ -12,7 +12,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     // TODO: endpoint has not been implemented so the parameter is ignored for right now
-    getUsers: (id: number) => dispatch(requestUsers(id, -1)),
+    getUsers: (id: number, limit: number) => dispatch(requestUsers(id, limit)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
     requestAuthenticateUser: (email: string, tokenId: string) => dispatch(requestAuthenticateUser(email, tokenId)),
@@ -106,7 +106,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers, userLoginAsync
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUsers(count + 50);
+        getUsers(count + 50, 30);
         setCount(count + 50);
     };
 

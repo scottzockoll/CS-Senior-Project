@@ -62,9 +62,7 @@ export function requestUsers(idOffset: number, limit: number): RequestUsersStart
         limit,
         type: REQUEST_USERS_STARTED,
         [CALL_API]: {
-            // TODO: this endpoint is not implemented yet
-            // endpoint: `user/${idOffset}/${limit}`,
-            endpoint: `user/${idOffset}`,
+            endpoint: `user/${idOffset}/${limit}`,
             schema: SCHEMAS['USER'],
             method: 'GET',
             body: {},
