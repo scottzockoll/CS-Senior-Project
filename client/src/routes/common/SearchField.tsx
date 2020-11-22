@@ -1,9 +1,10 @@
-import { Box, Drop, DropType, TextInput } from 'grommet';
+import { Box, Button, Drop, TextInput, Timeout } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { searchMovie } from '../../store/movie/actions';
+import { Movie } from '../../store/movie';
 
 const mapStateToProps = (state: RootState) => ({
     movies: state.movieSearchResults.ids.map((id) => state.movieSearchResults.entities[id]),
@@ -15,41 +16,98 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class UnconnectedSearchField extends React.Component<SearchFieldProps> {
-    protected dropRef: React.RefObject<DropType>;
-    protected inputRef: React.RefObject<typeof TextInput>;
+interface SearchFieldState {
+    focused: boolean;
+    movies: {
+        id: number;
+        title: string;
+    }[];
+}
+
+class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFieldState> {
+    protected inputRef: any;
+    protected timeout?: Timeout;
 
     constructor(props: Readonly<SearchFieldProps>) {
         super(props);
 
-        this.dropRef = React.createRef();
+        this.state = {
+            focused: false,
+            movies: [],
+        };
+
         this.inputRef = React.createRef();
     }
 
+    apiRequest = async (title: string) => {
+        const params: RequestInit = {
+            method: 'GET',
+            credentials: 'include',
+        };
+
+        const response = await fetch(`http://localhost:5000/api/v1/movie/search/${title}`, params);
+        return await response.json();
+    };
+
+    onFocusGained = (event: React.FocusEvent) => {
+        this.setState({
+            ...this.state,
+            focused: true,
+        });
+    };
+
+    onFocusLost = (event: React.FocusEvent) => {
+        this.setState({
+            ...this.state,
+            focused: false,
+        });
+        if (this.inputRef.current) {
+            (this.inputRef.current as HTMLInputElement).value = '';
+        }
+    };
+
+    onInput = (event: React.SyntheticEvent) => {
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+
+        this.timeout = setTimeout(async () => {
+            const input = event.target as HTMLInputElement;
+            const movies = await this.apiRequest(input.value);
+
+            this.setState({
+                ...this.state,
+                movies,
+            });
+        }, 250);
+    };
+
+    onSelect = (movie: Movie) => {};
+
     render() {
-        console.warn(this.props.movies);
         return (
             <Box>
                 <TextInput
+                    ref={this.inputRef}
                     placeholder={en.UI_LABELS.movieSearch}
-                    dropTarget={this.dropRef}
-                    dropProps={{
-                        align: {
-                            top: 'bottom',
-                        },
-                    }}
-                    onInput={(event: React.SyntheticEvent) => {
-                        const input = event.target as HTMLInputElement;
-                        this.props.movieSearch(input.value);
-                    }}
+                    onFocus={this.onFocusGained}
+                    onBlur={this.onFocusLost}
+                    onInput={this.onInput}
                 />
-                <Drop ref={'dropRef'} target={this.inputRef}>
-                    <ul>
+                {this.inputRef.current && this.state.focused && (
+                    <Drop target={this.inputRef.current} align={{ top: 'bottom' }}>
                         {this.props.movies.map((movie) => (
-                            <li key={movie.id}>{movie.title}</li>
+                            <Button
+                                key={movie.id}
+                                onClick={(event: React.MouseEvent) => {
+                                    this.onSelect(movie);
+                                }}
+                            >
+                                {movie.title}
+                            </Button>
                         ))}
-                    </ul>
-                </Drop>
+                    </Drop>
+                )}
             </Box>
         );
     }
