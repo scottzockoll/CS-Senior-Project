@@ -23,9 +23,6 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                 <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
-            <Box margin={{ top: '20px', bottom: '20px' }}>
-                <Login />
-            </Box>
             <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} height="40%" width="medium">
                 <Carousel fill play={5000}>
                     <Image fit={'cover'} src="images/movie1.jpg" />

@@ -9,7 +9,6 @@ const mapStateToProps = (state: RootState) => ({
     user: state.users.entities[state.activeUser],
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    // TODO: endpoint has not been implemented so the parameter is ignored for right now
     getUsers: (id: number) => dispatch(requestUsers(id, 1)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
@@ -19,7 +18,6 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-// What is the proper way to store this?
 const clientId = '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com';
 
 export const refreshTokenSetup = (res: any, authFunc: Function) => {
@@ -46,7 +44,6 @@ function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken
     const onSuccess = (res: any) => {
         refreshTokenSetup(res, requestAuthenticateUser);
         requestAuthenticateUser(res.profileObj.email, res.tokenId);
-        // TODO: need to get valid id from server
         userLogin(614);
         getUsers(614);
         updateToken(res.tokenId);
@@ -64,7 +61,6 @@ function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
-                style={{ marginTop: '100px' }}
                 isSignedIn={true}
             />
         </div>
@@ -79,9 +75,9 @@ function LogoutButton({ userLogout, updateToken }: LogoutButtonProps) {
     };
 
     return (
-        <div>
+        <Box>
             <GoogleLogout clientId={clientId} buttonText="Logout" onLogoutSuccess={onSuccess} />
-        </div>
+        </Box>
     );
 }
 
@@ -94,7 +90,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
     updateToken,
 }) => {
     return (
-        <Box align={'center'} margin={{ top: '-50px' }}>
+        <Box align={'center'}>
             {user && (
                 <Header>
                     {`Welcome, ${user.firstName} ${user.lastName}`}

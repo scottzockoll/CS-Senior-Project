@@ -3,6 +3,7 @@ import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
 import { SearchField } from './SearchField';
+import { Login } from './Login';
 
 function NavigationBar() {
     const history = useHistory();
@@ -18,6 +19,9 @@ function NavigationBar() {
                 </Box>
                 <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
                     <SearchField />
+                </Box>
+                <Box margin={{ top: '20px', bottom: '20px' }}>
+                    <Login />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (
