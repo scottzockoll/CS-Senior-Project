@@ -17,6 +17,8 @@ export function userAuthReducer(state = initialUserAuthState, action: UserEntiti
             return action.id;
         case 'USER_LOGOUT':
             return -1;
+        case RECEIVE_AUTH_USER_SUCCESS:
+            return action.response.result;
         default:
             return state;
     }
