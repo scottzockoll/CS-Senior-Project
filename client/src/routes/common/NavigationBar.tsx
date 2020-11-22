@@ -3,7 +3,6 @@ import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
 import { SearchField } from './SearchField';
-import { Login } from './Login';
 import LoginBox from './LoginBox';
 
 function NavigationBar() {

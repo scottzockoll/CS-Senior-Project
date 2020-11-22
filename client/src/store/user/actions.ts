@@ -35,7 +35,7 @@ export function userLogout(): UserLogout {
     };
 }
 
-export function updateToken(token: string): TokenUpdate {
+export function updateToken(token: string | null): TokenUpdate {
     return {
         type: TOKEN_UPDATE,
         token: token,

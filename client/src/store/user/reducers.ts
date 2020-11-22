@@ -26,8 +26,8 @@ export function userAuthReducer(state = initialUserAuthState, action: UserEntiti
     }
 }
 
-const initialUserTokenState: string = '';
-export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): string {
+const initialUserTokenState: string | null = '';
+export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): typeof initialUserTokenState {
     switch (action.type) {
         case 'TOKEN_UPDATE':
             return action.token;

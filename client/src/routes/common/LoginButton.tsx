@@ -1,14 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { userLogin } from '../../store/user/actions';
+import { requestUsers, updateToken, userLogin } from '../../store/user/actions';
 import { User } from '../../store/user';
-import { GoogleLogin } from 'react-google-login';
-
-const mapStateToProps = (state: RootState) => ({});
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    logout: (id: number) => dispatch(userLogin(id)),
-});
+import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import { API_ROOT } from '../../store/api';
 
 type LoginButtonProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> & {
@@ -21,14 +17,65 @@ class LoginButton extends React.Component<LoginButtonProps> {
         return (
             <GoogleLogin
                 clientId={this.props.clientId}
-                buttonText="Login"
-                // onSuccess={onSuccess}
-                // onFailure={onFailure}
+                buttonText="Login with Google"
+                onSuccess={this.props.login}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={true} // TODO: should not be always true
+                // TODO: should not be always true
+                isSignedIn={true}
             />
         );
     }
 }
+
+const mapStateToProps = (state: RootState) => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    login: async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+        const isOnlineLogin = (r: GoogleLoginResponse | GoogleLoginResponseOffline): r is GoogleLoginResponse => {
+            return r.hasOwnProperty('tokenId');
+        };
+
+        if (isOnlineLogin(response)) {
+            // Login was successful, notify the server and login
+            const email = response.profileObj.email;
+            const token = response.tokenId;
+
+            const auth = async (email: string, token: string) => {
+                let form_data = new FormData();
+                form_data.append('auth_token', token);
+
+                const userLoginPost = await fetch(`${API_ROOT}auth/${email}`, {
+                    method: 'POST',
+                    body: form_data,
+                });
+
+                const user: User = await userLoginPost.json();
+
+                dispatch(userLogin(user.id));
+                dispatch(updateToken(token));
+                dispatch(requestUsers(user.id, 1));
+            };
+
+            await auth(email, token);
+
+            // TODO: Setup token refresh, must be tested - field names do not match
+            // let time = (response.tokenObj.expires_in || 3600 - 5 * 60) * 1000;
+            //
+            // const refreshToken = async () => {
+            //     const refreshed = await response.reloadAuthResponse();
+            //     time = (refreshed.expires_in || 3600 - 5 * 60) * 1000;
+            //
+            //     await auth(email, refreshed.id_token);
+            //     updateToken(refreshed.id_token);
+            //
+            //     // Setup the other timer after the first one
+            //     setTimeout(refreshToken, time);
+            // };
+            // setTimeout(refreshToken, time);
+        } else {
+            // TODO: Dispatch a "you are offline" action
+            // dispatch(userOffline())
+        }
+    },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginButton);

@@ -1,13 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { userLogout } from '../../store/user/actions';
+import { updateToken, userLogout } from '../../store/user/actions';
 import { User } from '../../store/user';
-
-const mapStateToProps = (state: RootState) => ({});
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    logout: () => dispatch(userLogout()),
-});
+import { GoogleLogout } from 'react-google-login';
 
 type LogoutButtonProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> & {
@@ -17,8 +13,22 @@ type LogoutButtonProps = ReturnType<typeof mapStateToProps> &
 
 class LogoutButton extends React.Component<LogoutButtonProps> {
     render() {
-        return <React.Fragment />;
+        return (
+            <GoogleLogout
+                clientId={this.props.clientId}
+                buttonText={`${this.props.user.firstName} (Logout)`}
+                onLogoutSuccess={this.props.logout}
+            />
+        );
     }
 }
+
+const mapStateToProps = (state: RootState) => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    logout: () => {
+        dispatch(userLogout());
+        dispatch(updateToken(null));
+    },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogoutButton);

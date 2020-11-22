@@ -165,7 +165,7 @@ export interface DeleteUserFailure {
  */
 export interface TokenUpdate {
     type: TOKEN_UPDATE;
-    token: string;
+    token: string | null;
 }
 
 export interface AuthUser {

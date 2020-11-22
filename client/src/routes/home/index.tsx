@@ -3,7 +3,6 @@ import React from 'react';
 import { InitialSurvey } from './InitialSurveyModal';
 import en from '../../en.json';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
-import { Login } from '../common/Login';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 
