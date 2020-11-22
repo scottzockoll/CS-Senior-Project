@@ -27,12 +27,7 @@ def get_movie_autocomplete(name: str):
             # TODO: Update to return complete object (similar to get_movie)
             return Response(json.dumps(titles), mimetype='application/json', status=200)
 
-
-            # return Response({
-            #     "movies": titles
-            # }, mimetype='application/json', status=200)
-
-    # Why?
+    # Why the broad exception?
     # except Exception:
     #     return Response({
     #     }, mimetype='application/json', status=500)
