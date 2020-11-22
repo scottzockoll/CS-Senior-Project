@@ -70,41 +70,41 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
         return rating;
     };
 
+    hover = (event: React.MouseEvent) => {
+        this.setState({
+            ...this.state,
+            hover: this.positionToRating(event),
+        });
+    };
+
+    leave = (event: React.MouseEvent) => {
+        this.setState({
+            ...this.state,
+            hover: -1,
+        });
+    };
+
+    click = (event: React.MouseEvent) => {
+        this.setState({
+            ...this.state,
+            current: this.positionToRating(event),
+        });
+
+        if (this.props.onClick) {
+            this.props.onClick(event);
+        }
+    };
+
     render() {
-        const hover = (event: React.MouseEvent) => {
-            this.setState({
-                ...this.state,
-                hover: this.positionToRating(event),
-            });
-        };
-
-        const leave = (event: React.MouseEvent) => {
-            this.setState({
-                ...this.state,
-                hover: -1,
-            });
-        };
-
-        const click = (event: React.MouseEvent) => {
-            this.setState({
-                ...this.state,
-                current: this.positionToRating(event),
-            });
-
-            if (this.props.onClick) {
-                this.props.onClick(event);
-            }
-        };
-
         return (
             <Box
                 direction={'row'}
                 style={{
                     minWidth: 24 * this.props.maximum,
                 }}
-                onMouseOver={hover}
-                onMouseLeave={leave}
-                onClick={click}
+                onMouseOver={this.hover}
+                onMouseLeave={this.leave}
+                onClick={this.click}
             >
                 {this.stars(this.state.current, this.props.maximum)}
             </Box>
