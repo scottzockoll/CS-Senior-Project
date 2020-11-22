@@ -6,7 +6,8 @@ import { AppDispatch, RootState } from '../../store';
 import { searchMovie } from './actions';
 
 const mapStateToProps = (state: RootState) => ({
-    // to do
+    // movieSuggestions: ['toy story 1', 'toy story 2', 'toy story 3']
+    movieSuggestions: Object.values(state.movieSearchResults.entities).map((movie) => movie.title),
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -15,12 +16,12 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const UnconnectedSearchField: React.FC<SearchFieldProps> = ({ movieSearch }) => {
+const UnconnectedSearchField: React.FC<SearchFieldProps> = ({ movieSearch, movieSuggestions }) => {
     return (
         <Box>
             <TextInput
                 placeholder={en.UI_LABELS.movieSearch}
-                // dropProps={}
+                suggestions={movieSuggestions}
                 onInput={(event: React.SyntheticEvent) => {
                     const input = event.target as HTMLInputElement;
                     movieSearch(input.value);
