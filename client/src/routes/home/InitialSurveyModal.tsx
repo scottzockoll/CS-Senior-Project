@@ -4,7 +4,7 @@ import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
-import StarRating from '../common/star/StarRating';
+import StarRating from '../common/StarRating';
 
 interface PassedProps {
     numMovies: number;

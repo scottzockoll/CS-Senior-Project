@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { deleteUser, requestUsers, userLogout } from '../../store/user/actions';
-import StarRating from '../common/star/StarRating';
+import StarRating from '../common/StarRating';
 import { updateMovieRating, deleteMovies } from '../../store/movie/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
