@@ -4,6 +4,7 @@ import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
 import { SearchField } from './SearchField';
 import { Login } from './Login';
+import LoginBox from './LoginBox';
 
 function NavigationBar() {
     const history = useHistory();
@@ -17,11 +18,11 @@ function NavigationBar() {
                         onClick={() => history.push('/')}
                     />
                 </Box>
-                <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
-                    <SearchField />
+                <Box margin={{ left: 'auto' }}>
+                    <LoginBox />
                 </Box>
-                <Box margin={{ top: '20px', bottom: '20px' }}>
-                    <Login />
+                <Box style={{ width: 160 }}>
+                    <SearchField />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (
