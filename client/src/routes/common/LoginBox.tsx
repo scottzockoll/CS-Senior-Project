@@ -18,7 +18,7 @@ class LoginBox extends React.Component<LoginBoxProps> {
         return (
             <Box>
                 {this.props.user && <LogoutButton clientId={this.props.clientId} user={this.props.user} />}
-                {!this.props.user && <LoginButton clientId={this.props.clientId} user={this.props.user} />}
+                {!this.props.user && <LoginButton clientId={this.props.clientId} />}
             </Box>
         );
     }

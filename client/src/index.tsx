@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { Grommet } from 'grommet';
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import loggerMiddleware from 'redux-logger';
+// import loggerMiddleware from 'redux-logger';
 import { Provider } from 'react-redux';
 import { rootReducer } from './store';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -49,7 +49,8 @@ const customBreakpoints = {
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 export const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
+    // composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware, loggerMiddleware))
+    composeEnhancers(applyMiddleware(thunkMiddleware, apiMiddleware))
 );
 
 ReactDOM.render(

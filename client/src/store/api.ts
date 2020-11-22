@@ -31,6 +31,7 @@ const callApi = async (
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
     let fetchParam = {};
+    console.warn(new Error().stack);
 
     let form_data = new FormData();
 

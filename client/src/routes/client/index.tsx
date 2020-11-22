@@ -59,7 +59,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
     }
 
     componentDidMount() {
-        this.props.getUser(this.props.activeUserId);
+        // this.props.getUser(this.props.activeUserId);
     }
 
     render() {

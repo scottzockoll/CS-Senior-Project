@@ -8,7 +8,6 @@ import { API_ROOT } from '../../store/api';
 
 type LoginButtonProps = ReturnType<typeof mapStateToProps> &
     ReturnType<typeof mapDispatchToProps> & {
-        user: User;
         clientId: string;
     };
 
@@ -49,6 +48,8 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
                 });
 
                 const user: User = await userLoginPost.json();
+
+                console.warn(user);
 
                 dispatch(userLogin(user.id));
                 dispatch(updateToken(token));
