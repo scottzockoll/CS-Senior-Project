@@ -98,7 +98,12 @@ export interface RequestAuthUserStarted extends ApiRequest {
 
 export interface ReceiveAuthUserSuccess {
     type: RECEIVE_AUTH_USER_SUCCESS;
-    id: number;
+    response: {
+        entities: {
+            users: Record<number, User>;
+        };
+        result: number;
+    };
 }
 
 export interface ReceiveAuthUserFailure {
