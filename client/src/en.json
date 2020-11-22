@@ -1,5 +1,6 @@
 {
   "UI_LABELS": {
+    "flickPick": "FlickPick",
     "welcomeToFlickPick": "Welcome to FlickPick!",
     "userRecord": "User Record",
     "userId": "User ID",
@@ -19,7 +20,8 @@
       "signUp": "Sign Up",
       "home": "Home",
       "admin": "Admin",
-      "client": "Client"
+      "client": "Client",
+      "go": "Go"
     },
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",

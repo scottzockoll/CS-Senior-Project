@@ -121,7 +121,6 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
                     />
                 </Header>
             )}
-            {!user && <Header>Welcome, Guest! Sign up or Login.</Header>}
         </Box>
     );
 };

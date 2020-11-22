@@ -4,6 +4,7 @@ import { toggleInitialSurveyModal } from './actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
+import StarRating from '../common/star/StarRating';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -27,10 +28,10 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                     {numberOfChildren.map(() => {
                         return (
                             <Box>
-                                <Box width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
+                                <Box gap="none" width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
                                     <SearchField />
+                                    <StarRating currentRating={0} numberOfStars={5} size="medium" />
                                 </Box>
-                                <Box>{/*<StarRating />*/}</Box>
                             </Box>
                         );
                     })}

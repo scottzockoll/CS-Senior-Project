@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from 'grommet';
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
-import { SearchField } from './SearchField';
 
 function NavigationBar() {
     const history = useHistory();
@@ -10,10 +9,12 @@ function NavigationBar() {
         <Box>
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
-                    <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
-                </Box>
-                <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
-                    <SearchField />
+                    <Button
+                        focusIndicator={false}
+                        plain={true}
+                        label={<Image height="40" src="images/FlickPickSmall.png" />}
+                        href="/"
+                    />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (

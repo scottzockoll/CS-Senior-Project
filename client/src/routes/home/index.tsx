@@ -2,10 +2,11 @@ import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React from 'react';
 import { InitialSurvey } from './InitialSurveyModal';
 import en from '../../en.json';
-import { toggleInitialSurveyModal } from './actions';
+import { toggleInitialSurveyModal, toggleMovieModal } from './actions';
 import { Login } from '../common/Login';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
+import { SearchField } from '../common/SearchField';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -23,6 +24,20 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                 <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
+            <Box style={{ width: 250 }} margin={{ left: 'auto', right: 'auto', top: '-40px' }} width="medium">
+                <SearchField />
+                <Box margin={{ left: '270px', top: '-40px', bottom: '50px' }}>
+                    <Button
+                        margin={{ left: 'auto' }}
+                        label={en.UI_LABELS.NAVIGATION_BAR_LABELS.go}
+                        hoverIndicator
+                        onClick={() => {
+                            // to do
+                        }}
+                    />
+                </Box>
+            </Box>
+
             <Box margin={{ top: '20px', bottom: '20px' }}>
                 <Login />
             </Box>
@@ -42,6 +57,15 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
                     hoverIndicator
                     onClick={() => {
                         toggleInitialSurveyModal(true);
+                    }}
+                />
+
+                <Button
+                    style={{ width: 300 }}
+                    margin={{ top: 'medium', left: 'auto', right: 'auto' }}
+                    label={'Movie modal test btn'}
+                    onClick={() => {
+                        toggleMovieModal(true);
                     }}
                 />
             </Box>
