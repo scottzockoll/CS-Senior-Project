@@ -1,32 +1,27 @@
-import { Box, Button, Drop, TextInput, Timeout } from 'grommet';
+import { Box, Button, Drop, Text, TextInput } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { searchMovie } from '../../store/movie/actions';
-import { Movie } from '../../store/movie';
+import { API_ROOT } from '../../store/api';
 
-const mapStateToProps = (state: RootState) => ({
-    movies: state.movieSearchResults.ids.map((id) => state.movieSearchResults.entities[id]),
-});
-
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    movieSearch: (movieTitle: string) => dispatch(searchMovie(movieTitle)),
-});
+const mapStateToProps = (state: RootState) => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({});
 
 type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
+interface SearchResult {
+    id: number;
+    title: string;
+}
 interface SearchFieldState {
     focused: boolean;
-    movies: {
-        id: number;
-        title: string;
-    }[];
+    movies: SearchResult[];
 }
 
 class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFieldState> {
     protected inputRef: any;
-    protected timeout?: Timeout;
+    protected timeout?: number;
 
     constructor(props: Readonly<SearchFieldProps>) {
         super(props);
@@ -39,17 +34,22 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         this.inputRef = React.createRef();
     }
 
-    apiRequest = async (title: string) => {
+    /**
+     * Search for a movie
+     * @param title
+     */
+    static movieSearch = async (title: string) => {
         const params: RequestInit = {
             method: 'GET',
             credentials: 'include',
         };
 
-        const response = await fetch(`http://localhost:5000/api/v1/movie/search/${title}`, params);
+        const response = await fetch(`${API_ROOT}/movie/search/${title}`, params);
         return await response.json();
     };
 
     onFocusGained = (event: React.FocusEvent) => {
+        // show drop down
         this.setState({
             ...this.state,
             focused: true,
@@ -57,32 +57,46 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
     };
 
     onFocusLost = (event: React.FocusEvent) => {
-        this.setState({
-            ...this.state,
-            focused: false,
-        });
-        if (this.inputRef.current) {
-            (this.inputRef.current as HTMLInputElement).value = '';
-        }
+        // hide drop down, slight delay allows button clicks to function
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                focused: false,
+            });
+        }, 100);
     };
 
     onInput = (event: React.SyntheticEvent) => {
+        // prevent old api request from firing
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
 
+        const input = event.target as HTMLInputElement;
+        // fire request in 150ms if the user stops typing
         this.timeout = setTimeout(async () => {
-            const input = event.target as HTMLInputElement;
-            const movies = await this.apiRequest(input.value);
+            try {
+                // make request and update state
+                const movies = await SearchField.movieSearch(input.value);
 
-            this.setState({
-                ...this.state,
-                movies,
-            });
-        }, 250);
+                this.setState({
+                    ...this.state,
+                    movies,
+                });
+            } catch (ex) {
+                // clear suggestions
+                this.setState({
+                    ...this.state,
+                    movies: [],
+                });
+            }
+        }, 150) as any;
     };
 
-    onSelect = (movie: Movie) => {};
+    onSelect = (movie: SearchResult) => {
+        this.inputRef.current.value = movie.title;
+        // TODO: Show rating prompt here!!!
+    };
 
     render() {
         return (
@@ -96,14 +110,15 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
                 />
                 {this.inputRef.current && this.state.focused && (
                     <Drop target={this.inputRef.current} align={{ top: 'bottom' }}>
-                        {this.props.movies.map((movie) => (
+                        {this.state.movies.map((movie) => (
                             <Button
                                 key={movie.id}
-                                onClick={(event: React.MouseEvent) => {
+                                onClick={(event) => {
+                                    event.preventDefault();
                                     this.onSelect(movie);
                                 }}
                             >
-                                {movie.title}
+                                <Text>+ {movie.title}</Text>
                             </Button>
                         ))}
                     </Drop>
