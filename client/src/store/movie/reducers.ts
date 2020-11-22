@@ -27,7 +27,7 @@ export function movieSearchReducer(state = initialSearchMovieStates, action: App
         case RECEIVE_MOVIE_SEARCH_SUCCESS:
             if (action.response.entities.movies) {
                 return {
-                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    ids: Object.values(action.response.entities.movies).map((movie) => movie.id),
                     entities: {
                         ...state.entities,
                         ...action.response.entities.movies,
