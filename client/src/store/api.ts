@@ -29,6 +29,7 @@ const callApi = async (
     body?: Record<string, string>
 ) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
+    console.warn(`CALLING: "${fullUrl}"`);
 
     let fetchParam = {};
 
@@ -46,6 +47,8 @@ const callApi = async (
 
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
+    console.warn('API CALL SUCCESSFUL');
+    console.warn(json);
 
     if (!response.ok) {
         throw new Error(json);

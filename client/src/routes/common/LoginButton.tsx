@@ -42,18 +42,19 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
                 let form_data = new FormData();
                 form_data.append('auth_token', token);
 
+                console.warn(`CALLING: "${API_ROOT}auth/${email}"`);
+
                 const userLoginPost = await fetch(`${API_ROOT}auth/${email}`, {
                     method: 'POST',
                     body: form_data,
+                    credentials: 'include',
                 });
 
                 const user: User = await userLoginPost.json();
 
-                console.warn(user);
-
                 dispatch(userLogin(user.id));
                 dispatch(updateToken(token));
-                dispatch(requestUsers(user.id, 1));
+                // dispatch(requestUsers(user.id, 1));
             };
 
             await auth(email, token);

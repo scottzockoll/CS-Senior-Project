@@ -35,17 +35,14 @@ def verify_user(firstName: str, lastName: str, email: str):
         result = cursor.fetchmany(size=1)
 
         if len(result) == 1:
-            return Response({
-            }, mimetype='application/json', status=200)
+            return Response({}, mimetype='application/json', status=200)
         else:
             cursor.execute("INSERT INTO users (firstName, lastName, email, isAdmin) VALUES (%s, %s, %s, 0)",
                            (firstName, lastName, email))
             con.commit()
-            return Response({
-            }, mimetype='application/json', status=201)
+            return Response({}, mimetype='application/json', status=201)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()
@@ -74,11 +71,9 @@ def check_update(firstName: str, lastName: str, email: str):
             cursor.execute("UPDATE users SET lastName=%s WHERE email=%s", (lastName, email,))
 
         con.commit()
-        return Response({
-        }, mimetype='application/json', status=200)
+        return Response({}, mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()
@@ -109,10 +104,6 @@ def authenticate(email: str, token: str) -> Union[Dict, None]:
     :return: Authorization status of the request.
     """
     con, cursor = db_connection()
-
-    print('*'*50)
-    print('AUTHENTICATING')
-    print(f'Email: {email}, Token: {token}')
 
     try:
         token_first_name, token_last_name, token_email, token_expiration = _fetch_token_info(token)
@@ -151,93 +142,61 @@ def authenticate(email: str, token: str) -> Union[Dict, None]:
 
 def is_user():
     """
-        Checks to see if a user is signed in.
-        :return: Boolean
+    Checks to see if a user is signed in.
+    :return: Boolean
     """
-
-    print('-'*50)
-    print('Checking if login is a user!')
-    session_id = request.cookies.get('session')
-
-    if session_id:
-        print('Has a session id!')
-        user = session.get('user')
-
-        print(f"Session expiration in {datetime.timedelta(seconds=user['expiration']-time())}.")
-
+    user = session.get('user')
+    if user:
         if user['expiration'] < time():
-            session.pop('user')
-            print('Session is expired!')
-            print('-'*50)
+            session.clear()
             return False
         else:
             if user['authStatus'] == "User":
-                print('Auth status is user!')
-                print('-'*50)
                 return True
             else:
-                print('Auth status is not user!')
-                print('-'*50)
                 return False
     else:
-        print('No session exists!')
-        print('-'*50)
         return False
 
 
 def is_admin():
     """
-        Checks to see if a user is signed in with
-        admin privileges.
-        :return: Boolean
+    Checks to see if a user is signed in with
+    admin privileges.
+    :return: Boolean
     """
-
-    print('-'*50)
-    print('Checking if login is an admin!')
-    session_id = request.cookies.get('session')
-    if session_id:
-        print('Has a session id!')
-        user = session.get('user')
-
-        print(f"Session expiration in {datetime.timedelta(seconds=user['expiration']-time())}.")
-
+    user = session.get('user')
+    if user:
         if user['expiration'] < time():
-            session.pop('user')
-            print('Session is expired!')
-            print('-'*50)
+            session.clear()
             return False
         else:
             if user['auth_status'] == "Admin":
-                print('Auth status is admin!')
-                print('-'*50)
                 return True
             else:
-                print('Auth status is not admin!')
-                print('-'*50)
                 return False
     else:
-        print('-' * 50)
-        print('No session exists!')
         return False
 
 
 def is_current_user(id: int):
     """
-        Checks to see if the id of the user signed in matches
-        the id trying to be deleted.
-        NOTE: if_current_user is false, is_admin must be true
-        when checking.
-        :param id: The id of the user being deleted
-        :return: Boolean
+    Checks to see if the id of the user signed in matches
+    the id trying to be deleted.
+    NOTE: if_current_user is false, is_admin must be true
+    when checking.
+    :param id: The id of the user being deleted
+    :return: Boolean
     """
-    session_id = request.cookies.get('session')
-    if session_id:
-        user = session.get('user')
-
-        if user['expiration'] > time():
-            session.pop('user')
+    user = session.get('user')
+    if user:
+        if user['expiration'] < time():
+            session.clear()
+            return False
         else:
             if user['id'] == id:
                 return True
             else:
                 return False
+    else:
+        return False

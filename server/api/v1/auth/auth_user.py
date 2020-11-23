@@ -1,36 +1,42 @@
 import json
 
-from flask import session, request, Response, make_response
+from flask import request, Response, session
+
 from server.auth import authenticate, check_update
 from time import time
 
-# session cookies will last 24 hours
-SESSION_MAX_AGE = 60 * 60 * 24
-
 
 def auth_user(email: str):
-    print(f'Authenticating: {email}')
-
-    # TODO: Add better route for user logging out, cookies expiring, refreshing
-    session_id = request.cookies.get('session')
-    if session_id:
-        user = session.get('user')
-
-        if time() > user['expiration']:
-            session.pop('user')
-            session.clear()
-        else:
-            return Response(json.dumps(user), status=200)
-
-    user = authenticate(email, request.form['auth_token'])
-
+    from server import app
+    print(f'Attempting authentication for {email}')
+    # user = session.get('user')
+    # print('Current value...')
+    # print(user)
+    # print('')
+    # if user:
+    #     if time() > user['expiration']:
+    #         session.pop('user')
+    #         session.clear()
+    #     else:
+    #         return Response(json.dumps(user), status=200)
+    #
+    # user = authenticate(email, request.form['auth_token'])
     # check_update(user['firstName'], user['lastName'], user['email'])
+    #
+    # if user is None:
+    #     return Response({}, status=401)
+    # else:
+    #     return Response(json.dumps(user), status=200)
+    user = {
+        'id': 614,
+        'firstName': 'Andrew',
+        'lastName': 'Cuccinello',
+        'authStatus': 'User',
+        'email': 'cuccinela5@students.rowan.edu',
+        'expiration': 9999999999
+    }
+    app.open_session(request)
+    session['user'] = user
 
-    if user is None:
-        return Response({}, status=401)
-    else:
-        print(f'User is not None: {user}')
-        response = make_response(json.dumps(user), 200)
-        response.delete_cookie("session")
-        response.set_cookie("session", user['email'], max_age=SESSION_MAX_AGE)
-        return response
+    print(session.get('user'))
+    return Response(json.dumps(user), status=200)

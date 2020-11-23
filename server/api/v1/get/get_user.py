@@ -14,18 +14,16 @@ def get_user(id: int):
     con, cursor = server.utilities.db_connection()
     try:
         if not server.auth.is_user():
-            return Response({
-            }, mimetype='application/json', status=403)
+            return Response({}, mimetype='application/json', status=403)
         if not isinstance(id, int):  # checks if id is an integer
-            return Response({
-            }, mimetype='application/json', status=400)
+            return Response({}, mimetype='application/json', status=400)
         else:
             cursor.execute('''SELECT * FROM FlickPick.master_user_feedback_view '''
                            '''WHERE user_id = %s;''', (id,))
+
             result = cursor.fetchall()
             if len(result) < 1:
-                return Response({
-                }, mimetype='application/json', status=404)
+                return Response({}, mimetype='application/json', status=404)
             else:
                 movie_info = [{'id': i[6], 'title': i[5], 'rating': i[7],
                                'tags': server.utilities.process_movie_tags(i[8])
@@ -41,8 +39,7 @@ def get_user(id: int):
 
                 return Response(json.dumps(data), mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()

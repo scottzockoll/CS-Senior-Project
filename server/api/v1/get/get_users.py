@@ -1,3 +1,4 @@
+
 import server.auth
 import server.utilities
 from flask import Flask, Response
@@ -36,22 +37,22 @@ def get_users(limit: int, offset: int):
     #     })
     # return Response(json.dumps(data), status=200)
 
+    print(f"Getting user {offset},{limit}")
+
     con, cursor = server.utilities.db_connection()
     try:
         if not server.auth.is_user():
-            return Response({
-            }, mimetype='application/json', status=403)
+            return Response({}, mimetype='application/json', status=403)
         if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
-            return Response({
-            }, mimetype='application/json', status=400)
+            return Response({}, mimetype='application/json', status=400)
         else:
             cursor.execute('''SELECT DISTINCT * FROM FlickPick.master_user_feedback_view '''
                            '''ORDER BY user_id ASC '''
                            '''LIMIT %s OFFSET %s;''', (limit, offset,))
             result = cursor.fetchall()
+            print(result)
             if len(result) < 1:
-                return Response({
-                }, mimetype='application/json', status=404)
+                return Response({}, mimetype='application/json', status=404)
             else:
 
                 filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
@@ -79,10 +80,10 @@ def get_users(limit: int, offset: int):
                                 dicts["movies"].append(filter_dict["movies"])
                         filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
 
+                print(users_list)
                 return Response(json.dumps(users_list), mimetype='application/json', status=200)
-    except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+    # except Exception:
+    #     return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()
