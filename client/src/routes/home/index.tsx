@@ -7,18 +7,26 @@ import { Login } from '../common/Login';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
+import { MovieModal } from './MovieModal';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
+    movieModalVisible: state.movieModalVisible,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+    toggleMovieModal: (isVisible: boolean) => dispatch(toggleMovieModal(isVisible)),
 });
 
 type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, toggleInitialSurveyModal }) => {
+const HomepageComponent: React.FC<HomepageProps> = ({
+    toggleMovieModal,
+    movieModalVisible,
+    initialSurveyVisible,
+    toggleInitialSurveyModal,
+}) => {
     return (
         <Box background="light-3" height={'xxlarge'}>
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
@@ -80,6 +88,18 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
                     }}
                 >
                     <InitialSurvey />
+                </Layer>
+            )}
+            {movieModalVisible && (
+                <Layer
+                    onEsc={() => {
+                        toggleMovieModal(false);
+                    }}
+                    onClickOutside={() => {
+                        toggleMovieModal(false);
+                    }}
+                >
+                    <MovieModal />
                 </Layer>
             )}
         </Box>
