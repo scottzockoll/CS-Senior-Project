@@ -73,6 +73,10 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         }
 
         const input = event.target as HTMLInputElement;
+        if (input.value.length < 3) {
+            return;
+        }
+
         // fire request in 150ms if the user stops typing
         this.timeout = setTimeout(async () => {
             try {

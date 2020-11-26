@@ -3,8 +3,8 @@ import React from 'react';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
-import { SearchField } from '../common/SearchField';
-import StarRating from '../common/StarRating';
+import { SearchField } from './SearchField';
+import StarRating from './StarRating';
 
 interface PassedProps {
     numMovies: number;
@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
 });
 
-type InitialSurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & PassedProps;
+type SurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & PassedProps;
 
 /**
  * Construct a list of movie search fields
@@ -42,7 +42,7 @@ const MovieSearchList = (props: { count: number }) => {
     return <React.Fragment>{fields}</React.Fragment>;
 };
 
-const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({
+const InitialSurveyComponent: React.FC<SurveyProps> = ({
     initialSurveyVisible,
     toggleInitialSurveyModal,
     numMovies,
@@ -50,33 +50,26 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({
     return (
         <Box>
             {initialSurveyVisible && (
-                <Box height={'auto'} width={'large'}>
-                    <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
-                        <Heading>Initial Survey</Heading>
-                    </Box>
+                <Box width={'large'} pad={{ horizontal: 'medium' }}>
+                    <Heading alignSelf={'center'}>Rate Some Movies</Heading>
 
                     {/*<SurveyFields n={numMovies} />*/}
                     <MovieSearchList count={numMovies} />
 
-                    <Box width="35%" margin={{ top: 'medium', left: 'auto', right: 'auto' }}>
-                        <Box>
-                            <Button
-                                primary
-                                label="Submit Survey"
-                                onClick={() => {
-                                    toggleInitialSurveyModal(false);
-                                }}
-                            />
-                        </Box>
-
-                        <Box margin={{ top: '2%', bottom: '5%' }}>
-                            <Button
-                                label="Close"
-                                onClick={() => {
-                                    toggleInitialSurveyModal(false);
-                                }}
-                            />
-                        </Box>
+                    <Box direction={'row'} margin={{ top: 'medium', horizontal: 'auto', bottom: 'medium' }}>
+                        <Button
+                            primary
+                            label="Rate!"
+                            onClick={() => {
+                                toggleInitialSurveyModal(false);
+                            }}
+                        />
+                        <Button
+                            label="Cancel!"
+                            onClick={() => {
+                                toggleInitialSurveyModal(false);
+                            }}
+                        />
                     </Box>
                 </Box>
             )}

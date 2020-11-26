@@ -9,7 +9,7 @@ import { updateMovieRating, deleteMovies } from '../../store/movie/actions';
 import { RouteComponentProps } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
-import { InitialSurvey } from '../home/InitialSurveyModal';
+import { InitialSurvey } from '../common/Survey';
 
 interface ClientPageState {
     showUpdateRating: boolean;

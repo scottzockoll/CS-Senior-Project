@@ -1,6 +1,6 @@
 import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React, { CSSProperties } from 'react';
-import { InitialSurvey } from './InitialSurveyModal';
+import { InitialSurvey } from '../common/Survey';
 import en from '../../en.json';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
