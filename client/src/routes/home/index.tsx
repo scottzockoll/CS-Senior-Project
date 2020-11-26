@@ -56,7 +56,13 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                     <Image fit={'cover'} src="images/movie4.jpg" />
                     <Image fit={'cover'} src="images/movie5.jpg" />
                 </Carousel>
-                <Carousel fill play={5000}>
+                <Carousel
+                    onClick={() => {
+                        toggleMovieModal(true);
+                    }}
+                    fill
+                    play={5000}
+                >
                     <Box margin={{ bottom: '12px' }}>
                         <h1>Title 1</h1>
                     </Box>
