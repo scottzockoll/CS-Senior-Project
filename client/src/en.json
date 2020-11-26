@@ -13,15 +13,23 @@
     "title": "Title",
     "genre": "Genre",
     "userRating": "User Rating",
-    "takeAMovieSurvey": "Take a Movie Survey",
     "movieSearch": "Movie search",
+    "initialSurvey": "Movie Survey",
+    "initialSurveyInstructions": "We want to provide you with the best possible content and recommendations, so we'd love to get to know a little more about you!  Please select five movies of your choosing, providing a rating from 1-5 stars for each.  We'll take it from there.",
+    "movieInformation": "Movie Information",
     "NAVIGATION_BAR_LABELS": {
       "signIn": "Sign In",
       "signUp": "Sign Up",
       "home": "Home",
       "admin": "Admin",
-      "client": "Client",
-      "go": "Go"
+      "client": "Client"
+    },
+    "BUTTON_LABELS": {
+      "close": "Close",
+      "rateIt": "Rate It!",
+      "takeAMovieSurvey": "Take a Movie Survey",
+      "go": "Go",
+      "submitSurvey": "Submit Survey"
     },
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",

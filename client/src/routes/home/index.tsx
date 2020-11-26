@@ -37,7 +37,7 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                 <Box margin={{ left: '270px', top: '-40px', bottom: '50px' }}>
                     <Button
                         margin={{ left: 'auto' }}
-                        label={en.UI_LABELS.NAVIGATION_BAR_LABELS.go}
+                        label={en.UI_LABELS.BUTTON_LABELS.go}
                         hoverIndicator
                         onClick={() => {
                             // to do
@@ -45,7 +45,6 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                     />
                 </Box>
             </Box>
-
             <Box margin={{ top: '20px', bottom: '20px' }}>
                 <Login />
             </Box>
@@ -57,17 +56,33 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                     <Image fit={'cover'} src="images/movie4.jpg" />
                     <Image fit={'cover'} src="images/movie5.jpg" />
                 </Carousel>
+                <Carousel fill play={5000}>
+                    <Box margin={{ bottom: '12px' }}>
+                        <h1>Title 1</h1>
+                    </Box>
+                    <Box margin={{ bottom: '12px' }}>
+                        <h1>Title 2</h1>
+                    </Box>
+                    <Box margin={{ bottom: '12px' }}>
+                        <h1>Title 3</h1>
+                    </Box>
+                    <Box margin={{ bottom: '12px' }}>
+                        <h1>Title 4</h1>
+                    </Box>
+                    <Box margin={{ bottom: '12px' }}>
+                        <h1>Title 5</h1>
+                    </Box>
+                </Carousel>
                 <Button
                     style={{ width: 300 }}
                     primary
                     margin={{ top: 'medium', left: 'auto', right: 'auto' }}
-                    label={en.UI_LABELS.takeAMovieSurvey}
+                    label={en.UI_LABELS.BUTTON_LABELS.takeAMovieSurvey}
                     hoverIndicator
                     onClick={() => {
                         toggleInitialSurveyModal(true);
                     }}
                 />
-
                 <Button
                     style={{ width: 300 }}
                     margin={{ top: 'medium', left: 'auto', right: 'auto' }}

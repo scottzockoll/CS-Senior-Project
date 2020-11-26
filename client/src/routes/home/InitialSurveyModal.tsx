@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
 import StarRating from '../common/star/StarRating';
+import en from '../../en.json';
 
 const mapStateToProps = (state: RootState) => ({
     initialSurveyVisible: state.initialSurveyVisible,
@@ -21,9 +22,12 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
     return (
         <Box>
             {initialSurveyVisible && (
-                <Box height={'auto'} width={'large'}>
+                <Box height={'auto'} width={'large'} margin={{ right: '25px', left: '25px' }}>
                     <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
-                        <Heading>Initial Survey</Heading>
+                        <h1>{en.UI_LABELS.initialSurvey}</h1>
+                    </Box>
+                    <Box text-align="center" margin={{ bottom: '25px', right: '25px', left: '25px' }}>
+                        <text>{en.UI_LABELS.initialSurveyInstructions}</text>
                     </Box>
                     {numberOfChildren.map(() => {
                         return (
@@ -39,7 +43,7 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                         <Box>
                             <Button
                                 primary
-                                label="Submit Survey"
+                                label={en.UI_LABELS.BUTTON_LABELS.submitSurvey}
                                 onClick={() => {
                                     toggleInitialSurveyModal(false);
                                 }}
@@ -48,7 +52,7 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
 
                         <Box margin={{ top: '2%', bottom: '5%' }}>
                             <Button
-                                label="Close"
+                                label={en.UI_LABELS.BUTTON_LABELS.close}
                                 onClick={() => {
                                     toggleInitialSurveyModal(false);
                                 }}
