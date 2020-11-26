@@ -61,7 +61,7 @@ export interface User {
     /**
      * An array of all movie ids that the user has rated.
      */
-    movies: Record<number, Movie>;
+    movies: number[];
     /**
      * An array of all tag ids that the user has rated.
      */

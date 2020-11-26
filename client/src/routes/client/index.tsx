@@ -39,7 +39,14 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 const mapStateToProps = (state: RootState) => ({
     activeUserId: state.activeUser,
     user: state.users.entities[state.activeUser],
-    movies: Object.values(state.movies.entities),
+    movies: (() => {
+        if (state.activeUser === -1) return [];
+        if (state.users.entities.hasOwnProperty(state.activeUser)) {
+            return state.users.entities[state.activeUser].movies.map((id) => {
+                return state.movies.entities[id];
+            });
+        }
+    })(),
     initialSurveyVisible: state.initialSurveyVisible,
 });
 

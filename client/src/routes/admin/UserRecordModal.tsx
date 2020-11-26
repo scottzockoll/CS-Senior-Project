@@ -3,6 +3,7 @@ import React from 'react';
 import { User } from '../../store/user';
 import { CSVParser } from '../common/CSVParser';
 import en from '../../en.json';
+import StarRating from '../common/StarRating';
 
 interface UserRecordModalProps {
     user: User;
@@ -14,29 +15,29 @@ interface UserRecordModalProps {
  * @param user
  */
 function exportUserRecordToCSV(user: User) {
-    const movies = Object.values(user.movies);
-
-    // check if the user has at least one movie watched
-    if (movies.length < 1) {
-        alert('User has no data to export. Cancelling download.');
-        return;
-    }
-
-    if (window.confirm('Download the selected user record to CSV?')) {
-        movies.forEach(function (movie) {
-            delete movie.tags;
-        });
-
-        // retrieve the current datetime
-        let date = new Date();
-        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
-
-        // format the filename
-        let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
-
-        // export user records to csv
-        CSVParser.exportToCsv(filename, movies);
-    }
+    // const movies = Object.values(user.movies);
+    //
+    // // check if the user has at least one movie watched
+    // if (movies.length < 1) {
+    //     alert('User has no data to export. Cancelling download.');
+    //     return;
+    // }
+    //
+    // if (window.confirm('Download the selected user record to CSV?')) {
+    //     movies.forEach(function (movie) {
+    //         delete movie.tags;
+    //     });
+    //
+    //     // retrieve the current datetime
+    //     let date = new Date();
+    //     let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    //
+    //     // format the filename
+    //     let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
+    //
+    //     // export user records to csv
+    //     CSVParser.exportToCsv(filename, movies);
+    // }
 }
 
 /**
@@ -105,8 +106,9 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
                                 render: (datum) => {
-                                    const genres = Object.values(datum.genres);
-                                    return <Text>{genres.join('/')}</Text>;
+                                    // const genres = Object.values(datum.genres);
+                                    // return <Text>{genres.join('/')}</Text>;
+                                    return <Text>TODO: {datum}</Text>;
                                 },
                             },
                             {
@@ -115,16 +117,17 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <Meter
-                                            background={'light-4'}
-                                            values={[
-                                                {
-                                                    value: datum.rating * 20,
-                                                },
-                                            ]}
-                                            thickness="small"
-                                            size="small"
-                                        />
+                                        {/*<Meter*/}
+                                        {/*    background={'light-4'}*/}
+                                        {/*    values={[*/}
+                                        {/*        {*/}
+                                        {/*            value: datum.rating * 20,*/}
+                                        {/*        },*/}
+                                        {/*    ]}*/}
+                                        {/*    thickness="small"*/}
+                                        {/*    size="small"*/}
+                                        {/*/>*/}
+                                        <StarRating current={2} maximum={5} />
                                     </Box>
                                 ),
                             },
