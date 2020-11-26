@@ -5,10 +5,11 @@ import { Homepage } from './routes/home';
 import NavigationBar from './routes/common/NavigationBar';
 import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
+import { Box } from 'grommet';
 
 function App() {
     return (
-        <div className="App">
+        <Box className="App">
             <NavigationBar />
             <Switch>
                 <Route path="/admin">
@@ -21,7 +22,7 @@ function App() {
                     <Homepage />
                 </Route>
             </Switch>
-        </div>
+        </Box>
     );
 }
 

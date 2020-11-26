@@ -1,5 +1,5 @@
 import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import { InitialSurvey } from './InitialSurveyModal';
 import en from '../../en.json';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
@@ -17,18 +17,23 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, toggleInitialSurveyModal }) => {
+    const imgStyle: CSSProperties = {
+        display: 'block',
+        maxHeight: '70vh',
+        maxWidth: '60vh',
+        width: 'auto',
+        height: '70vh',
+    };
     return (
-        <Box background="light-3" height={'xxlarge'}>
-            <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
-                <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
-            </Box>
-            <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} height="40%" width="medium">
-                <Carousel fill play={5000}>
-                    <Image fit={'cover'} src="images/movie1.jpg" />
-                    <Image fit={'cover'} src="images/movie2.jpg" />
-                    <Image fit={'cover'} src="images/movie3.jpg" />
-                    <Image fit={'cover'} src="images/movie4.jpg" />
-                    <Image fit={'cover'} src="images/movie5.jpg" />
+        <Box background="light-3" style={{ height: '100vh' }}>
+            <Heading>{en.UI_LABELS.welcomeToFlickPick}</Heading>
+            <Box style={{ marginLeft: 'auto', marginRight: 'auto', overflow: 'show' }}>
+                <Carousel play={2500}>
+                    <Image fit={'cover'} src="images/movie1.jpg" style={imgStyle} />
+                    <Image fit={'cover'} src="images/movie2.jpg" style={imgStyle} />
+                    <Image fit={'cover'} src="images/movie3.jpg" style={imgStyle} />
+                    <Image fit={'cover'} src="images/movie4.jpg" style={imgStyle} />
+                    <Image fit={'cover'} src="images/movie5.jpg" style={imgStyle} />
                 </Carousel>
                 <Button
                     style={{ width: 300 }}
