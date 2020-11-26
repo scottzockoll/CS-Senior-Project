@@ -1,20 +1,23 @@
 import { Box, Button, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
-import { AppDispatch, RootState } from '../../store';
+import { AppDispatch, AppThunk, RootState } from '../../store';
 import { requestUsers, updateToken, userLogin, userLogout, requestAuthenticateUser } from '../../store/user/actions';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import { API_ROOT } from '../../store/api';
+import { User } from '../../store/user';
 
 const mapStateToProps = (state: RootState) => ({
     user: state.users.entities[state.activeUser],
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     // TODO: endpoint has not been implemented so the parameter is ignored for right now
-    getUsers: (id: number) => dispatch(requestUsers(id, 1)),
+    getUsers: (id: number, limit: number) => dispatch(requestUsers(id, limit)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
     requestAuthenticateUser: (email: string, tokenId: string) => dispatch(requestAuthenticateUser(email, tokenId)),
     updateToken: (token: string) => dispatch(updateToken(token)),
+    userLoginAsync: (email: string, tokenId: string) => dispatch(userLoginAsync(email, tokenId)),
 });
 
 type LoginProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -41,15 +44,27 @@ export const refreshTokenSetup = (res: any, authFunc: Function) => {
     setTimeout(refreshToken, refreshTiming);
 };
 
+export const userLoginAsync = (email: string, authToken: string): AppThunk => async (dispatch: AppDispatch) => {
+    let form_data = new FormData();
+    form_data.append('auth_token', authToken);
+
+    const userLoginPost = await fetch(`${API_ROOT}auth/${email}`, {
+        method: 'POST',
+        body: form_data,
+    });
+
+    const user: User = await userLoginPost.json();
+
+    dispatch(userLogin(user.id));
+    dispatch(updateToken(authToken));
+    dispatch(requestUsers(user.id, 30));
+};
+
 type LoginButtonProps = Omit<ReturnType<typeof mapDispatchToProps>, 'userLogout'>;
 function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }: LoginButtonProps) {
     const onSuccess = (res: any) => {
         refreshTokenSetup(res, requestAuthenticateUser);
-        requestAuthenticateUser(res.profileObj.email, res.tokenId);
-        // TODO: need to get valid id from server
-        userLogin(614);
-        getUsers(614);
-        updateToken(res.tokenId);
+        userLoginAsync(res.profileObj.email, res.tokenId);
     };
 
     const onFailure = (res: any) => {
@@ -85,19 +100,12 @@ function LogoutButton({ userLogout, updateToken }: LogoutButtonProps) {
     );
 }
 
-const UnconnectedLogin: React.FC<LoginProps> = ({
-    user,
-    getUsers,
-    userLogin,
-    userLogout,
-    requestAuthenticateUser,
-    updateToken,
-}) => {
+const UnconnectedLogin: React.FC<LoginProps> = ({ user, getUsers, userLoginAsync, userLogout, updateToken }) => {
     const [count, setCount] = React.useState(0);
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault();
-        getUsers(count + 50);
+        getUsers(count + 50, 30);
         setCount(count + 50);
     };
 
@@ -113,12 +121,7 @@ const UnconnectedLogin: React.FC<LoginProps> = ({
             {!user && (
                 <Header>
                     Welcome Guest
-                    <LoginButton
-                        getUsers={getUsers}
-                        userLogin={userLogin}
-                        requestAuthenticateUser={requestAuthenticateUser}
-                        updateToken={updateToken}
-                    />
+                    <LoginButton userLoginAsync={userLoginAsync} />
                 </Header>
             )}
             {!user && <Header>Welcome, Guest! Sign up or Login.</Header>}
