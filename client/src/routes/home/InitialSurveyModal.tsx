@@ -31,9 +31,11 @@ const InitialSurveyComponent: React.FC<InitialSurveyProps> = ({ initialSurveyVis
                     </Box>
                     {numberOfChildren.map(() => {
                         return (
-                            <Box>
-                                <Box gap="none" width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
+                            <Box gap="none" width={'medium'} margin={{ left: '3%', bottom: '2%' }}>
+                                <Box margin={{ bottom: '20px' }}>
                                     <SearchField />
+                                </Box>
+                                <Box margin={{ left: '550px', top: '-55px' }}>
                                     <StarRating currentRating={0} numberOfStars={5} size="medium" />
                                 </Box>
                             </Box>
