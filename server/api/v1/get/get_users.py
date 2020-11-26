@@ -37,6 +37,8 @@ def get_users(limit: int, offset: int):
     #     })
     # return Response(json.dumps(data), status=200)
 
+    print()
+    print('-'*50)
     print(f"Getting user {offset},{limit}")
 
     con, cursor = server.utilities.db_connection()
@@ -46,6 +48,7 @@ def get_users(limit: int, offset: int):
         if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
             return Response({}, mimetype='application/json', status=400)
         else:
+            print(offset)
             cursor.execute('''SELECT DISTINCT * FROM FlickPick.master_user_feedback_view '''
                            '''ORDER BY user_id ASC '''
                            '''LIMIT %s OFFSET %s;''', (limit, offset,))

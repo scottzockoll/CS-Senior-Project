@@ -28,7 +28,7 @@ def process_single_tag(tag: str):
     """
     split = tag.split(',')
     return {
-            'tag_id': split[0],
+            'id': split[0],
             'rating': split[1],
             'name': split[2]
         }
