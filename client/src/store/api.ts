@@ -29,9 +29,6 @@ const callApi = async (
     body?: Record<string, string>
 ) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
-    console.warn(`CALLING: "${fullUrl}"`);
-
-    let fetchParam = {};
 
     let form_data = new FormData();
 
@@ -39,7 +36,7 @@ const callApi = async (
         form_data.append(key, body[key]);
     }
 
-    fetchParam = {
+    let fetchParam: RequestInit = {
         method: method,
         body: method === 'POST' ? form_data : null,
         credentials: 'include',
@@ -47,7 +44,7 @@ const callApi = async (
 
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
-    console.warn('API CALL SUCCESSFUL');
+    console.warn(`Call to ${fullUrl}: OK!`);
     console.warn(json);
 
     if (!response.ok) {

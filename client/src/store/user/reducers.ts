@@ -2,8 +2,11 @@ import {
     DELETE_USER_FAILURE,
     DELETE_USER_STARTED,
     DELETE_USER_SUCCESS,
+    RECEIVE_USER_FAILURE,
+    RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
+    REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
     User,
     UserAuthActions,
@@ -44,11 +47,13 @@ const initialUserEntitiesState: Paginated<User> = {
 
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
+        case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
             };
+        case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             if (action.response.entities.users) {
                 return {
@@ -63,6 +68,7 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
             } else {
                 return state;
             }
+        case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
