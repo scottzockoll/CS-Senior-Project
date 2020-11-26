@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.update.query_update_feedback import query_update_feedback
-from server.utilities import is_user
 from flask import Response
 
 

@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.get.query_get_feedback_tags import query_get_feedback_tags
-from server.utilities import is_user
 from flask import Response
 import json
 
