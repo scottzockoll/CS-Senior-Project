@@ -40,7 +40,7 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                         label={en.UI_LABELS.BUTTON_LABELS.go}
                         hoverIndicator
                         onClick={() => {
-                            // to do
+                            toggleMovieModal(true);
                         }}
                     />
                 </Box>
