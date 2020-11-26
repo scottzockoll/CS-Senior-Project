@@ -1,5 +1,5 @@
-from server.utilities import db_connection
-from server.auth import is_user
+from server.queries.create.query_create_feedback_tag import query_create_feedback_tag
+from server.utilities import is_user
 from flask import Response
 import json
 
@@ -12,7 +12,6 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
     :param int tagId: The tag id to retrieve
     :return: JSON object of feedback id
     """
-    con, cursor = db_connection()
     
     # The line below is for the request body content, which is awaiting implementation on the frontend.
     # rating = request.form["rating"]
@@ -30,18 +29,11 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
             return Response({}, mimetype='application/json', status=400)
         
         # Create row in database
-        cursor.execute("INSERT INTO tag_feedback (rating, movie_id, user_id, tag_id) VALUES ({r}, {m}, {u}, {t})".format(r = rating, m = movieId, u = userId, t = tagId))
-        if cursor.rowcount == 1:
-            con.commit()
-            data = {
-                "id": cursor.lastrowid
-            }
-            return Response(json.dumps(data), mimetype='application/json', status=201)
-        else:
-            con.rollback()
+        result = query_create_feedback_tag(userId, movieId, tagId, rating)
+
+        if result is None:
             return Response({}, mimetype='application/json', status=404)
+        else:
+            return Response(json.dumps(result), mimetype='application/json', status=201)
     except Exception:
         return Response({}, mimetype='application/json', status=500)
-    finally:
-        cursor.close()
-        con.close()
