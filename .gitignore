@@ -2,7 +2,7 @@
 
 # testing
 coverage
-tests/node_modules
+tests/node_modules/**/*
 
 # production
 build
