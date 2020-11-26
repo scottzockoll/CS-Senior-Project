@@ -37,10 +37,6 @@ def get_users(limit: int, offset: int):
     #     })
     # return Response(json.dumps(data), status=200)
 
-    print()
-    print('-'*50)
-    print(f"Getting user {offset},{limit}")
-
     con, cursor = server.utilities.db_connection()
     try:
         if not server.auth.is_user():
@@ -49,11 +45,10 @@ def get_users(limit: int, offset: int):
             return Response({}, mimetype='application/json', status=400)
         else:
             print(offset)
-            cursor.execute('''SELECT DISTINCT * FROM FlickPick.master_user_feedback_view '''
-                           '''ORDER BY user_id ASC '''
-                           '''LIMIT %s OFFSET %s;''', (limit, offset,))
+            cursor.execute(f'''SELECT DISTINCT * FROM FlickPick.master_user_feedback_view'''
+                           f''' WHERE user_id >= {offset} AND user_id < {offset+limit}'''
+                           f''' ORDER BY user_id;''')
             result = cursor.fetchall()
-            print(result)
             if len(result) < 1:
                 return Response({}, mimetype='application/json', status=404)
             else:
@@ -67,23 +62,22 @@ def get_users(limit: int, offset: int):
                     if not any(d['id'] == row[0] for d in users_list):
                         filter_dict["id"] = row[0]
                         filter_dict["email"] = row[3]
-                        filter_dict["first_name"] = row[1]
-                        filter_dict["last_name"] = row[2]
-                        filter_dict["is_admin"] = row[4]
+                        filter_dict["firstName"] = row[1]
+                        filter_dict["lastName"] = row[2]
+                        filter_dict["isAdmin"] = row[4]
                         filter_dict["movies"] = [
-                            {"movie_id": row[6], "title": row[5], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
+                            {"id": row[6], "title": row[5], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
                         users_list.append(filter_dict)
                         filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
                     # if there is, just append the movie information to the existing dictionary for that user
                     else:
-                        filter_dict["movies"] = {"movie_id": row[6], "title": row[5], "rating": row[7],
+                        filter_dict["movies"] = {"id": row[6], "title": row[5], "rating": row[7],
                                                  "tags": server.utilities.process_movie_tags(row[8])}
                         for dicts in users_list:
                             if dicts["id"] == row[0]:
                                 dicts["movies"].append(filter_dict["movies"])
                         filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
 
-                print(users_list)
                 return Response(json.dumps(users_list), mimetype='application/json', status=200)
     # except Exception:
     #     return Response({}, mimetype='application/json', status=500)
