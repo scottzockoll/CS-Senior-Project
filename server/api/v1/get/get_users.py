@@ -15,7 +15,6 @@ def get_users(limit: int, offset: int):
     of dictionaries, with the 'tag' key for those also being a list of
     dictionaries.
     """
-
     con, cursor = server.utilities.db_connection()
     try:
         if not server.utilities.is_user():

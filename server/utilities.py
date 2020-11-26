@@ -32,7 +32,7 @@ def is_user():
         if user['expiration'] > time():
             session.pop('user')
         else:
-            if user['auth_status'] == "User":
+            if user['authStatus'] == "User":
                 return True
             else:
                 return False
@@ -52,7 +52,7 @@ def is_admin():
         if user['expiration'] > time():
             session.pop('user')
         else:
-            if user['auth_status'] == "Admin":
+            if user['authStatus'] == "Admin":
                 return True
             else:
                 return False

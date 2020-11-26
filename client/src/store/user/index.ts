@@ -6,6 +6,10 @@ export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';
 export const RECEIVE_USERS_FAILURE = 'RECEIVE_USERS_FAILURE';
 
+export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
+export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
+export const RECEIVE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
+
 export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
 export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
 export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
@@ -13,6 +17,10 @@ export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
 export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
 export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
 export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
+
+export type REQUEST_USER_STARTED = typeof REQUEST_USER_STARTED;
+export type RECEIVE_USER_SUCCESS = typeof RECEIVE_USER_SUCCESS;
+export type RECEIVE_USER_FAILURE = typeof RECEIVE_USER_FAILURE;
 
 export const DELETE_USER_STARTED = 'DELETE_USER_STARTED';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
@@ -59,6 +67,11 @@ export interface User {
     tags: number[];
 }
 
+export interface RequestUserStarted extends ApiRequest {
+    type: REQUEST_USER_STARTED;
+    id: number;
+}
+
 /**
  * Action that occurs when fetching a list of users starts.
  */
@@ -82,11 +95,27 @@ export interface ReceiveUsersSuccess {
     };
 }
 
+export interface ReceiveUserSuccess {
+    type: RECEIVE_USER_SUCCESS;
+    response: {
+        entities: {
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
+        };
+    };
+}
+
 /**
  * Action that occurs when fetching a specific user fails.
  */
 export interface ReceiveUsersFailure {
     type: RECEIVE_USERS_FAILURE;
+    id: number;
+}
+
+export interface ReceiveUserFailure {
+    type: RECEIVE_USER_FAILURE;
     id: number;
 }
 
@@ -117,14 +146,14 @@ export type UserEntitiesActions =
     | RequestUsersStarted
     | ReceiveUsersSuccess
     | ReceiveUsersFailure
+    | RequestUserStarted
+    | ReceiveUserFailure
+    | ReceiveUserSuccess
     | DeleteUserStarted
     | DeleteUserSuccess
     | DeleteUserFailure
     | RequestAuthUserStarted
     | ReceiveAuthUserSuccess
-    | ReceiveUsersFailure
-    | RequestUsersStarted
-    | ReceiveUsersSuccess
     | UserLogin
     | UserLogout
     | TokenUpdate;

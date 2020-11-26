@@ -20,6 +20,10 @@ import {
     USER_LOGOUT,
     UserLogin,
     UserLogout,
+    RequestUserStarted,
+    REQUEST_USER_STARTED,
+    RECEIVE_USER_SUCCESS,
+    RECEIVE_USER_FAILURE,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
@@ -42,23 +46,23 @@ export function updateToken(token: string): TokenUpdate {
     };
 }
 
-// export function requestSingleUser(id: number): RequestUserStarted {
-//     return {
-//         id,
-//         type: REQUEST_USER_STARTED,
-//         [CALL_API]: {
-//             endpoint: `user/${id}`,
-//             schema: SCHEMAS['USER'],
-//             method: 'GET',
-//             body: {},
-//             types: {
-//                 [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
-//                 [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
-//                 [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
-//             },
-//         },
-//     };
-// }
+export function requestSingleUser(id: number): RequestUserStarted {
+    return {
+        id,
+        type: REQUEST_USER_STARTED,
+        [CALL_API]: {
+            endpoint: `user/${id}`,
+            schema: SCHEMAS['USER'],
+            method: 'GET',
+            body: {},
+            types: {
+                [AsyncActionStatus.Request]: REQUEST_USER_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_USER_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_USER_FAILURE,
+            },
+        },
+    };
+}
 
 export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
     return {

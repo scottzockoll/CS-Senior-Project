@@ -2,7 +2,14 @@ import { Box, Button, Header } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, AppThunk, RootState } from '../../store';
-import { requestUsers, updateToken, userLogin, userLogout, requestAuthenticateUser } from '../../store/user/actions';
+import {
+    requestSingleUser,
+    requestUsers,
+    updateToken,
+    userLogin,
+    userLogout,
+    requestAuthenticateUser,
+} from '../../store/user/actions';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { API_ROOT } from '../../store/api';
 import { User } from '../../store/user';
@@ -12,6 +19,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     // TODO: endpoint has not been implemented so the parameter is ignored for right now
+    requestSingleUser: (id: number) => dispatch(requestSingleUser(id)),
     getUsers: (id: number, limit: number) => dispatch(requestUsers(id, limit)),
     userLogin: (id: number) => dispatch(userLogin(id)),
     userLogout: () => dispatch(userLogout()),
@@ -57,11 +65,12 @@ export const userLoginAsync = (email: string, authToken: string): AppThunk => as
 
     dispatch(userLogin(user.id));
     dispatch(updateToken(authToken));
-    dispatch(requestUsers(user.id, 30));
+    dispatch(requestSingleUser(user.id));
 };
 
 type LoginButtonProps = Omit<ReturnType<typeof mapDispatchToProps>, 'userLogout'>;
-function LoginButton({ getUsers, userLogin, requestAuthenticateUser, updateToken }: LoginButtonProps) {
+// @ts-ignore
+function LoginButton({ userLoginAsync }) {
     const onSuccess = (res: any) => {
         refreshTokenSetup(res, requestAuthenticateUser);
         userLoginAsync(res.profileObj.email, res.tokenId);

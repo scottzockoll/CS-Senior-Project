@@ -2,9 +2,11 @@ import {
     DELETE_USER_FAILURE,
     DELETE_USER_STARTED,
     DELETE_USER_SUCCESS,
+    RECEIVE_AUTH_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
     REQUEST_USERS_STARTED,
+    RECEIVE_USER_SUCCESS,
     User,
     UserAuthActions,
     UserEntitiesActions,
@@ -54,6 +56,7 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                 ...state,
                 isFetching: true,
             };
+        case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             if (action.response.entities.users) {
                 return {
