@@ -7,13 +7,25 @@ export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';
 export const RECEIVE_USERS_FAILURE = 'RECEIVE_USERS_FAILURE';
 
+export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
+export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
+export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
+
+export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
+export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
+export const RECEIVE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
+
+export type REQUEST_USER_STARTED = typeof REQUEST_USER_STARTED;
+export type RECEIVE_USER_SUCCESS = typeof RECEIVE_USER_SUCCESS;
+export type RECEIVE_USER_FAILURE = typeof RECEIVE_USER_FAILURE;
+
 export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
 export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
 export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
 
-export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
-export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
-export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
+export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
+export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
+export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
 
 export const DELETE_USER_STARTED = 'DELETE_USER_STARTED';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
@@ -22,10 +34,6 @@ export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
 export type DELETE_USER_STARTED = typeof DELETE_USER_STARTED;
 export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
 export type DELETE_USER_FAILURE = typeof DELETE_USER_FAILURE;
-
-export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
-export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
-export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
 
 export type UsersEntitiesTypes = REQUEST_USERS_STARTED | RECEIVE_USERS_SUCCESS | RECEIVE_USERS_FAILURE;
 
@@ -58,6 +66,27 @@ export interface User {
      * An array of all tag ids that the user has rated.
      */
     tags: number[];
+}
+
+export interface RequestUserStarted extends ApiRequest {
+    type: REQUEST_USER_STARTED;
+    id: number;
+}
+
+export interface ReceiveUserSuccess {
+    type: RECEIVE_USER_SUCCESS;
+    response: {
+        entities: {
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
+        };
+    };
+}
+
+export interface ReceiveUserFailure {
+    type: RECEIVE_USER_FAILURE;
+    id: number;
 }
 
 /**
@@ -118,6 +147,9 @@ export type UserEntitiesActions =
     | RequestUsersStarted
     | ReceiveUsersSuccess
     | ReceiveUsersFailure
+    | RequestUserStarted
+    | ReceiveUserSuccess
+    | ReceiveUserFailure
     | DeleteUserStarted
     | DeleteUserSuccess
     | DeleteUserFailure
