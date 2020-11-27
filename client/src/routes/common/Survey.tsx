@@ -11,11 +11,11 @@ interface PassedProps {
 }
 
 const mapStateToProps = (state: RootState) => ({
-    initialSurveyVisible: state.initialSurveyVisible,
+    surveyVisible: state.surveyVisible,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+    toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
 });
 
 type SurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & PassedProps;
@@ -42,14 +42,10 @@ const MovieSearchList = (props: { count: number }) => {
     return <React.Fragment>{fields}</React.Fragment>;
 };
 
-const InitialSurveyComponent: React.FC<SurveyProps> = ({
-    initialSurveyVisible,
-    toggleInitialSurveyModal,
-    numMovies,
-}) => {
+const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey, numMovies }) => {
     return (
         <Box>
-            {initialSurveyVisible && (
+            {surveyVisible && (
                 <Box width={'large'} pad={{ horizontal: 'medium' }}>
                     <Heading alignSelf={'center'}>Rate Some Movies</Heading>
 
@@ -61,13 +57,13 @@ const InitialSurveyComponent: React.FC<SurveyProps> = ({
                             primary
                             label="Rate!"
                             onClick={() => {
-                                toggleInitialSurveyModal(false);
+                                toggleSurvey(false);
                             }}
                         />
                         <Button
                             label="Cancel!"
                             onClick={() => {
-                                toggleInitialSurveyModal(false);
+                                toggleSurvey(false);
                             }}
                         />
                     </Box>
@@ -77,4 +73,4 @@ const InitialSurveyComponent: React.FC<SurveyProps> = ({
     );
 };
 
-export const InitialSurvey = connect(mapStateToProps, mapDispatchToProps)(InitialSurveyComponent);
+export const Survey = connect(mapStateToProps, mapDispatchToProps)(UnconnectedSurvey);

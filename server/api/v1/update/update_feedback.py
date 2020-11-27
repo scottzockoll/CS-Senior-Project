@@ -1,6 +1,6 @@
 from server.auth import is_user
 from server.queries.update.query_update_feedback import query_update_feedback
-from flask import Response
+from flask import Response, request
 
 
 def update_feedback(feedbackId: int):
@@ -9,12 +9,8 @@ def update_feedback(feedbackId: int):
     :param int feedbackId: The feedback id to retrieve
     :return: Nothing
     """
-    
-    # The line below is for the request body content, which is awaiting implementation on the frontend.
-    # rating = request.form["rating"]
-    
-    # TODO: For now it is hardcoded for testing purposes
-    rating = 3
+
+    rating = request.form["rating"]
     
     try:
         # Validate user permission level

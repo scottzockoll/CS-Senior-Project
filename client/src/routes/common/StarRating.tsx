@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from 'grommet';
 import { Star, StarHalf } from 'grommet-icons';
 
-type ClickHandler = (event: React.MouseEvent) => void;
+type ClickHandler = (event: React.MouseEvent, value: number) => void;
 
 interface StarRatingProps {
     current: number;
@@ -23,9 +23,8 @@ interface StarRatingState {
 class StarRating extends React.Component<StarRatingProps, StarRatingState> {
     constructor(props: StarRatingProps) {
         super(props);
-
         this.state = {
-            current: Math.round(this.props.current),
+            current: Math.round(this.props.current / 0.5) * 0.5,
             hover: -1,
         };
     }
@@ -94,7 +93,7 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
                 ...this.state,
                 current: this.positionToRating(event),
             });
-            this.props.onClick(event);
+            this.props.onClick(event, this.positionToRating(event));
         }
     };
 

@@ -44,9 +44,10 @@ export const rootReducer = combineReducers({
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
     token: tokenReducer,
-    initialSurveyVisible: toggleInitialSurveyModalReducer,
+    surveyVisible: toggleInitialSurveyModalReducer,
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
+    // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });
 

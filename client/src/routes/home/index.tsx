@@ -1,22 +1,22 @@
 import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
 import React, { CSSProperties } from 'react';
-import { InitialSurvey } from '../common/Survey';
+import { Survey } from '../common/Survey';
 import en from '../../en.json';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: RootState) => ({
-    initialSurveyVisible: state.initialSurveyVisible,
+    surveyVisible: state.surveyVisible,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+    toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
 });
 
 type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, toggleInitialSurveyModal }) => {
+const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurvey }) => {
     const imgStyle: CSSProperties = {
         display: 'block',
         maxHeight: '70vh',
@@ -42,21 +42,21 @@ const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, togg
                     label={en.UI_LABELS.takeAMovieSurvey}
                     hoverIndicator
                     onClick={() => {
-                        toggleInitialSurveyModal(true);
+                        toggleSurvey(true);
                     }}
                 />
             </Box>
             {/* User Modal displayed when row is clicked */}
-            {initialSurveyVisible && (
+            {surveyVisible && (
                 <Layer
                     onEsc={() => {
-                        toggleInitialSurveyModal(false);
+                        toggleSurvey(false);
                     }}
                     onClickOutside={() => {
-                        toggleInitialSurveyModal(false);
+                        toggleSurvey(false);
                     }}
                 >
-                    <InitialSurvey numMovies={5} />
+                    <Survey numMovies={5} />
                 </Layer>
             )}
         </Box>
