@@ -33,7 +33,7 @@ def get_user(id: int):
                     "email": result[0][3],
                     "firstName": result[0][1],
                     "lastName": result[0][2],
-                    "isAdmin": result[0][4],
+                    "isAdmin": result[0][4] == 1,
                     "movies": movie_info,
                 }
 

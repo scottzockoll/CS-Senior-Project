@@ -64,7 +64,7 @@ def get_users(limit: int, offset: int):
                         filter_dict["email"] = row[3]
                         filter_dict["firstName"] = row[1]
                         filter_dict["lastName"] = row[2]
-                        filter_dict["isAdmin"] = row[4]
+                        filter_dict["isAdmin"] = row[4] == 1
                         filter_dict["movies"] = [
                             {"id": row[6], "title": row[5], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
                         users_list.append(filter_dict)

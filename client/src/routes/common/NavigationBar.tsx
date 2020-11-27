@@ -3,19 +3,41 @@ import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
 import LoginBox from './LoginBox';
+import { RootState } from '../../store';
+import { connect } from 'react-redux';
 
-function NavigationBar() {
+const mapStateToProps = (state: RootState) => ({
+    isAdmin: state.users.entities[state.activeUser]?.isAdmin,
+});
+
+type NavigationBarProps = ReturnType<typeof mapStateToProps>;
+
+const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) => {
     const history = useHistory();
+
+    const smallItems: object[] = [];
+    smallItems.push([
+        {
+            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+            onClick: () => history.push('/client'),
+        },
+        {
+            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+            onClick: () => history.push('/'),
+        },
+    ]);
+
+    if (props.isAdmin) {
+        smallItems.unshift({
+            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+            onClick: () => history.push('/admin'),
+        });
+    }
+
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
-                    <Button
-                        focusIndicator={false}
-                        plain={true}
-                        label={<Image height="40" src="images/FlickPickSmall.png" />}
-                        href="/"
-                    />
                     <Button
                         plain={true}
                         label={<Image height="40" src="images/FlickPickSmall.png" />}
@@ -31,10 +53,12 @@ function NavigationBar() {
                             {size === 'large' && (
                                 <Box margin={{ right: 'auto', left: 'auto' }}>
                                     <Nav direction="row" background="brand" margin={{ right: '15px' }}>
-                                        <Anchor
-                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
-                                            onClick={() => history.push('/admin')}
-                                        />
+                                        {props.isAdmin === true && (
+                                            <Anchor
+                                                label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
+                                                onClick={() => history.push('/admin')}
+                                            />
+                                        )}
                                         <Anchor
                                             label={en.UI_LABELS.NAVIGATION_BAR_LABELS.client}
                                             onClick={() => history.push('/client')}
@@ -46,31 +70,13 @@ function NavigationBar() {
                                     </Nav>
                                 </Box>
                             )}
-                            {size !== 'large' && (
-                                <Menu
-                                    dropBackground="white"
-                                    items={[
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
-                                            onClick: () => history.push('/admin'),
-                                        },
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
-                                            onClick: () => history.push('/client'),
-                                        },
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
-                                            onClick: () => history.push('/'),
-                                        },
-                                    ]}
-                                />
-                            )}
+                            {size !== 'large' && <Menu dropBackground="white" items={smallItems} />}
                         </Box>
                     )}
                 </ResponsiveContext.Consumer>
             </Header>
         </Box>
     );
-}
+};
 
-export default NavigationBar;
+export default connect(mapStateToProps)(NavigationBar);
