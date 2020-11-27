@@ -18,10 +18,10 @@ export function updateMovieRating(feedbackId: number, rating: number): UpdateMov
         rating,
         type: UPDATE_MOVIE_RATING_STARTED,
         [CALL_API]: {
-            endpoint: `feedback/movie/${feedbackId}`,
+            endpoint: `feedback/movie/${feedbackId}/${rating}`,
             schema: SCHEMAS['NULL'],
             method: 'PUT',
-            body: { rating: rating.toString() },
+            body: {},
             types: {
                 [AsyncActionStatus.Request]: UPDATE_MOVIE_RATING_STARTED,
                 [AsyncActionStatus.Success]: UPDATE_MOVIE_RATING_SUCCESS,

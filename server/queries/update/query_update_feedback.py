@@ -2,7 +2,7 @@ from server.utilities import db_connection
 from typing import Union
 
 
-def query_update_feedback(feedbackId: Union[int, str], rating: Union[int, str]):
+def query_update_feedback(feedbackId: Union[int, str], rating: Union[float, str]):
     """
     Replace a user's feedback of a specific movie
     :param Union[int, str] feedbackId: The feedback id to retrieve

@@ -1,6 +1,6 @@
 import { Middleware } from 'redux';
 import { AppAction, AsyncActionStatus, RootState } from './index';
-import { schema, normalize } from 'normalizr';
+import { normalize, schema } from 'normalizr';
 
 export const API_ROOT = 'http://localhost:5000/api/v1/';
 export const CALL_API = 'CALL_API';
@@ -30,17 +30,24 @@ const callApi = async (
 ) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
-    let form_data = new FormData();
-
-    for (const key in body) {
-        form_data.append(key, body[key]);
+    let formData = new FormData();
+    if (body) {
+        for (const key in Object.keys(body)) {
+            formData.append(key, body[key]);
+        }
     }
+
+    console.warn('Form data');
+    console.warn(formData);
 
     let fetchParam: RequestInit = {
         method: method,
-        body: method === 'POST' ? form_data : null,
+        body: method === ('POST' || 'PUT') ? formData : null,
         credentials: 'include',
     };
+
+    console.warn(`Sending request to ${fullUrl}`);
+    console.warn(fetchParam);
 
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
@@ -58,8 +65,7 @@ const callApi = async (
     // and keep it updated as we fetch more data.
 
     // Read more about Normalizr: https://github.com/paularmstrong/normalizr
-    const normalized = normalize(json, schema);
-    return normalized;
+    return normalize(json, schema);
 };
 
 export const apiMiddleware: Middleware<{}, RootState> = (store) => (next) => (action: AppAction) => {

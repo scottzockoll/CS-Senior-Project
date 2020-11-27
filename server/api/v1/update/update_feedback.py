@@ -3,14 +3,13 @@ from server.queries.update.query_update_feedback import query_update_feedback
 from flask import Response, request
 
 
-def update_feedback(feedbackId: int):
+def update_feedback(feedbackId: int, rating: float):
     """
     Replace a user's feedback of a specific movie
     :param int feedbackId: The feedback id to retrieve
+    :param float rating: Rating to set to
     :return: Nothing
     """
-
-    rating = request.form["rating"]
     
     try:
         # Validate user permission level
