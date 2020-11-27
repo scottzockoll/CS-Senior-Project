@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "strict": true,
     "alwaysStrict": true,
-
     "noImplicitAny": true,
     "noImplicitReturns": false,
     "noImplicitThis": false,
@@ -12,7 +11,6 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "downlevelIteration": true,
-
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowJs": true,

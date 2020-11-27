@@ -100,6 +100,7 @@ class StarRating extends React.Component<StarRatingProps, StarRatingState> {
     render() {
         return (
             <Box
+                margin={{ top: 'auto', bottom: 'auto' }}
                 direction={'row'}
                 style={{
                     minWidth: 24 * this.props.maximum,

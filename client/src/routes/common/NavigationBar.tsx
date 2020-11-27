@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from 'grommet';
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
-import { SearchField } from './SearchField';
 import LoginBox from './LoginBox';
 
 function NavigationBar() {
@@ -12,6 +11,12 @@ function NavigationBar() {
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
                     <Button
+                        focusIndicator={false}
+                        plain={true}
+                        label={<Image height="40" src="images/FlickPickSmall.png" />}
+                        href="/"
+                    />
+                    <Button
                         plain={true}
                         label={<Image height="40" src="images/FlickPickSmall.png" />}
                         onClick={() => history.push('/')}
@@ -19,9 +24,6 @@ function NavigationBar() {
                 </Box>
                 <Box margin={{ left: 'auto' }}>
                     <LoginBox />
-                </Box>
-                <Box style={{ width: 160 }}>
-                    <SearchField />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (

@@ -1,0 +1,70 @@
+import { fillTextInput, validateContains } from '../common/common';
+
+export const messages = {
+    headerMessage: 'Welcome to FlickPick!',
+    movieModalHeader: 'Movie Information',
+    takeAMovieSurvey: 'Take a Movie Survey',
+    go: 'Go',
+    close: 'Close',
+    submitSurvey: 'Submit Survey',
+    movieSurvey: 'Movie Survey',
+    description: 'We want to provide you with the best possible content and recommendations',
+};
+
+export const selectors = {
+    header: `.StyledHeading-sc-1rdh4aw-0:contains(${messages.headerMessage})`,
+    movieSearch: '.StyledTextInput-sc-1x30a0s-0',
+    goButton: `.gHIFjI > .StyledButton-sc-323bzc-0:contains(${messages.go})`,
+    takeAMovieSurveyButton: `.gjLUkY:contains(${messages.takeAMovieSurvey})`,
+    movieModalSelectors: {
+        title: `.Exrhr > .ApBkK > h1:contains(${messages.movieModalHeader})`,
+        closeButton: `.hAUFyq > .StyledButton-sc-323bzc-0:contains(${messages.close})`,
+    },
+    initialSurveyModalSelectors: {
+        header: `.ePjjVl > .ApBkK > h1:contains(${messages.movieSurvey})`,
+        description: 'text',
+        submitButton: `.dEvxPd > .gAsOLC > .StyledButton-sc-323bzc-0:contains(${messages.submitSurvey})`,
+    },
+};
+
+const homepageUrl = 'http://localhost:3000/';
+
+export function navigateToHomepage(): void {
+    cy.visit(homepageUrl);
+    validateContains(selectors.header, messages.headerMessage);
+}
+
+export function searchForMovie(movieTitle: string): void {
+    fillTextInput(selectors.movieSearch, movieTitle);
+    clickGoButton();
+}
+
+export function clickGoButton(): void {
+    cy.get(selectors.goButton).click();
+}
+
+export function closeMovieModal(): void {
+    cy.get(selectors.movieModalSelectors.closeButton).click();
+    cy.get(selectors.movieModalSelectors.closeButton).should('not.exist');
+    cy.get(selectors.header).should('exist');
+}
+
+export function openInitialSurveyModal(): void {
+    cy.get(selectors.takeAMovieSurveyButton).click();
+    cy.get(selectors.initialSurveyModalSelectors.header).should('exist');
+    validateContains(selectors.initialSurveyModalSelectors.description, messages.description);
+}
+
+export function fillInitialSurvey(titles: string[]): void {
+    let child: number = 3;
+    titles.forEach((title) => {
+        cy.get(
+            `:nth-child(${child}) > .bghRLY > .StyledBox-sc-13pk1d4-0 > .StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 > .StyledTextInput-sc-1x30a0s-0`
+        )
+            .clear()
+            .type(title);
+            child++;
+    });
+    cy.get(selectors.initialSurveyModalSelectors.submitButton).click();
+    cy.get(selectors.initialSurveyModalSelectors.header).should('not.exist');
+}

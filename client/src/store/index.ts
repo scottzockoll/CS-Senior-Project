@@ -9,18 +9,31 @@ import {
     usersReducer,
     usersTagsReducer,
 } from './user/reducers';
-import { MovieDeleteActions, MovieDeleteEntitiesTypes, MovieEntitiesActions, MovieUpdateEntitiesTypes } from './movie';
+import {
+    MovieDeleteActions,
+    MovieDeleteEntitiesTypes,
+    MovieEntitiesActions,
+    MovieUpdateEntitiesTypes,
+    TOGGLE_MOVIE_MODAL,
+    ToggleMovieModal,
+} from './movie';
 import { deleteMoviesReducer } from './movie/reducers';
-import { toggleInitialSurveyModalReducer } from './home/reducers';
+import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
 import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
-export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | MovieEntitiesActions | MovieDeleteActions;
+export type AppAction =
+    | UserEntitiesActions
+    | ToggleInitialSurveyModal
+    | MovieEntitiesActions
+    | MovieDeleteActions
+    | ToggleMovieModal;
 
 export type ActionType =
     | UsersEntitiesTypes
     | MovieUpdateEntitiesTypes
     | MovieDeleteEntitiesTypes
-    | TOGGLE_INITIAL_SURVEY_MODAL;
+    | TOGGLE_INITIAL_SURVEY_MODAL
+    | TOGGLE_MOVIE_MODAL;
 
 /**
  * Alias for app-specific redux store dispatch function.
@@ -47,6 +60,7 @@ export const rootReducer = combineReducers({
     surveyVisible: toggleInitialSurveyModalReducer,
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
+    movieModalVisible: toggleMovieModalReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });

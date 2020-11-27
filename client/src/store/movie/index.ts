@@ -76,3 +76,10 @@ export interface DeleteMoviesFailure {
 }
 
 export type MovieDeleteActions = DeleteMoviesStarted | DeleteMoviesSuccess | DeleteMoviesFailure;
+
+export const TOGGLE_MOVIE_MODAL = 'TOGGLE_MOVIE_MODAL';
+export type TOGGLE_MOVIE_MODAL = typeof TOGGLE_MOVIE_MODAL;
+export interface ToggleMovieModal {
+    type: TOGGLE_MOVIE_MODAL;
+    shouldBeVisible: boolean;
+}

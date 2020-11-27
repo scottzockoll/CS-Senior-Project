@@ -29,7 +29,7 @@ const MovieSearchList = (props: { count: number }) => {
     let fields: JSX.Element[] = [];
     for (let i = 0; i < props.count; i++) {
         fields.push(
-            <Box direction={'row'} key={i}>
+            <Box direction={'row'} key={i} pad={{ vertical: 'xxsmall' }}>
                 <Box flex={'grow'}>
                     <SearchField />
                 </Box>
@@ -55,13 +55,14 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
                     <Box direction={'row'} margin={{ top: 'medium', horizontal: 'auto', bottom: 'medium' }}>
                         <Button
                             primary
-                            label="Rate!"
+                            margin={{ right: 'xsmall' }}
+                            label="Submit"
                             onClick={() => {
                                 toggleSurvey(false);
                             }}
                         />
                         <Button
-                            label="Cancel!"
+                            label="Cancel"
                             onClick={() => {
                                 toggleSurvey(false);
                             }}
