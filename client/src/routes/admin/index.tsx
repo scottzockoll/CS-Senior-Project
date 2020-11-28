@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
 import { connect } from 'react-redux';
+import en from '../../en.json';
 
 /***
  * Exports all the user records to a CSV file. Redirects the
@@ -27,10 +28,10 @@ const AdminPage: React.FC = () => {
                 { name: 'main', start: [0, 1], end: [1, 1] },
             ]}
         >
-            <Box gridArea="header">
+            <Box margin={{ top: '5px' }} gridArea="header">
                 <Button
                     secondary
-                    label={'Download All'}
+                    label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
                     alignSelf={'start'}
                     onClick={() => {
                         downloadAllToCSV();

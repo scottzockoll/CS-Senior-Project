@@ -14,8 +14,8 @@
     "genre": "Genre",
     "userRating": "User Rating",
     "movieSearch": "Movie search",
-    "initialSurvey": "Movie Survey",
-    "initialSurveyInstructions": "We want to provide you with the best possible content and recommendations, so we'd love to get to know a little more about you!  Please select five movies of your choosing, providing a rating from 1-5 stars for each.  We'll take it from there.",
+    "movieSurvey": "Movie Survey",
+    "movieSurveyInstructions": "We want to provide you with the best possible content and recommendations, so we'd love to get to know a little more about you!  Please select five movies of your choosing, providing a rating from 1-5 stars for each.  We'll take it from there.",
     "movieInformation": "Movie Information",
     "NAVIGATION_BAR_LABELS": {
       "signIn": "Sign In",
@@ -26,10 +26,14 @@
     },
     "BUTTON_LABELS": {
       "close": "Close",
+      "cancel": "Cancel",
       "rateIt": "Rate It!",
       "takeAMovieSurvey": "Take a Movie Survey",
       "go": "Go",
-      "submitSurvey": "Submit Survey"
+      "submit": "Submit",
+      "downloadAll": "Download All",
+      "yes": "Yes",
+      "no": "No"
     },
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",
@@ -38,8 +42,6 @@
     "resetYourMovies": "Reset Your Movies?",
     "deleteYourAccount": "Delete Your Account?",
     "signOutQuestion": "Sign Out?",
-    "yes": "Yes",
-    "no": "No",
     "updateRating": "Select New Rating",
     "confirm": "Confirm",
     "cancel": "Cancel"

@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from './SearchField';
 import StarRating from './StarRating';
+import en from '../../en.json';
 
 interface PassedProps {
     numMovies: number;
@@ -47,7 +48,10 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
         <Box>
             {surveyVisible && (
                 <Box width={'large'} pad={{ horizontal: 'medium' }}>
-                    <Heading alignSelf={'center'}>Rate Some Movies</Heading>
+                    <Heading alignSelf={'center'}>{en.UI_LABELS.movieSurvey}</Heading>
+                    <Box margin={{ bottom: '25px', top: '-10px', right: '25px', left: '25px' }}>
+                        <text>{en.UI_LABELS.movieSurveyInstructions}</text>
+                    </Box>
 
                     {/*<SurveyFields n={numMovies} />*/}
                     <MovieSearchList count={numMovies} />
@@ -56,13 +60,13 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
                         <Button
                             primary
                             margin={{ right: 'xsmall' }}
-                            label="Submit"
+                            label={en.UI_LABELS.BUTTON_LABELS.submit}
                             onClick={() => {
                                 toggleSurvey(false);
                             }}
                         />
                         <Button
-                            label="Cancel"
+                            label={en.UI_LABELS.BUTTON_LABELS.cancel}
                             onClick={() => {
                                 toggleSurvey(false);
                             }}

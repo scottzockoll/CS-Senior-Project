@@ -16,9 +16,13 @@ class Confirmation extends React.Component<ConfirmationProps> {
                 <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
                     {this.props.header && <Text size={'xxlarge'}>{this.props.header}</Text>}
                     {this.props.body && <Text size={'medium'}>{this.props.body}</Text>}
-                    <Box direction="row" justify="center">
-                        <Button label={en.UI_LABELS.yes} onClick={this.props.onConfirm} />
-                        <Button label={en.UI_LABELS.no} onClick={this.props.onCancel} />
+                    <Box margin={{ top: '20px' }} direction="row" justify="center">
+                        <Button
+                            margin={{ right: 'small' }}
+                            label={en.UI_LABELS.BUTTON_LABELS.yes}
+                            onClick={this.props.onConfirm}
+                        />
+                        <Button primary label={en.UI_LABELS.BUTTON_LABELS.no} onClick={this.props.onCancel} />
                     </Box>
                 </Box>
             </Layer>

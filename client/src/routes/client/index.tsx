@@ -125,7 +125,11 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                     sortable={true}
                 />
                 <Box direction={'row'} margin={{ top: 'medium' }}>
-                    <Button label={en.UI_LABELS.resetMovieSurvey} onClick={this.showReset} />
+                    <Button
+                        margin={{ right: 'xsmall' }}
+                        label={en.UI_LABELS.resetMovieSurvey}
+                        onClick={this.showReset}
+                    />
                     <Button label={en.UI_LABELS.deleteAccount} onClick={this.showDelete} />
                 </Box>
 

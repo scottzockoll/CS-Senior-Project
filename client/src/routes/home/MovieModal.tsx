@@ -36,25 +36,21 @@ const MovieModalComponent: React.FC<MovieModalProps> = ({ movieModalVisible, tog
                             <StarRating current={0} maximum={5} />
                         </Box>
                     </Box>
-                    <Box width="26%" margin={{ top: 'large', left: 'auto', right: 'auto' }}>
-                        <Box>
-                            <Button
-                                primary
-                                label={en.UI_LABELS.BUTTON_LABELS.rateIt}
-                                onClick={() => {
-                                    toggleMovieModal(false);
-                                }}
-                            />
-                        </Box>
-
-                        <Box margin={{ top: '2%', bottom: '5%' }}>
-                            <Button
-                                label={en.UI_LABELS.BUTTON_LABELS.close}
-                                onClick={() => {
-                                    toggleMovieModal(false);
-                                }}
-                            />
-                        </Box>
+                    <Box direction={'row'} margin={{ top: 'large', horizontal: 'auto', bottom: 'medium' }}>
+                        <Button
+                            primary
+                            margin={{ right: 'xsmall' }}
+                            label={en.UI_LABELS.BUTTON_LABELS.rateIt}
+                            onClick={() => {
+                                toggleMovieModal(false);
+                            }}
+                        />
+                        <Button
+                            label={en.UI_LABELS.BUTTON_LABELS.close}
+                            onClick={() => {
+                                toggleMovieModal(false);
+                            }}
+                        />
                     </Box>
                 </Box>
             )}
