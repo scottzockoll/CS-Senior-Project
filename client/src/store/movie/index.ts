@@ -1,6 +1,6 @@
 import { ApiRequest } from '../api';
 import { Tag } from '../tag';
-/* eslint-disable @typescript-eslint/no-redeclare */
+// /* eslint-disable @typescript-eslint/no-redeclare */
 
 /**
  * A single movie.

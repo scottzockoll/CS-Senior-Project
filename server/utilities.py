@@ -11,7 +11,7 @@ def db_connection():
     con = connection.MySQLConnection(user='fp_user', password='flickpick123',
                                      host='ec2-18-222-97-98.us-east-2.compute.amazonaws.com', database='FlickPick')
 
-    cursor = con.cursor()
+    cursor = con.cursor(buffered=True)
 
     return con, cursor
 

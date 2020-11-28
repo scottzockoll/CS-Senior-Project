@@ -10,16 +10,19 @@ def query_get_feedback(userId: int, movieId: int):
     :param Union[int, str] movieId: The movie id to retrieve
     :return: JSON object of movie id and rating
     """
-    
+
     con, cursor = db_connection()
-    
+
     try:
-        cursor.execute("SELECT rating FROM movie_feedback WHERE user_id={u} AND movie_id={m}".format(u = userId, m = movieId))
+        cursor.execute(
+            "SELECT id, rating FROM movie_feedback WHERE user_id={u} AND movie_id={m}".format(u=userId, m=movieId))
         result = cursor.fetchone()
+        print(result)
         if cursor.rowcount == 1:
             data = {
-                "id": movieId,
-                "rating": result[0]
+                "movieId": movieId,
+                "rating": result[1],
+                "feedbackId": result[0]
             }
             return data
         else:
