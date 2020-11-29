@@ -79,8 +79,8 @@ def get_users(limit: int, offset: int):
                         filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
 
                 return Response(json.dumps(users_list), mimetype='application/json', status=200)
-    # except Exception:
-    #     return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        server.utilities.log_exception_and_return_500(e)
     finally:
         cursor.close()
         con.close()

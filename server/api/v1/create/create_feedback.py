@@ -3,6 +3,8 @@ from server.queries.create.query_create_feedback import query_create_feedback
 from flask import Response
 import json
 
+from server.utilities import log_exception_and_return_500
+
 
 def create_feedback(userId: int, movieId: int):
     """
@@ -34,5 +36,6 @@ def create_feedback(userId: int, movieId: int):
             return Response({}, mimetype='application/json', status=404)
         else:
             return Response(json.dumps(result), mimetype='application/json', status=201)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+
+    except Exception as e:
+        log_exception_and_return_500(e)

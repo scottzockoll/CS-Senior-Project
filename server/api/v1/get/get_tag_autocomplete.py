@@ -1,4 +1,4 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, log_exception_and_return_500
 from server.auth import is_user
 from Levenshtein import distance
 from flask import Response
@@ -37,8 +37,8 @@ def get_tag_autocomplete(name: str, movieId: int):
                 return Response({
                     "tags": tag
                 }, mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)
     finally:
         cursor.close()
         con.close()

@@ -10,20 +10,26 @@ def query_get_feedback_tags(userId: Union[int, str], movieId: Union[int, str]):
     :param Union[int, str] movieId: The movie id to retrieve
     :return: JSON object of feedbacks array containing movie id, tag id, and rating
     """
-    
+
     con, cursor = db_connection()
-    
+
     try:
-        cursor.execute("SELECT movie_feedback.movie_id, tag_feedback.tag_id, tag_feedback.rating FROM movie_feedback JOIN tag_feedback ON movie_feedback.movie_id = tag_feedback.movie_id WHERE movie_feedback.user_id={u} AND movie_feedback.movie_id={m}".format(u = userId, m = movieId))
+        cursor.execute(
+            "SELECT movie_feedback.id, movie_feedback.movie_id, tag_feedback.tag_id, tag_feedback.rating FROM "
+            "movie_feedback JOIN "
+            "tag_feedback ON movie_feedback.movie_id = tag_feedback.movie_id WHERE movie_feedback.user_id={u} AND movie_feedback.movie_id={m}".format(
+                u=userId, m=movieId))
         result = cursor.fetchall()
         if cursor.rowcount > 0:
             data = {}
             feedbacks = []
             for row in result:
+                print(row)
                 feedbacks.append({
-                    "movie_id": row[0],
-                    "tag_id": row[1],
-                    "rating": row[2]
+                    "feedbackId": row[0],
+                    "movie_id": row[1],
+                    "tag_id": row[2],
+                    "rating": row[3]
                 })
             data.update({"feedbacks": feedbacks})
             return data

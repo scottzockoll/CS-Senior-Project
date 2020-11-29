@@ -3,6 +3,8 @@ from server.queries.create.query_create_feedback_tag import query_create_feedbac
 from flask import Response
 import json
 
+from server.utilities import log_exception_and_return_500
+
 
 def create_feedback_tag(userId: int, movieId: int, tagId: int):
     """
@@ -35,5 +37,5 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
             return Response({}, mimetype='application/json', status=404)
         else:
             return Response(json.dumps(result), mimetype='application/json', status=201)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)

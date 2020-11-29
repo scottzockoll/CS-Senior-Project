@@ -1,4 +1,4 @@
-from server.utilities import db_connection
+from server.utilities import db_connection, log_exception_and_return_500
 from server.auth import is_user
 from flask import Response
 
@@ -31,8 +31,8 @@ def get_tag(id: int):
                 "name": name,
                 "movie_id": movie_id
             }, mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)
     finally:
         cursor.close()
         con.close()

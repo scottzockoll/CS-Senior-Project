@@ -1,4 +1,4 @@
-from server.utilities import db_connection, process_movie_tags
+from server.utilities import db_connection, process_movie_tags, log_exception_and_return_500
 from server.auth import is_admin
 from flask import Response
 import json
@@ -43,8 +43,8 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
                 }
 
                 return Response(json.dumps(data), mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)
     finally:
         cursor.close()
         con.close()

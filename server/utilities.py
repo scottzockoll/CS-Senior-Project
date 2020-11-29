@@ -1,3 +1,4 @@
+from flask import Response
 from mysql.connector import connection
 
 
@@ -11,7 +12,7 @@ def db_connection():
     con = connection.MySQLConnection(user='fp_user', password='flickpick123',
                                      host='ec2-18-222-97-98.us-east-2.compute.amazonaws.com', database='FlickPick')
 
-    cursor = con.cursor(buffered=True)
+    cursor = con.cursor()
 
     return con, cursor
 
@@ -28,10 +29,10 @@ def process_single_tag(tag: str):
     """
     split = tag.split(',')
     return {
-            'id': split[0],
-            'rating': split[1],
-            'name': split[2]
-        }
+        'id': split[0],
+        'rating': split[1],
+        'name': split[2]
+    }
 
 
 def process_movie_tags(movie: str):
@@ -50,3 +51,13 @@ def process_movie_tags(movie: str):
     else:
         tag_data = movie.split(';')
     return [process_single_tag(tag) for tag in tag_data]
+
+
+def log_exception_and_return_500(e: Exception):
+    """
+    Logs exception and returns a 500 Response
+    :param Exception e: The exception to log
+    :return: A Flask Response object
+    """
+    print(e)
+    return Response({}, mimetype='application/json', status=500)

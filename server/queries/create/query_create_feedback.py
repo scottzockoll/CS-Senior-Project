@@ -18,7 +18,7 @@ def query_create_feedback(userId: Union[int, str], movieId: Union[int, str], rat
         if cursor.rowcount == 1:
             con.commit()
             data = {
-                "id": cursor.lastrowid
+                "feedbackId": cursor.lastrowid
             }
             return data
         else:

@@ -2,6 +2,8 @@ from server.auth import is_user
 from server.queries.update.query_update_feedback_tag import query_update_feedback_tag
 from flask import Response
 
+from server.utilities import log_exception_and_return_500
+
 
 def update_feedback_tag(feedbackId: int):
     """
@@ -32,5 +34,5 @@ def update_feedback_tag(feedbackId: int):
             return Response({}, mimetype='application/json', status=404)
         else:
             return Response({}, mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)

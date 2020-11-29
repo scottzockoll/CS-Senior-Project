@@ -4,6 +4,7 @@ from flask import Response
 import json
 
 from server.queries.get.get_movie import query_get_movie
+from server.utilities import log_exception_and_return_500
 
 
 def get_movie(id: int):
@@ -25,5 +26,5 @@ def get_movie(id: int):
             else:
                 return Response(json.dumps(result), mimetype='application/json', status=200)
 
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        log_exception_and_return_500(e)

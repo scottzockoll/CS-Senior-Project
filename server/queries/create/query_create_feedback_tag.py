@@ -19,7 +19,7 @@ def query_create_feedback_tag(userId: Union[int, str], movieId: Union[int, str],
         if cursor.rowcount == 1:
             con.commit()
             data = {
-                "id": cursor.lastrowid
+                "tagId": cursor.lastrowid
             }
             return data
         else:

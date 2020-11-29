@@ -17,7 +17,6 @@ def query_get_feedback(userId: int, movieId: int):
         cursor.execute(
             "SELECT id, rating FROM movie_feedback WHERE user_id={u} AND movie_id={m}".format(u=userId, m=movieId))
         result = cursor.fetchone()
-        print(result)
         if cursor.rowcount == 1:
             data = {
                 "movieId": movieId,

@@ -3,7 +3,6 @@ import server.utilities
 from flask import Flask, Response
 import json
 
-
 def get_user(id: int):
     """
     Returns a single user by user id
@@ -38,8 +37,8 @@ def get_user(id: int):
                 }
 
                 return Response(json.dumps(data), mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        server.utilities.log_exception_and_return_500(e)
     finally:
         cursor.close()
         con.close()
