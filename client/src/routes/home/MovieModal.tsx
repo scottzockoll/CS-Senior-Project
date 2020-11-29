@@ -30,15 +30,15 @@ const MovieModalComponent: React.FC<MovieModalProps> = ({ show, movie, toggleMov
                                 <h1>{en.UI_LABELS.movieInformation}</h1>
                             </Box>
                             <Box margin={{ left: '150px' }}>
-                                <Heading>Title</Heading>
+                                <h3>{en.UI_LABELS.title}</h3>
                                 <Text>{movie.title}</Text>
                             </Box>
                             <Box margin={{ left: '150px' }}>
-                                <Heading>Genre</Heading>
+                                <h3>{en.UI_LABELS.genre}</h3>
                                 {/*<Text>{movie.genres.join(', ')}</Text>*/}
                             </Box>
                             <Box margin={{ left: '150px' }}>
-                                <h3>Rating:</h3>
+                                <h3>{en.UI_LABELS.rating}</h3>
                                 <Box margin={{ left: '120px', top: '-44px' }}>
                                     <StarRating
                                         current={movie.rating}
@@ -51,14 +51,6 @@ const MovieModalComponent: React.FC<MovieModalProps> = ({ show, movie, toggleMov
                                 </Box>
                             </Box>
                             <Box width="26%" margin={{ top: 'large', left: 'auto', right: 'auto' }}>
-                                <Box>
-                                    <Button
-                                        primary
-                                        label={en.UI_LABELS.BUTTON_LABELS.rateIt}
-                                        onClick={() => toggleMovieModal(false)}
-                                    />
-                                </Box>
-
                                 <Box margin={{ top: '2%', bottom: '5%' }}>
                                     <Button
                                         label={en.UI_LABELS.BUTTON_LABELS.close}

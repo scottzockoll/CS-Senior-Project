@@ -33,7 +33,7 @@ const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurve
                 margin={{ left: 'auto', right: 'auto', top: '-20px', bottom: '50px' }}
                 width="medium"
             >
-                <SearchField />
+                <SearchField displayModal={true} />
             </Box>
             <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} width="medium">
                 <MovieCarousel />

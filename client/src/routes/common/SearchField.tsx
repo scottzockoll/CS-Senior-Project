@@ -11,7 +11,8 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleMovieModal: (show: boolean, movieId: number) => dispatch(toggleMovieModal(show, movieId)),
 });
 
-type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type SearchFieldProps = ReturnType<typeof mapStateToProps> &
+    ReturnType<typeof mapDispatchToProps> & { displayModal: boolean };
 
 interface SearchResult {
     id: number;
@@ -85,7 +86,7 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         suggestion: { label: string; value: number };
     }) => {
         this.inputRef.current.value = event.suggestion.label;
-        this.props.toggleMovieModal(true, event.suggestion.value);
+        this.props.displayModal && this.props.toggleMovieModal(true, event.suggestion.value);
     };
 
     render() {

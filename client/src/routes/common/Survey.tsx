@@ -33,7 +33,7 @@ const MovieSearchList = (props: { count: number; updateMovieRating: any }) => {
         fields.push(
             <Box direction={'row'} key={i} pad={{ vertical: 'xxsmall' }}>
                 <Box flex={'grow'}>
-                    <SearchField />
+                    <SearchField displayModal={false} />
                 </Box>
                 <Box pad={{ horizontal: 'xlarge' }}>
                     <StarRating
