@@ -1,4 +1,4 @@
-import { Box, Button, Drop, Text, TextInput } from 'grommet';
+import { Box, TextInput } from 'grommet';
 import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
@@ -15,7 +15,6 @@ interface SearchResult {
     title: string;
 }
 interface SearchFieldState {
-    focused: boolean;
     movies: SearchResult[];
 }
 
@@ -27,7 +26,6 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         super(props);
 
         this.state = {
-            focused: false,
             movies: [],
         };
 
@@ -46,24 +44,6 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
 
         const response = await fetch(`${API_ROOT}/movie/search/${title}`, params);
         return await response.json();
-    };
-
-    onFocusGained = (event: React.FocusEvent) => {
-        // show drop down
-        this.setState({
-            ...this.state,
-            focused: true,
-        });
-    };
-
-    onFocusLost = (event: React.FocusEvent) => {
-        // hide drop down, slight delay allows button clicks to function
-        setTimeout(() => {
-            this.setState({
-                ...this.state,
-                focused: false,
-            });
-        }, 100);
     };
 
     onInput = (event: React.SyntheticEvent) => {
@@ -97,9 +77,11 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         }, 150) as any;
     };
 
-    onSelect = (movie: SearchResult) => {
-        this.inputRef.current.value = movie.title;
-        // TODO: Show rating prompt here!!!
+    onSelect = (event: {
+        target: React.RefObject<HTMLElement>['current'];
+        suggestion: { label: string; value: number };
+    }) => {
+        this.inputRef.current.value = event.suggestion.label;
     };
 
     render() {
@@ -107,26 +89,14 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
             <Box>
                 <TextInput
                     ref={this.inputRef}
+                    suggestions={this.state.movies.map((movie) => ({
+                        label: movie.title,
+                        value: movie.id,
+                    }))}
                     placeholder={en.UI_LABELS.movieSearch}
-                    onFocus={this.onFocusGained}
-                    onBlur={this.onFocusLost}
+                    onSelect={this.onSelect}
                     onInput={this.onInput}
                 />
-                {this.inputRef.current && this.state.focused && (
-                    <Drop target={this.inputRef.current} align={{ top: 'bottom' }}>
-                        {this.state.movies.map((movie) => (
-                            <Button
-                                key={movie.id}
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    this.onSelect(movie);
-                                }}
-                            >
-                                <Text>+ {movie.title}</Text>
-                            </Button>
-                        ))}
-                    </Drop>
-                )}
             </Box>
         );
     }
