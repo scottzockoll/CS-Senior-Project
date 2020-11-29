@@ -136,6 +136,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                 {this.state.showResetMovies && (
                     <Confirmation
                         header={en.UI_LABELS.resetYourMovies}
+                        body={en.UI_LABELS.resetYourMoviesConfirmation}
                         onConfirm={() => {
                             this.props.deleteMovies(this.props.activeUserId);
                             this.hideReset();
@@ -148,6 +149,7 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                 {this.state.showDeleteAccount && (
                     <Confirmation
                         header={en.UI_LABELS.deleteYourAccount}
+                        body={en.UI_LABELS.deleteYourAccountConfirmation}
                         onConfirm={() => {
                             // dispatch he deleteUser action
                             this.props.deleteUser(this.props.activeUserId);

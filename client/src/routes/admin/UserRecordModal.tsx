@@ -138,12 +138,24 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         size={'medium'}
                     />
                 </Box>
-                <Box width={'small'} margin={{ top: '10px', left: 'auto', right: 'auto', bottom: '5px' }}>
+                <Box direction={'row'} margin={{ top: 'medium', horizontal: 'auto', bottom: 'medium' }}>
                     <Button
                         primary
-                        label={'Download to CSV'}
+                        margin={{ right: 'xsmall' }}
+                        label={en.UI_LABELS.BUTTON_LABELS.downloadToCsv}
                         onClick={() => {
                             exportUserRecordToCSV(this.props.user);
+                        }}
+                    />
+                    <Button
+                        label={en.UI_LABELS.BUTTON_LABELS.close}
+                        onClick={() => {
+                            {
+                                {
+                                    /* TODO: CLOSE MODAL */
+                                }
+                                this.setState({ showModal: false });
+                            }
                         }}
                     />
                 </Box>

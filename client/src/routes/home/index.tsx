@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
 import { MovieModal } from './MovieModal';
 import { toggleInitialSurveyModal, toggleMovieModal } from '../../store/home/actions';
+import MovieCarousel from './MovieCarousel';
 
 const mapStateToProps = (state: RootState) => ({
     surveyVisible: state.surveyVisible,
@@ -31,43 +32,18 @@ const HomepageComponent: React.FC<HomepageProps> = ({
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                 <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
-            <Box style={{ width: 250 }} margin={{ left: 'auto', right: 'auto', top: '-40px' }} width="medium">
+            <Box margin={{ left: 'auto', right: 'auto', bottom: '80px' }}>
+                <img width={'200px'} src={'images/FlickPickIcon.png'} />
+            </Box>
+            <Box
+                style={{ width: 250 }}
+                margin={{ left: 'auto', right: 'auto', top: '-20px', bottom: '50px' }}
+                width="medium"
+            >
                 <SearchField />
-                <Box margin={{ left: '270px', top: '-40px', bottom: '50px' }}>
-                    <Button
-                        margin={{ left: 'auto' }}
-                        label={en.UI_LABELS.BUTTON_LABELS.go}
-                        hoverIndicator
-                        onClick={() => {
-                            toggleMovieModal(true);
-                        }}
-                    />
-                </Box>
             </Box>
             <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} width="medium">
-                <Carousel
-                    onClick={() => {
-                        toggleMovieModal(true);
-                    }}
-                    fill
-                    play={5000}
-                >
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 1</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 2</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 3</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 4</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 5</h1>
-                    </Box>
-                </Carousel>
+                <MovieCarousel />
                 <Button
                     style={{ width: 300 }}
                     primary

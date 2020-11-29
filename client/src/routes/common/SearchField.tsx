@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { API_ROOT } from '../../store/api';
+import { toggleMovieModal } from '../../store/home/actions';
 
 const mapStateToProps = (state: RootState) => ({});
 const mapDispatchToProps = (dispatch: AppDispatch) => ({});
@@ -82,6 +83,7 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         suggestion: { label: string; value: number };
     }) => {
         this.inputRef.current.value = event.suggestion.label;
+        toggleMovieModal(true);
     };
 
     render() {

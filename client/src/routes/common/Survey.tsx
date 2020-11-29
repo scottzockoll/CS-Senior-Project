@@ -1,4 +1,4 @@
-import { Box, Button, Heading } from 'grommet';
+import { Box, Button, Text } from 'grommet';
 import React from 'react';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
@@ -52,7 +52,7 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
                         <h1>{en.UI_LABELS.movieSurvey}</h1>
                     </Box>
                     <Box margin={{ bottom: '25px', top: '-10px', right: '25px', left: '25px' }}>
-                        <text>{en.UI_LABELS.movieSurveyInstructions}</text>
+                        <Text textAlign="center">{en.UI_LABELS.movieSurveyInstructions}</Text>
                     </Box>
 
                     {/*<SurveyFields n={numMovies} />*/}

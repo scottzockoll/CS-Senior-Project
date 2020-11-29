@@ -14,8 +14,18 @@ class Confirmation extends React.Component<ConfirmationProps> {
         return (
             <Layer onEsc={this.props.onCancel} onClickOutside={this.props.onCancel}>
                 <Box pad={{ horizontal: 'medium', vertical: 'small' }}>
-                    {this.props.header && <Text size={'xxlarge'}>{this.props.header}</Text>}
-                    {this.props.body && <Text size={'medium'}>{this.props.body}</Text>}
+                    {this.props.header && (
+                        <Text textAlign="center" size={'xxlarge'}>
+                            {this.props.header}
+                        </Text>
+                    )}
+                    <Box margin={{ top: '10px' }} width="medium">
+                        {this.props.body && (
+                            <Text textAlign="center" size={'medium'}>
+                                {this.props.body}
+                            </Text>
+                        )}
+                    </Box>
                     <Box margin={{ top: '20px' }} direction="row" justify="center">
                         <Button
                             margin={{ right: 'small' }}
