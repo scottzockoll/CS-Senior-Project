@@ -2,6 +2,9 @@ import {
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
     REQUEST_USERS_STARTED,
+    SEARCH_USERS_FAILURE,
+    SEARCH_USERS_STARTED,
+    SEARCH_USERS_SUCCESS,
     User,
     UserAuthActions,
     UserEntitiesActions,
@@ -45,6 +48,7 @@ const initialUserEntitiesState: Paginated<User> = {
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
         case REQUEST_USERS_STARTED:
+        case SEARCH_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
@@ -65,7 +69,23 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
             } else {
                 return state;
             }
+        case SEARCH_USERS_SUCCESS:
+            if (action.response.entities.users) {
+                return {
+                    ...state,
+                    ids: [...Object.values(action.response.entities.users).map((user) => user.id)],
+                    entities: {
+                        ...action.response.entities.users,
+                    },
+                    nextPage: state.nextPage, // TODO
+                    prevPage: state.prevPage, // TODO
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
         case RECEIVE_USERS_FAILURE:
+        case SEARCH_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
@@ -124,6 +144,7 @@ const initialTagEntitiesState: Paginated<Tag> = {
     nextPage: '',
     isFetching: false,
 };
+
 export function usersTagsReducer(state = initialTagEntitiesState, action: UserEntitiesActions): Paginated<Tag> {
     switch (action.type) {
         case REQUEST_USERS_STARTED:

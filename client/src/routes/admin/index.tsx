@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
 import { connect } from 'react-redux';
+import { UserSearchBar } from './UserSearchBar';
 
 /***
  * Exports all the user records to a CSV file. Redirects the
@@ -19,7 +20,7 @@ const AdminPage: React.FC = () => {
     return (
         <Grid
             rows={['xxsmall', 'large']}
-            columns={['medium']}
+            columns={['large']}
             gap="small"
             margin={{ top: 'small', left: 'small', right: 'small' }}
             areas={[
@@ -27,16 +28,29 @@ const AdminPage: React.FC = () => {
                 { name: 'main', start: [0, 1], end: [1, 1] },
             ]}
         >
-            <Box gridArea="header">
-                <Button
-                    secondary
-                    label={'Download All'}
-                    alignSelf={'start'}
-                    onClick={() => {
-                        downloadAllToCSV();
-                    }}
-                />
-            </Box>
+            <Grid
+                rows={['medium']}
+                columns={['medium', 'medium']}
+                gap="xlarge"
+                areas={[
+                    { name: 'downloadButton', start: [0, 0], end: [1, 0] },
+                    { name: 'searchBar', start: [1, 0], end: [2, 0] },
+                ]}
+            >
+                <Box gridArea={'downloadButton'}>
+                    <Button
+                        secondary
+                        label={'Download All'}
+                        alignSelf={'start'}
+                        onClick={() => {
+                            downloadAllToCSV();
+                        }}
+                    />
+                </Box>
+                <Box gridArea={'searchBar'} align={'end'}>
+                    <UserSearchBar />
+                </Box>
+            </Grid>
             <Box gridArea="main" background="light-2">
                 <UserTable />
             </Box>

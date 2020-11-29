@@ -28,6 +28,7 @@
     "deleteYourAccount": "Delete Your Account?",
     "signOutQuestion": "Sign Out?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "searchUser": "Search User"
   }
 }

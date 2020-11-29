@@ -2,20 +2,25 @@ import { CALL_API } from '../api';
 import { SCHEMAS } from '../schema';
 import { AsyncActionStatus } from '../index';
 import {
-    RECEIVE_USERS_FAILURE,
-    RECEIVE_USERS_SUCCESS,
-    REQUEST_USERS_STARTED,
     RECEIVE_AUTH_USER_FAILURE,
     RECEIVE_AUTH_USER_SUCCESS,
+    RECEIVE_USERS_FAILURE,
+    RECEIVE_USERS_SUCCESS,
     REQUEST_AUTH_USER_STARTED,
+    REQUEST_USERS_STARTED,
     RequestAuthUserStarted,
     RequestUsersStarted,
+    SEARCH_USERS_FAILURE,
+    SEARCH_USERS_STARTED,
+    SEARCH_USERS_SUCCESS,
+    SearchUsersStarted,
     TOKEN_UPDATE,
     TokenUpdate,
     USER_LOGIN,
     USER_LOGOUT,
     UserLogin,
     UserLogout,
+    UserSearchFilter,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
@@ -56,13 +61,13 @@ export function updateToken(token: string): TokenUpdate {
 //     };
 // }
 
-export function requestUsers(idOffset: number, limit: number): RequestUsersStarted {
+export function requestUsers(offset: number, limit: number): RequestUsersStarted {
     return {
-        idOffset,
+        offset,
         limit,
         type: REQUEST_USERS_STARTED,
         [CALL_API]: {
-            endpoint: `user/${limit}/${idOffset}`,
+            endpoint: `user/${limit}/${offset}`,
             schema: SCHEMAS['USER_ARRAY'],
             method: 'GET',
             body: {},
@@ -90,6 +95,54 @@ export function requestAuthenticateUser(email: string, authToken: string): Reque
                 [AsyncActionStatus.Request]: REQUEST_AUTH_USER_STARTED,
                 [AsyncActionStatus.Success]: RECEIVE_AUTH_USER_SUCCESS,
                 [AsyncActionStatus.Failure]: RECEIVE_AUTH_USER_FAILURE,
+            },
+        },
+    };
+}
+
+/**
+ * API Request for searching users by the desired
+ * filter (Email, FirstName, LastName).
+ *
+ * @param searchFilter The search filter enum
+ * @param searchVal The value to search in the desired column
+ * @param offset The query offset
+ * @param limit The query result limit
+ */
+export function searchUsers(
+    searchFilter: UserSearchFilter,
+    searchValue: string,
+    offset: number,
+    limit: number
+): SearchUsersStarted {
+    let endpoint = '';
+
+    // Check the requested search filter
+    switch (searchFilter) {
+        case UserSearchFilter.EMAIL:
+            endpoint = `user/search/email/${searchValue}/${offset}/${limit}`;
+            break;
+        case UserSearchFilter.FIRST_NAME:
+            endpoint = `user/search/first-name/${searchValue}/${offset}/${limit}`;
+            break;
+        case UserSearchFilter.LAST_NAME:
+            endpoint = `user/search/last-name/${searchValue}/${offset}/${limit}`;
+    }
+
+    return {
+        searchValue,
+        offset,
+        limit,
+        type: SEARCH_USERS_STARTED,
+        [CALL_API]: {
+            endpoint: endpoint,
+            schema: SCHEMAS['USER_ARRAY'],
+            method: 'GET',
+            body: {},
+            types: {
+                [AsyncActionStatus.Request]: SEARCH_USERS_STARTED,
+                [AsyncActionStatus.Success]: SEARCH_USERS_SUCCESS,
+                [AsyncActionStatus.Failure]: SEARCH_USERS_FAILURE,
             },
         },
     };

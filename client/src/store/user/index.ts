@@ -10,6 +10,10 @@ export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
 export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
 export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
 
+export const SEARCH_USERS_STARTED = 'SEARCH_USERS_STARTED';
+export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
+export const SEARCH_USERS_FAILURE = 'SEARCH_USERS_FAILURE';
+
 export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
 export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
 export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
@@ -18,12 +22,32 @@ export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
 export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
 export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
 
-export type UsersEntitiesTypes = REQUEST_USERS_STARTED | RECEIVE_USERS_SUCCESS | RECEIVE_USERS_FAILURE;
+export type SEARCH_USERS_STARTED = typeof SEARCH_USERS_STARTED;
+export type SEARCH_USERS_SUCCESS = typeof SEARCH_USERS_SUCCESS;
+export type SEARCH_USERS_FAILURE = typeof SEARCH_USERS_FAILURE;
+
+export type UsersEntitiesTypes =
+    | REQUEST_USERS_STARTED
+    | RECEIVE_USERS_SUCCESS
+    | RECEIVE_USERS_FAILURE
+    | SEARCH_USERS_STARTED
+    | SEARCH_USERS_SUCCESS
+    | SEARCH_USERS_FAILURE;
 
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const TOKEN_UPDATE = 'TOKEN_UPDATE';
 export const AUTH_USER = 'AUTH_USER';
+
+/**
+ * User search constants
+ */
+export enum UserSearchFilter {
+    NO_FILTER = -1,
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+}
 
 export type USER_LOGIN = typeof USER_LOGIN;
 export type USER_LOGOUT = typeof USER_LOGOUT;
@@ -56,7 +80,7 @@ export interface User {
  */
 export interface RequestUsersStarted extends ApiRequest {
     type: REQUEST_USERS_STARTED;
-    idOffset: number;
+    offset: number;
     limit: number;
 }
 
@@ -79,6 +103,38 @@ export interface ReceiveUsersSuccess {
  */
 export interface ReceiveUsersFailure {
     type: RECEIVE_USERS_FAILURE;
+    id: number;
+}
+
+/**
+ * Action that occurs when searching user.
+ */
+export interface SearchUsersStarted extends ApiRequest {
+    type: SEARCH_USERS_STARTED;
+    searchValue: string;
+    offset: number;
+    limit: number;
+}
+
+/**
+ * Action that occurs when fetching a specific user succeeds.
+ */
+export interface SearchUsersSuccess {
+    type: SEARCH_USERS_SUCCESS;
+    response: {
+        entities: {
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
+        };
+    };
+}
+
+/**
+ * Action that occurs when fetching a specific user fails.
+ */
+export interface SearchUsersFailure {
+    type: SEARCH_USERS_FAILURE;
     id: number;
 }
 
@@ -106,6 +162,9 @@ export type UserEntitiesActions =
     | ReceiveUsersFailure
     | RequestUsersStarted
     | ReceiveUsersSuccess
+    | SearchUsersStarted
+    | SearchUsersSuccess
+    | SearchUsersFailure
     | UserLogin
     | UserLogout
     | TokenUpdate;
