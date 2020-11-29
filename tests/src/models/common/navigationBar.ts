@@ -2,15 +2,21 @@ import { contains } from 'cypress/types/jquery';
 import { validateContains } from './common';
 
 export const selectors = {
-    menuButton: '.StyledBox-sc-13pk1d4-0 > .StyledIcon-ofa7kd-0',
-    navigationMenuItems: '.eSaWHE > > .StyledButton-sc-323bzc-0 > .StyledBox-sc-13pk1d4-0',
+    menuButton: '.StyledBox-sc-13pk1d4-0 > .StyledIcon-ofa7kd-0:first',
+    closeMenuButton: ':nth-child(1) > .StyledButton-sc-323bzc-0 > .StyledBox-sc-13pk1d4-0 > .StyledIcon-ofa7kd-0',
+    navigationMenuItems: '.eSaWHE > .hrGwMH > .StyledButton-sc-323bzc-0 > .StyledBox-sc-13pk1d4-0',
 };
 
-export const navigationItems = ['Sign Up', 'Sign In', 'Admin', 'Client', 'Home'];
+export const navigationItems = ['Admin', 'Client', 'Home'];
 
-export function openNavigationMenu(): void {
-    cy.get(selectors.menuButton).click();
-    cy.get(selectors.navigationMenuItems).should('exist');
+export function toggleNavigationMenu(visible = false): void {
+    if (visible) {
+        cy.get(selectors.menuButton).click();
+        cy.get(selectors.navigationMenuItems).should('exist');
+    } else {
+        cy.get(selectors.closeMenuButton).click();
+        cy.get(selectors.navigationMenuItems).should('not.exist');
+    }
 }
 
 export function verifyNavigationContent(): void {

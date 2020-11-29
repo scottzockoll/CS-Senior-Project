@@ -6,7 +6,7 @@ export const messages = {
     takeAMovieSurvey: 'Take a Movie Survey',
     go: 'Go',
     close: 'Close',
-    submitSurvey: 'Submit Survey',
+    submit: 'Submit',
     movieSurvey: 'Movie Survey',
     description: 'We want to provide you with the best possible content and recommendations',
 };
@@ -17,13 +17,13 @@ export const selectors = {
     goButton: `.gHIFjI > .StyledButton-sc-323bzc-0:contains(${messages.go})`,
     takeAMovieSurveyButton: `.gjLUkY:contains(${messages.takeAMovieSurvey})`,
     movieModalSelectors: {
-        title: `.Exrhr > .ApBkK > h1:contains(${messages.movieModalHeader})`,
-        closeButton: `.hAUFyq > .StyledButton-sc-323bzc-0:contains(${messages.close})`,
+        header: `.Exrhr > .ApBkK > h1:contains(${messages.movieModalHeader})`,
+        closeButton: `.gwuqRp:contains(${messages.close})`,
     },
     initialSurveyModalSelectors: {
-        header: `.ePjjVl > .ApBkK > h1:contains(${messages.movieSurvey})`,
+        header: `.hctKMK > h1:contains(${messages.movieSurvey})`,
         description: 'text',
-        submitButton: `.dEvxPd > .gAsOLC > .StyledButton-sc-323bzc-0:contains(${messages.submitSurvey})`,
+        submitButton: `.eywOwc:contains(${messages.submit})`,
     },
 };
 
@@ -59,7 +59,7 @@ export function fillInitialSurvey(titles: string[]): void {
     let child: number = 3;
     titles.forEach((title) => {
         cy.get(
-            `:nth-child(${child}) > .bghRLY > .StyledBox-sc-13pk1d4-0 > .StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 > .StyledTextInput-sc-1x30a0s-0`
+            `:nth-child(${child}) > .eBeIbe > .StyledBox-sc-13pk1d4-0 > .StyledTextInput__StyledTextInputContainer-sc-1x30a0s-1 > .StyledTextInput-sc-1x30a0s-0`
         )
             .clear()
             .type(title);

@@ -8,7 +8,7 @@ describe('movie search', () => {
 
     it('can search for movie', () => {
         searchForMovie(movieTitle);
-        cy.get(selectors.movieModalSelectors.title).should('exist');
+        cy.get(selectors.movieModalSelectors.header).should('exist');
         closeMovieModal();
     });
 });

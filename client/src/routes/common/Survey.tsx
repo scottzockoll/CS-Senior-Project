@@ -48,7 +48,9 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
         <Box>
             {surveyVisible && (
                 <Box width={'large'} pad={{ horizontal: 'medium' }}>
-                    <Heading alignSelf={'center'}>{en.UI_LABELS.movieSurvey}</Heading>
+                    <Box margin={{ left: 'auto', right: 'auto', bottom: '10px', top: '5px' }} direction="row">
+                        <h1>{en.UI_LABELS.movieSurvey}</h1>
+                    </Box>
                     <Box margin={{ bottom: '25px', top: '-10px', right: '25px', left: '25px' }}>
                         <text>{en.UI_LABELS.movieSurveyInstructions}</text>
                     </Box>
