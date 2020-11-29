@@ -11,10 +11,12 @@ import {
     User,
     UserAuthActions,
     UserEntitiesActions,
+    TOGGLE_USER_MODAL,
 } from './index';
 import { Paginated } from '../types';
 import { Movie } from '../movie';
 import { Tag } from '../tag';
+import { AppAction } from '..';
 
 const initialUserAuthState: number = -1;
 
@@ -162,6 +164,15 @@ export function deleteUserReducer(state = -1, action: UserEntitiesActions): numb
             return -1;
         case DELETE_USER_FAILURE:
             return action.id;
+        default:
+            return state;
+    }
+}
+
+export function toggleUserModalReducer(state = false, action: AppAction): boolean {
+    switch (action.type) {
+        case TOGGLE_USER_MODAL:
+            return action.show;
         default:
             return state;
     }

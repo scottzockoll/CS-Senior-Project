@@ -5,7 +5,7 @@ import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
-import { toggleInitialSurveyModal, toggleMovieModal } from '../../store/home/actions';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
 import MovieCarousel from './MovieCarousel';
 
 const mapStateToProps = (state: RootState) => ({

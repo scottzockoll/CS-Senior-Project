@@ -1,8 +1,9 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
-import { UserEntitiesActions, UsersEntitiesTypes } from './user';
+import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
 import {
     deleteUserReducer,
+    toggleUserModalReducer,
     tokenReducer,
     userAuthReducer,
     usersMoviesReducer,
@@ -26,14 +27,16 @@ export type AppAction =
     | ToggleInitialSurveyModal
     | MovieEntitiesActions
     | MovieDeleteActions
-    | ToggleMovieModal;
+    | ToggleMovieModal
+    | ToggleUserModal;
 
 export type ActionType =
     | UsersEntitiesTypes
     | MovieUpdateEntitiesTypes
     | MovieDeleteEntitiesTypes
     | TOGGLE_INITIAL_SURVEY_MODAL
-    | TOGGLE_MOVIE_MODAL;
+    | TOGGLE_MOVIE_MODAL
+    | TOGGLE_USER_MODAL;
 
 /**
  * Alias for app-specific redux store dispatch function.
@@ -61,6 +64,7 @@ export const rootReducer = combineReducers({
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
     movieModal: toggleMovieModalReducer,
+    showUserModal: toggleUserModalReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });

@@ -1,6 +1,6 @@
 import { CALL_API } from '../api';
 import { SCHEMAS } from '../schema';
-import { AsyncActionStatus } from '../index';
+import { AppAction, AsyncActionStatus } from '../index';
 import {
     DELETE_USER_FAILURE,
     DELETE_USER_STARTED,
@@ -24,6 +24,7 @@ import {
     RequestUserStarted,
     RECEIVE_USER_SUCCESS,
     RECEIVE_USER_FAILURE,
+    TOGGLE_USER_MODAL,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
@@ -122,5 +123,12 @@ export function requestAuthenticateUser(email: string, authToken: string): Reque
                 [AsyncActionStatus.Failure]: RECEIVE_AUTH_USER_FAILURE,
             },
         },
+    };
+}
+
+export function toggleUserModal(shouldBeVisible: boolean): AppAction {
+    return {
+        type: TOGGLE_USER_MODAL,
+        show: shouldBeVisible,
     };
 }

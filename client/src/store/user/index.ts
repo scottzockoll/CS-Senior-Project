@@ -49,6 +49,13 @@ export type AUTH_USER = typeof AUTH_USER;
 
 export type UserAuthTypes = USER_LOGIN | USER_LOGOUT;
 
+export const TOGGLE_USER_MODAL = 'TOGGLE_USER_MODAL';
+export type TOGGLE_USER_MODAL = typeof TOGGLE_USER_MODAL;
+export interface ToggleUserModal {
+    type: TOGGLE_USER_MODAL;
+    show: boolean;
+}
+
 /**
  * A single user.
  */

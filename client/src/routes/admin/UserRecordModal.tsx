@@ -2,12 +2,21 @@ import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
 import React from 'react';
 import { User } from '../../store/user';
 import { CSVParser } from '../common/CSVParser';
+import { AppDispatch, RootState } from '../../store';
 import en from '../../en.json';
 import StarRating from '../common/StarRating';
+import { toggleUserModal } from '../../store/user/actions';
+import { connect, MapDispatchToProps } from 'react-redux';
 
-interface UserRecordModalProps {
-    user: User;
-}
+type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { user: User };
+
+const mapStateToProps = (state: RootState) => ({
+    showUserModal: state.showUserModal,
+});
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    toggleUserModal: (isVisible: boolean) => dispatch(toggleUserModal(isVisible)),
+});
 
 /***
  * Exports all of user's watched movie data to a CSV file.
@@ -45,7 +54,7 @@ function exportUserRecordToCSV(user: User) {
  * corresponding UserRecord
  * @param userRecord
  */
-export default class userRecordModal extends React.Component<UserRecordModalProps> {
+class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
             <Box style={{ height: '80%' }} width={'large'}>
@@ -150,12 +159,7 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                     <Button
                         label={en.UI_LABELS.BUTTON_LABELS.close}
                         onClick={() => {
-                            {
-                                {
-                                    /* TODO: CLOSE MODAL */
-                                }
-                                this.setState({ showModal: false });
-                            }
+                            this.props.toggleUserModal(false);
                         }}
                     />
                 </Box>
@@ -163,3 +167,5 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
         );
     }
 }
+
+export const UserRecordModal = connect(mapStateToProps, mapDispatchToProps)(UnconnectedUserRecordModal);
