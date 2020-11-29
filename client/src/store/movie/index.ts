@@ -8,7 +8,7 @@ import { Tag } from '../tag';
 export interface Movie {
     id: number;
     title: string;
-    genres: Record<number, string>;
+    genres: string[];
     rating: number;
     tags: Record<number, Tag>;
 }
@@ -81,5 +81,9 @@ export const TOGGLE_MOVIE_MODAL = 'TOGGLE_MOVIE_MODAL';
 export type TOGGLE_MOVIE_MODAL = typeof TOGGLE_MOVIE_MODAL;
 export interface ToggleMovieModal {
     type: TOGGLE_MOVIE_MODAL;
-    shouldBeVisible: boolean;
+    visible: boolean;
+    movieId?: number;
 }
+
+// TODO: We'll need an action that sends an API request to the server which gets the recommendations
+//  It will also need some type information, an interface, and a reducer.

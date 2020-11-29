@@ -9,9 +9,10 @@ export function toggleInitialSurveyModal(shouldBeVisible: boolean): AppAction {
     };
 }
 
-export function toggleMovieModal(shouldBeVisible: boolean): AppAction {
+export function toggleMovieModal(shouldBeVisible: boolean, movieId?: number): AppAction {
     return {
         type: TOGGLE_MOVIE_MODAL,
-        shouldBeVisible: shouldBeVisible,
+        visible: shouldBeVisible,
+        movieId,
     };
 }

@@ -60,7 +60,7 @@ export const rootReducer = combineReducers({
     surveyVisible: toggleInitialSurveyModalReducer,
     deleteUser: deleteUserReducer,
     deleteMovies: deleteMoviesReducer,
-    movieModalVisible: toggleMovieModalReducer,
+    movieModal: toggleMovieModalReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });
