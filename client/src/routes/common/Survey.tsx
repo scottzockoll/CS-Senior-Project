@@ -17,6 +17,7 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+    // Need to grab the updateRating function so we can use in UnconnectedSurvey & MovieSearchList
 });
 
 type SurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & PassedProps;
@@ -26,7 +27,7 @@ type SurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDis
  * @param props
  * @constructor
  */
-const MovieSearchList = (props: { count: number }) => {
+const MovieSearchList = (props: { count: number; updateMovieRating: any }) => {
     let fields: JSX.Element[] = [];
     for (let i = 0; i < props.count; i++) {
         fields.push(
@@ -35,7 +36,13 @@ const MovieSearchList = (props: { count: number }) => {
                     <SearchField />
                 </Box>
                 <Box pad={{ horizontal: 'xlarge' }}>
-                    <StarRating current={0} maximum={5} />
+                    <StarRating
+                        current={0}
+                        maximum={5}
+                        onClick={(event, value) => {
+                            // Do something with the current state of the search field
+                        }}
+                    />
                 </Box>
             </Box>
         );
@@ -56,7 +63,8 @@ const UnconnectedSurvey: React.FC<SurveyProps> = ({ surveyVisible, toggleSurvey,
                     </Box>
 
                     {/*<SurveyFields n={numMovies} />*/}
-                    <MovieSearchList count={numMovies} />
+                    {/*TODO: Pass update rating*/}
+                    <MovieSearchList count={numMovies} updateMovieRating={null} />
 
                     <Box direction={'row'} margin={{ top: 'medium', horizontal: 'auto', bottom: 'medium' }}>
                         <Button

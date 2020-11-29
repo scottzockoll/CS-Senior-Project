@@ -6,11 +6,13 @@ import NavigationBar from './routes/common/NavigationBar';
 import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
 import { Box } from 'grommet';
+import { MovieModal } from './routes/home/MovieModal';
 
 function App() {
     return (
         <Box className="App">
             <NavigationBar />
+            <MovieModal />
             <Switch>
                 <Route path="/admin">
                     <Admin />

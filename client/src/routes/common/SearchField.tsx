@@ -7,7 +7,9 @@ import { API_ROOT } from '../../store/api';
 import { toggleMovieModal } from '../../store/home/actions';
 
 const mapStateToProps = (state: RootState) => ({});
-const mapDispatchToProps = (dispatch: AppDispatch) => ({});
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    toggleMovieModal: (show: boolean, movieId: number) => dispatch(toggleMovieModal(show, movieId)),
+});
 
 type SearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -83,7 +85,7 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
         suggestion: { label: string; value: number };
     }) => {
         this.inputRef.current.value = event.suggestion.label;
-        toggleMovieModal(true);
+        this.props.toggleMovieModal(true, event.suggestion.value);
     };
 
     render() {

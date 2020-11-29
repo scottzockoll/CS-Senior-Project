@@ -5,28 +5,21 @@ import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
-import { MovieModal } from './MovieModal';
 import { toggleInitialSurveyModal, toggleMovieModal } from '../../store/home/actions';
 import MovieCarousel from './MovieCarousel';
 
 const mapStateToProps = (state: RootState) => ({
+    // TODO: Can we leverage the Redux state to get an array of titles?
     surveyVisible: state.surveyVisible,
-    movieModalVisible: state.movieModalVisible,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
-    toggleMovieModal: (isVisible: boolean) => dispatch(toggleMovieModal(isVisible)),
 });
 
 type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const HomepageComponent: React.FC<HomepageProps> = ({
-    toggleMovieModal,
-    movieModalVisible,
-    surveyVisible,
-    toggleSurvey,
-}) => {
+const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurvey }) => {
     return (
         <Box background="light-3" height={'xxlarge'}>
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
@@ -66,18 +59,6 @@ const HomepageComponent: React.FC<HomepageProps> = ({
                     }}
                 >
                     <Survey numMovies={5} />
-                </Layer>
-            )}
-            {movieModalVisible && (
-                <Layer
-                    onEsc={() => {
-                        toggleMovieModal(false);
-                    }}
-                    onClickOutside={() => {
-                        toggleMovieModal(false);
-                    }}
-                >
-                    <MovieModal />
                 </Layer>
             )}
         </Box>
