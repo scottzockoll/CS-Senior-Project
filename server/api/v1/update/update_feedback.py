@@ -11,6 +11,12 @@ def update_feedback(feedbackId: int, rating: float):
     :return: Nothing
     """
     
+    # The line below is for the request body content, which is awaiting implementation on the frontend.
+    # rating = request.form["rating"]
+    
+    # TODO: For now it is hardcoded for testing purposes
+    rating = 3
+    
     try:
         # Validate user permission level
         if not is_user():
@@ -22,7 +28,6 @@ def update_feedback(feedbackId: int, rating: float):
         
         # Update row in database
         result = query_update_feedback(feedbackId, rating)
-
         if not result:
             return Response({}, mimetype='application/json', status=404)
         else:

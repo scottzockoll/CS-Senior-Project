@@ -1,6 +1,5 @@
 from server.auth import is_user
 from server.queries.get.query_get_feedback import query_get_feedback
-
 from flask import Response
 import json
 
@@ -24,7 +23,6 @@ def get_feedback(userId: int, movieId: int):
         
         # Retrieve feedback
         result = query_get_feedback(userId, movieId)
-
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:

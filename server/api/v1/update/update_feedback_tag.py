@@ -27,7 +27,6 @@ def update_feedback_tag(feedbackId: int):
         
         # Update row in database
         result = query_update_feedback_tag(feedbackId, rating)
-
         if not result:
             return Response({}, mimetype='application/json', status=404)
         else:

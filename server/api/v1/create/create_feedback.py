@@ -29,7 +29,6 @@ def create_feedback(userId: int, movieId: int):
         
         # Create row in database
         result = query_create_feedback(userId, movieId, rating)
-
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:

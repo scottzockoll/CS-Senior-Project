@@ -30,7 +30,6 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
         
         # Create row in database
         result = query_create_feedback_tag(userId, movieId, tagId, rating)
-
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:
