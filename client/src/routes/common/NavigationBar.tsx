@@ -15,25 +15,6 @@ type NavigationBarProps = ReturnType<typeof mapStateToProps>;
 const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) => {
     const history = useHistory();
 
-    const smallItems: object[] = [];
-    smallItems.push([
-        {
-            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
-            onClick: () => history.push('/client'),
-        },
-        {
-            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
-            onClick: () => history.push('/'),
-        },
-    ]);
-
-    if (props.isAdmin) {
-        smallItems.unshift({
-            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
-            onClick: () => history.push('/admin'),
-        });
-    }
-
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
@@ -70,7 +51,39 @@ const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) 
                                     </Nav>
                                 </Box>
                             )}
-                            {size !== 'large' && <Menu dropBackground="white" items={smallItems} />}
+                            {size !== 'large' && (
+                                <Menu
+                                    dropBackground="white"
+                                    items={
+                                        // Done this way to fix a weird error with propTypes in console
+                                        props.isAdmin
+                                            ? [
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                                      onClick: () => history.push('/client'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                                      onClick: () => history.push('/'),
+                                                  },
+                                              ]
+                                            : [
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                                      onClick: () => history.push('/client'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                                      onClick: () => history.push('/'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+                                                      onClick: () => history.push('/admin'),
+                                                  },
+                                              ]
+                                    }
+                                />
+                            )}
                         </Box>
                     )}
                 </ResponsiveContext.Consumer>
