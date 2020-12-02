@@ -9,21 +9,23 @@ def del_user(id: int):
     :param int id: The user id to delete
     :return: Nothing
     """
-    con, cursor = db_connection()
+    if not isinstance(id, int):
+        return Response({}, mimetype='application/json', status=400)
 
+    con, cursor = db_connection()
     try:
-        if not is_admin() or not is_current_user(id):
+        if not is_admin() and not is_current_user(id):
             return Response({}, mimetype='application/json', status=401)
-        elif not isinstance(id, int):  # checks if id is integer
-            return Response({}, mimetype='application/json', status=400)
-        else:  # executes query
+        else:
             cursor.execute("DELETE FROM users WHERE id=%s", (id,))
             if cursor.rowcount == 1:
                 con.commit()
                 return Response({}, mimetype='application/json', status=200)
             else:
                 return Response({}, mimetype='application/json', status=404)
-    except Exception:
+    except Exception as e:
+        print(f'Error in del_user')
+        print(e)
         return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
