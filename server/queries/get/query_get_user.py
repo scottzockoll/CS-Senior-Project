@@ -18,10 +18,10 @@ def query_get_user(id: Union[int, str]):
             for row in result:
                 if row[9] is not None:
                     movie_info.append(
-                        dict(id=row[7], title=row[5], rating=row[8], genres=row[6], tags=server.utilities.process_movie_tags(row[9])))
+                        dict(id=row[7], title=row[5], rating=row[8], genres=row[6].split(','), tags=server.utilities.process_movie_tags(row[9])))
                 else:
                     movie_info.append(
-                        dict(id=row[7], title=row[5], rating=row[8], genres=row[6]))
+                        dict(id=row[7], title=row[5], rating=row[8], genres=row[6].split(',')))
             data = {
                 "id": result[0][0],
                 "email": result[0][3],
