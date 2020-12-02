@@ -37,8 +37,8 @@ const callApi = async (
         }
     }
 
-    console.warn('Form data');
-    console.warn(formData);
+    // console.warn('Form data');
+    // console.warn(formData);
 
     let fetchParam: RequestInit = {
         method: method,
@@ -46,13 +46,13 @@ const callApi = async (
         credentials: 'include',
     };
 
-    console.warn(`Sending request to ${fullUrl}`);
-    console.warn(fetchParam);
+    // console.warn(`Sending request to ${fullUrl}`);
+    // console.warn(fetchParam);
 
     const response = await fetch(fullUrl, fetchParam);
     const json = await response.json();
-    console.warn(`Call to ${fullUrl}: OK!`);
-    console.warn(json);
+    // console.warn(`Call to ${fullUrl}: OK!`);
+    // console.warn(json);
 
     if (!response.ok) {
         throw new Error(json);
