@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Layer, Text } from 'grommet';
+import { Box, Button, Layer, Text } from 'grommet';
 import React from 'react';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';

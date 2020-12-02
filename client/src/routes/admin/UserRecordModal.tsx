@@ -1,12 +1,11 @@
-import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
+import { Box, DataTable, Grid, Heading, Text, Button } from 'grommet';
 import React from 'react';
 import { User } from '../../store/user';
-import { CSVParser } from '../common/CSVParser';
 import { AppDispatch, RootState } from '../../store';
 import en from '../../en.json';
 import StarRating from '../common/StarRating';
 import { toggleUserModal } from '../../store/user/actions';
-import { connect, MapDispatchToProps } from 'react-redux';
+import { connect } from 'react-redux';
 
 type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { user: User };
 

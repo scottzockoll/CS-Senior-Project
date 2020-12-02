@@ -1,4 +1,4 @@
-import { Box, Button, Carousel, Heading, Layer } from 'grommet';
+import { Box, Button, Heading, Layer } from 'grommet';
 import React from 'react';
 import { Survey } from '../common/Survey';
 import en from '../../en.json';
@@ -26,7 +26,7 @@ const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurve
                 <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
             <Box margin={{ left: 'auto', right: 'auto', bottom: '80px' }}>
-                <img width={'200px'} src={'images/FlickPickIcon.png'} />
+                <img width={'200px'} src={'images/FlickPickIcon.png'} alt={'FlickPick Logo'} />
             </Box>
             <Box
                 style={{ width: 250 }}

@@ -1,6 +1,6 @@
 import { AppAction } from '../index';
 import { TOGGLE_INITIAL_SURVEY_MODAL } from './index';
-import { TOGGLE_MOVIE_MODAL, ToggleMovieModal } from '../movie';
+import { TOGGLE_MOVIE_MODAL } from '../movie';
 
 export function toggleInitialSurveyModalReducer(state = false, action: AppAction): boolean {
     switch (action.type) {
