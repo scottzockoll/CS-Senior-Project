@@ -1,4 +1,5 @@
 import json
+from urllib.parse import unquote
 
 from server.utilities import db_connection
 from server.auth import is_user
@@ -13,6 +14,8 @@ def get_movie_autocomplete(name: str):
     :return: JSON object of movies array containing movie id and title
     """
     con, cursor = db_connection()
+
+    name = unquote(name)
 
     try:
         if not is_user():

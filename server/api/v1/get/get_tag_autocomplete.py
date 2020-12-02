@@ -1,3 +1,5 @@
+from urllib.parse import unquote
+
 from server.utilities import db_connection
 from server.auth import is_user
 from Levenshtein import distance
@@ -14,6 +16,8 @@ def get_tag_autocomplete(name: str, movieId: int):
     """
     con, cursor = db_connection()
     result_set = {}
+
+    name = unquote(name)
 
     try:
         if not is_user():
