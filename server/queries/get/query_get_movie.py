@@ -33,8 +33,8 @@ def query_get_movie(id: Union[int, str]):
             else:
                 genres = [genres[3].split(',') for genres in result]
                 data = {
-                    "movie_id": movie_id,
-                    "movie_name": movie_name,
+                    "id": movie_id,
+                    "title": movie_name,
                     "tags": tags[0],
                     "genres": genres[0]
                 }
