@@ -1,3 +1,4 @@
+import server.auth
 from server.queries.get.query_get_users import query_get_users
 import server.utilities
 from flask import Response
@@ -17,9 +18,8 @@ def get_users(limit: int, offset: int):
     dictionaries.
     """
 
-
     try:
-        if not server.utilities.is_user():
+        if not server.auth.is_user():
             return Response({}, mimetype='application/json', status=403)
 
         if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
@@ -31,5 +31,7 @@ def get_users(limit: int, offset: int):
         else:
             return Response(json.dumps(result), mimetype='application/json', status=200)
 
-    except Exception:
+    except Exception as e:
+        print(f'Error in get_users')
+        print(e)
         return Response({}, mimetype='application/json', status=500)

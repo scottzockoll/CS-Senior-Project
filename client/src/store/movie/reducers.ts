@@ -1,43 +1,69 @@
-import { AppAction, SEARCH_MOVIE } from '../index';
-import { Movie } from './index';
+import {
+    DELETE_MOVIES_FAILURE,
+    DELETE_MOVIES_STARTED,
+    DELETE_MOVIES_SUCCESS,
+    Movie,
+    MovieDeleteActions,
+} from './index';
+import { AppAction } from '../index';
+import { Paginated } from '../types';
+import {
+    RECEIVE_USER_FAILURE,
+    RECEIVE_USER_SUCCESS,
+    RECEIVE_USERS_FAILURE,
+    RECEIVE_USERS_SUCCESS,
+    REQUEST_USER_STARTED,
+    REQUEST_USERS_STARTED,
+} from '../user';
 
-const initialSearchMovieStates: Movie[] = [];
+const intialMoviesState: Paginated<Movie> = {
+    entities: {},
+    ids: [],
+    isFetching: false,
+};
 
-export function searchMovieReducer(state = initialSearchMovieStates, action: AppAction): Movie[] {
+export function getUserMoviesReducer(state = intialMoviesState, action: AppAction): Paginated<Movie> {
     switch (action.type) {
-        case SEARCH_MOVIE:
-            return [
-                {
+        case REQUEST_USER_STARTED:
+        case REQUEST_USERS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_USER_SUCCESS:
+        case RECEIVE_USERS_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
                     ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 109,
-                    title: 'Wolf of Wall St.',
-                    genres: ['Comedy'],
-                    rating: 5,
-                    tags: [],
-                },
-                {
-                    ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 110,
-                    title: 'The Mandalorian',
-                    genres: ['Action', 'Science Fiction'],
-                    rating: 4,
-                    tags: [],
-                },
-                {
-                    ...state,
-                    // This is where the API request would be made
-                    // No it's not -- Andy
-                    id: 111,
-                    title: 'The Other Guys',
-                    genres: ['Action', 'Comedy'],
-                    rating: 2,
-                    tags: [],
-                },
-            ];
+                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.movies,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_USER_FAILURE:
+        case RECEIVE_USERS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
+        default:
+            return state;
+    }
+}
+
+export function deleteMoviesReducer(state = -1, action: MovieDeleteActions): number {
+    switch (action.type) {
+        case DELETE_MOVIES_STARTED:
+            return action.id;
+        case DELETE_MOVIES_SUCCESS:
+            return action.id;
+        case DELETE_MOVIES_FAILURE:
+            return action.id;
         default:
             return state;
     }

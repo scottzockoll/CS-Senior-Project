@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.create.query_create_feedback import query_create_feedback
-from server.utilities import is_user
 from flask import Response
 import json
 
@@ -29,10 +29,9 @@ def create_feedback(userId: int, movieId: int):
         
         # Create row in database
         result = query_create_feedback(userId, movieId, rating)
-        
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:
-            return Response(json.dumps(result), mimetype='application/json', status=201)  
+            return Response(json.dumps(result), mimetype='application/json', status=201)
     except Exception:
         return Response({}, mimetype='application/json', status=500)

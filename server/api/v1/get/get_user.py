@@ -1,4 +1,5 @@
 from server.queries.get.query_get_user import query_get_user
+import server.auth
 import server.utilities
 from flask import Response
 import json
@@ -12,7 +13,7 @@ def get_user(id: int):
     """
 
     try:
-        if not server.utilities.is_user():
+        if not server.auth.is_user():
             return Response({}, mimetype='application/json', status=403)
 
         if not isinstance(id, int):  # checks if id is an integer
@@ -24,5 +25,7 @@ def get_user(id: int):
         else:
             return Response(json.dumps(result), mimetype='application/json', status=200)
 
-    except Exception:
+    except Exception as e:
+        print(f'Error in get_user')
+        print(e)
         return Response({}, mimetype='application/json', status=500)

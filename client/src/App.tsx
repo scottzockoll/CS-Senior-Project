@@ -5,24 +5,26 @@ import { Homepage } from './routes/home';
 import NavigationBar from './routes/common/NavigationBar';
 import { Admin } from './routes/admin';
 import { Route, Switch } from 'react-router-dom';
-import { sampleRecord } from './ExampleData';
+import { Box } from 'grommet';
+import { MovieModal } from './routes/home/MovieModal';
 
 function App() {
     return (
-        <div className="App">
+        <Box className="App">
             <NavigationBar />
+            <MovieModal />
             <Switch>
                 <Route path="/admin">
                     <Admin />
                 </Route>
                 <Route path="/client">
-                    <ClientPage userRecord={sampleRecord} />
+                    <ClientPage />
                 </Route>
                 <Route path="/">
                     <Homepage />
                 </Route>
             </Switch>
-        </div>
+        </Box>
     );
 }
 

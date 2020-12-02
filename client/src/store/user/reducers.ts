@@ -1,14 +1,22 @@
 import {
+    DELETE_USER_FAILURE,
+    DELETE_USER_STARTED,
+    DELETE_USER_SUCCESS,
+    RECEIVE_USER_FAILURE,
+    RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
+    REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
     User,
     UserAuthActions,
     UserEntitiesActions,
+    TOGGLE_USER_MODAL,
 } from './index';
 import { Paginated } from '../types';
 import { Movie } from '../movie';
 import { Tag } from '../tag';
+import { AppAction } from '..';
 
 const initialUserAuthState: number = -1;
 
@@ -23,8 +31,8 @@ export function userAuthReducer(state = initialUserAuthState, action: UserEntiti
     }
 }
 
-const initialUserTokenState: string = '';
-export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): string {
+const initialUserTokenState: string | null = '';
+export function tokenReducer(state = initialUserTokenState, action: UserAuthActions): typeof initialUserTokenState {
     switch (action.type) {
         case 'TOKEN_UPDATE':
             return action.token;
@@ -36,19 +44,18 @@ export function tokenReducer(state = initialUserTokenState, action: UserAuthActi
 const initialUserEntitiesState: Paginated<User> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 
 export function usersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
     switch (action.type) {
+        case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
             };
+        case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             if (action.response.entities.users) {
                 return {
@@ -58,13 +65,12 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
                         ...state.entities,
                         ...action.response.entities.users,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
                 return state;
             }
+        case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
@@ -78,18 +84,17 @@ export function usersReducer(state = initialUserEntitiesState, action: UserEntit
 const initialMovieEntitiesState: Paginated<Movie> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
     switch (action.type) {
+        case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
             };
+        case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             if (action.response.entities.movies) {
                 return {
@@ -99,13 +104,12 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
                         ...state.entities,
                         ...action.response.entities.movies,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
                 return state;
             }
+        case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
@@ -119,9 +123,6 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
 const initialTagEntitiesState: Paginated<Tag> = {
     ids: [],
     entities: {},
-    pages: [],
-    prevPage: '',
-    nextPage: '',
     isFetching: false,
 };
 export function usersTagsReducer(state = initialTagEntitiesState, action: UserEntitiesActions): Paginated<Tag> {
@@ -140,8 +141,6 @@ export function usersTagsReducer(state = initialTagEntitiesState, action: UserEn
                         ...state.entities,
                         ...action.response.entities.tags,
                     },
-                    nextPage: state.nextPage, // TODO
-                    prevPage: state.prevPage, // TODO
                     isFetching: false,
                 };
             } else {
@@ -152,6 +151,28 @@ export function usersTagsReducer(state = initialTagEntitiesState, action: UserEn
                 ...state,
                 isFetching: false,
             };
+        default:
+            return state;
+    }
+}
+
+export function deleteUserReducer(state = -1, action: UserEntitiesActions): number {
+    switch (action.type) {
+        case DELETE_USER_STARTED:
+            return action.id;
+        case DELETE_USER_SUCCESS:
+            return -1;
+        case DELETE_USER_FAILURE:
+            return action.id;
+        default:
+            return state;
+    }
+}
+
+export function toggleUserModalReducer(state = false, action: AppAction): boolean {
+    switch (action.type) {
+        case TOGGLE_USER_MODAL:
+            return action.show;
         default:
             return state;
     }

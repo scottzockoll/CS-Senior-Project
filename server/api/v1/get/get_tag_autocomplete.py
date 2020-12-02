@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_user
+from server.utilities import db_connection
+from server.auth import is_user
 from Levenshtein import distance
 from flask import Response
 
@@ -16,8 +17,7 @@ def get_tag_autocomplete(name: str, movieId: int):
 
     try:
         if not is_user():
-            return Response({
-            }, mimetype='application/json', status=403)
+            return Response({}, mimetype='application/json', status=403)
         else:
             cursor.execute(f"SELECT id, name FROM tags WHERE movie_id=%s AND name LIKE '{name}__%'", (movieId,))
 
@@ -38,8 +38,7 @@ def get_tag_autocomplete(name: str, movieId: int):
                     "tags": tag
                 }, mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()

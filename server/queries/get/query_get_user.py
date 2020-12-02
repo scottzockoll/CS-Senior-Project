@@ -9,7 +9,6 @@ def query_get_user(id: Union[int, str]):
     :return: JSON object with user firstName, lastName, and isAdmin
     """
     con, cursor = server.utilities.db_connection()
-    data = {}
 
     try:
         cursor.execute("SELECT * FROM FlickPick.master_user_feedback_view WHERE user_id = {u};".format(u=id))
@@ -28,7 +27,7 @@ def query_get_user(id: Union[int, str]):
                 "email": result[0][3],
                 "firstName": result[0][1],
                 "lastName": result[0][2],
-                "isAdmin": result[0][4],
+                "isAdmin": result[0][4] == 1,
                 "movies": movie_info,
             }
             return data
@@ -41,7 +40,8 @@ def query_get_user(id: Union[int, str]):
                     "email": result[0][3],
                     "firstName": result[0][1],
                     "lastName": result[0][2],
-                    "isAdmin": result[0][4],
+                    "isAdmin": result[0][4] == 1,
+                    "movies": []
                 }
                 return data
 

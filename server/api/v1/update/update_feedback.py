@@ -1,12 +1,13 @@
+from server.auth import is_user
 from server.queries.update.query_update_feedback import query_update_feedback
-from server.utilities import is_user
-from flask import Response
+from flask import Response, request
 
 
-def update_feedback(feedbackId: int):
+def update_feedback(feedbackId: int, rating: float):
     """
     Replace a user's feedback of a specific movie
     :param int feedbackId: The feedback id to retrieve
+    :param float rating: Rating to set to
     :return: Nothing
     """
     
@@ -27,7 +28,6 @@ def update_feedback(feedbackId: int):
         
         # Update row in database
         result = query_update_feedback(feedbackId, rating)
-        
         if not result:
             return Response({}, mimetype='application/json', status=404)
         else:

@@ -1,7 +1,8 @@
 import pickle
 import json
 
-from server.utilities import db_connection, is_current_user, is_admin
+from server.utilities import db_connection
+from server.auth import is_admin, is_current_user
 from flask import Response
 import numpy as np
 
@@ -10,8 +11,7 @@ model_name = '100k'
 
 def get_recommendations(user_id: int):
     if not is_admin() or not is_current_user(user_id):
-        return Response({
-        }, mimetype='application/json', status=401)
+        return Response({}, mimetype='application/json', status=401)
     else:
         connection, cursor = db_connection()
 

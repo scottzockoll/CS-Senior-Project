@@ -1,25 +1,42 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
-import { UserEntitiesActions, UsersEntitiesTypes } from './user';
-import { userAuthReducer, usersReducer, tokenReducer, usersMoviesReducer, usersTagsReducer } from './user/reducers';
-import { toggleInitialSurveyModalReducer } from '../routes/home/reducers';
-export type AppAction = UserEntitiesActions | ToggleInitialSurveyModal | SearchMovie;
+import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
+import {
+    deleteUserReducer,
+    toggleUserModalReducer,
+    tokenReducer,
+    userAuthReducer,
+    usersMoviesReducer,
+    usersReducer,
+    usersTagsReducer,
+} from './user/reducers';
+import {
+    MovieDeleteActions,
+    MovieDeleteEntitiesTypes,
+    MovieEntitiesActions,
+    MovieUpdateEntitiesTypes,
+    TOGGLE_MOVIE_MODAL,
+    ToggleMovieModal,
+} from './movie';
+import { deleteMoviesReducer } from './movie/reducers';
+import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
+import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
-export type ActionType = UsersEntitiesTypes | TOGGLE_INITIAL_SURVEY_MODAL | SEARCH_MOVIE;
+export type AppAction =
+    | UserEntitiesActions
+    | ToggleInitialSurveyModal
+    | MovieEntitiesActions
+    | MovieDeleteActions
+    | ToggleMovieModal
+    | ToggleUserModal;
 
-export const TOGGLE_INITIAL_SURVEY_MODAL = 'TOGGLE_INITIAL_SURVEY_MODAL';
-export type TOGGLE_INITIAL_SURVEY_MODAL = typeof TOGGLE_INITIAL_SURVEY_MODAL;
-export interface ToggleInitialSurveyModal {
-    type: TOGGLE_INITIAL_SURVEY_MODAL;
-    shouldBeVisible: boolean;
-}
-
-export const SEARCH_MOVIE = 'SEARCH_MOVIE';
-export type SEARCH_MOVIE = typeof SEARCH_MOVIE;
-export interface SearchMovie {
-    type: SEARCH_MOVIE;
-    title: string;
-}
+export type ActionType =
+    | UsersEntitiesTypes
+    | MovieUpdateEntitiesTypes
+    | MovieDeleteEntitiesTypes
+    | TOGGLE_INITIAL_SURVEY_MODAL
+    | TOGGLE_MOVIE_MODAL
+    | TOGGLE_USER_MODAL;
 
 /**
  * Alias for app-specific redux store dispatch function.
@@ -43,7 +60,13 @@ export const rootReducer = combineReducers({
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
     token: tokenReducer,
-    initialSurveyVisible: toggleInitialSurveyModalReducer,
+    surveyVisible: toggleInitialSurveyModalReducer,
+    deleteUser: deleteUserReducer,
+    deleteMovies: deleteMoviesReducer,
+    movieModal: toggleMovieModalReducer,
+    showUserModal: toggleUserModalReducer,
+    // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
+    googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });
 
 /**

@@ -1,22 +1,32 @@
 import React from 'react';
-import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext, TextInput } from 'grommet';
+import { Button, Header, Menu, Image, Box, Anchor, Nav, ResponsiveContext } from 'grommet';
 import en from '../../en.json';
 import { useHistory } from 'react-router-dom';
+import LoginBox from './LoginBox';
+import { RootState } from '../../store';
+import { connect } from 'react-redux';
 
-function NavigationBar() {
+const mapStateToProps = (state: RootState) => ({
+    isAdmin: state.users.entities[state.activeUser]?.isAdmin,
+});
+
+type NavigationBarProps = ReturnType<typeof mapStateToProps>;
+
+const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) => {
     const history = useHistory();
+
     return (
         <Box>
             <Header style={{ height: 60 }} background="brand">
                 <Box style={{ height: 48 }} margin={{ left: '.5%' }}>
-                    <Button plain={true} label={<Image height="40" src="images/FlickPickSmall.png" />} href="/" />
-                </Box>
-                <Box style={{ width: 160 }} margin={{ left: 'auto' }}>
-                    <TextInput
-                        placeholder="Movie search"
-                        // value={value}
-                        // onChange={event => setValue(event.target.value)}
+                    <Button
+                        plain={true}
+                        label={<Image height="40" src="images/FlickPickSmall.png" />}
+                        onClick={() => history.push('/')}
                     />
+                </Box>
+                <Box margin={{ left: 'auto' }}>
+                    <LoginBox />
                 </Box>
                 <ResponsiveContext.Consumer>
                     {(size) => (
@@ -24,12 +34,12 @@ function NavigationBar() {
                             {size === 'large' && (
                                 <Box margin={{ right: 'auto', left: 'auto' }}>
                                     <Nav direction="row" background="brand" margin={{ right: '15px' }}>
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp} />
-                                        <Anchor label={en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn} />
-                                        <Anchor
-                                            label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
-                                            onClick={() => history.push('/admin')}
-                                        />
+                                        {props.isAdmin === true && (
+                                            <Anchor
+                                                label={en.UI_LABELS.NAVIGATION_BAR_LABELS.admin}
+                                                onClick={() => history.push('/admin')}
+                                            />
+                                        )}
                                         <Anchor
                                             label={en.UI_LABELS.NAVIGATION_BAR_LABELS.client}
                                             onClick={() => history.push('/client')}
@@ -44,22 +54,34 @@ function NavigationBar() {
                             {size !== 'large' && (
                                 <Menu
                                     dropBackground="white"
-                                    items={[
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signUp },
-                                        { label: en.UI_LABELS.NAVIGATION_BAR_LABELS.signIn },
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
-                                            onClick: () => history.push('/admin'),
-                                        },
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
-                                            onClick: () => history.push('/client'),
-                                        },
-                                        {
-                                            label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
-                                            onClick: () => history.push('/'),
-                                        },
-                                    ]}
+                                    items={
+                                        // Done this way to fix a weird error with propTypes in console
+                                        props.isAdmin
+                                            ? [
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                                      onClick: () => history.push('/client'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                                      onClick: () => history.push('/'),
+                                                  },
+                                              ]
+                                            : [
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.client,
+                                                      onClick: () => history.push('/client'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
+                                                      onClick: () => history.push('/'),
+                                                  },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+                                                      onClick: () => history.push('/admin'),
+                                                  },
+                                              ]
+                                    }
                                 />
                             )}
                         </Box>
@@ -68,6 +90,6 @@ function NavigationBar() {
             </Header>
         </Box>
     );
-}
+};
 
-export default NavigationBar;
+export default connect(mapStateToProps)(NavigationBar);

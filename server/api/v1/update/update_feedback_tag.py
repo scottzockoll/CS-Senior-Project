@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.update.query_update_feedback_tag import query_update_feedback_tag
-from server.utilities import is_user
 from flask import Response
 
 
@@ -27,7 +27,6 @@ def update_feedback_tag(feedbackId: int):
         
         # Update row in database
         result = query_update_feedback_tag(feedbackId, rating)
-        
         if not result:
             return Response({}, mimetype='application/json', status=404)
         else:

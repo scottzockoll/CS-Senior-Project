@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.create.query_create_feedback_tag import query_create_feedback_tag
-from server.utilities import is_user
 from flask import Response
 import json
 
@@ -30,7 +30,6 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
         
         # Create row in database
         result = query_create_feedback_tag(userId, movieId, tagId, rating)
-        
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:

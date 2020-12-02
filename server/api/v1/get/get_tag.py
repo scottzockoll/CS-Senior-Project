@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_user
+from server.utilities import db_connection
+from server.auth import is_user
 from flask import Response
 
 
@@ -12,18 +13,15 @@ def get_tag(id: int):
 
     try:
         if not is_user():
-            return Response({
-            }, mimetype='application/json', status=403)
+            return Response({}, mimetype='application/json', status=403)
         if not isinstance(id, int):     # checks if id is an integer
-            return Response({
-            }, mimetype='application/json', status=400)
+            return Response({}, mimetype='application/json', status=400)
         else:                           # executes query
             cursor.execute("SELECT name, movie_id FROM tags WHERE id=%s", (id,))
             result = cursor.fetchmany(size=1)
 
         if len(result) != 1:            # checks if query returned one result
-            return Response({
-            }, mimetype='application/json', status=404)
+            return Response({}, mimetype='application/json', status=404)
         else:                           # pulls necessary data from result
             name = result[0][0]
             movie_id = result[0][1]
@@ -34,8 +32,7 @@ def get_tag(id: int):
                 "movie_id": movie_id
             }, mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()

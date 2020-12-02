@@ -1,5 +1,6 @@
 {
   "UI_LABELS": {
+    "flickPick": "FlickPick",
     "welcomeToFlickPick": "Welcome to FlickPick!",
     "userRecord": "User Record",
     "userId": "User ID",
@@ -12,7 +13,11 @@
     "title": "Title",
     "genre": "Genre",
     "userRating": "User Rating",
-    "takeAMovieSurvey": "Take a Movie Survey",
+    "rating": "Rating",
+    "movieSearch": "Movie search",
+    "movieSurvey": "Movie Survey",
+    "movieSurveyInstructions": "We want to provide you with the best possible content and recommendations, so we'd love to get to know a little more about you!  Please select five movies of your choosing, providing a rating from 1-5 stars for each.  We'll take it from there.",
+    "movieInformation": "Movie Information",
     "NAVIGATION_BAR_LABELS": {
       "signIn": "Sign In",
       "signUp": "Sign Up",
@@ -20,14 +25,29 @@
       "admin": "Admin",
       "client": "Client"
     },
+    "BUTTON_LABELS": {
+      "close": "Close",
+      "cancel": "Cancel",
+      "rateIt": "Rate It!",
+      "takeAMovieSurvey": "Take a Movie Survey",
+      "go": "Go",
+      "submit": "Submit",
+      "downloadAll": "Download All",
+      "yes": "Yes",
+      "no": "No",
+      "downloadToCsv": "Download to CSV"
+    },
     "resetMovieSurvey": "Reset Movie Survey",
     "signOut": "Sign Out",
     "deleteAccount": "Delete Account",
     "fullName": "Name",
-    "resetYourMovies": "Reset Your Movies?",
+    "resetYourMovies": "Reset Your Movies",
+    "resetYourMoviesConfirmation": "Are you sure you want to reset all movie data?",
     "deleteYourAccount": "Delete Your Account?",
+    "deleteYourAccountConfirmation": "We'd hate to see you go! Are you sure you want to delete your account with FlickPick?",
     "signOutQuestion": "Sign Out?",
-    "yes": "Yes",
-    "no": "No"
+    "updateRating": "Select New Rating",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }

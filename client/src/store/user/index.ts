@@ -1,22 +1,39 @@
 import { ApiRequest } from '../api';
 import { Movie } from '../movie';
 import { Tag } from '../tag';
+/* eslint-disable @typescript-eslint/no-redeclare */
 
 export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';
 export const RECEIVE_USERS_FAILURE = 'RECEIVE_USERS_FAILURE';
 
-export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
-export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
-export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
-
 export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
 export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
 export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
 
+export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
+export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
+export const RECEIVE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
+
+export type REQUEST_USER_STARTED = typeof REQUEST_USER_STARTED;
+export type RECEIVE_USER_SUCCESS = typeof RECEIVE_USER_SUCCESS;
+export type RECEIVE_USER_FAILURE = typeof RECEIVE_USER_FAILURE;
+
+export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
+export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
+export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
+
 export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
 export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
 export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
+
+export const DELETE_USER_STARTED = 'DELETE_USER_STARTED';
+export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
+export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+
+export type DELETE_USER_STARTED = typeof DELETE_USER_STARTED;
+export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
+export type DELETE_USER_FAILURE = typeof DELETE_USER_FAILURE;
 
 export type UsersEntitiesTypes = REQUEST_USERS_STARTED | RECEIVE_USERS_SUCCESS | RECEIVE_USERS_FAILURE;
 
@@ -32,6 +49,13 @@ export type AUTH_USER = typeof AUTH_USER;
 
 export type UserAuthTypes = USER_LOGIN | USER_LOGOUT;
 
+export const TOGGLE_USER_MODAL = 'TOGGLE_USER_MODAL';
+export type TOGGLE_USER_MODAL = typeof TOGGLE_USER_MODAL;
+export interface ToggleUserModal {
+    type: TOGGLE_USER_MODAL;
+    show: boolean;
+}
+
 /**
  * A single user.
  */
@@ -44,11 +68,32 @@ export interface User {
     /**
      * An array of all movie ids that the user has rated.
      */
-    movies: Record<number, Movie>;
+    movies: number[];
     /**
      * An array of all tag ids that the user has rated.
      */
     tags: number[];
+}
+
+export interface RequestUserStarted extends ApiRequest {
+    type: REQUEST_USER_STARTED;
+    id: number;
+}
+
+export interface ReceiveUserSuccess {
+    type: RECEIVE_USER_SUCCESS;
+    response: {
+        entities: {
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
+        };
+    };
+}
+
+export interface ReceiveUserFailure {
+    type: RECEIVE_USER_FAILURE;
+    id: number;
 }
 
 /**
@@ -89,7 +134,12 @@ export interface RequestAuthUserStarted extends ApiRequest {
 
 export interface ReceiveAuthUserSuccess {
     type: RECEIVE_AUTH_USER_SUCCESS;
-    id: number;
+    response: {
+        entities: {
+            users: Record<number, User>;
+        };
+        result: number;
+    };
 }
 
 export interface ReceiveAuthUserFailure {
@@ -101,11 +151,17 @@ export interface ReceiveAuthUserFailure {
  * Any user entities retrieval action, that is a user entities Request {Start, Success, Failure}.
  */
 export type UserEntitiesActions =
-    | RequestAuthUserStarted
-    | ReceiveAuthUserSuccess
-    | ReceiveUsersFailure
     | RequestUsersStarted
     | ReceiveUsersSuccess
+    | ReceiveUsersFailure
+    | RequestUserStarted
+    | ReceiveUserSuccess
+    | ReceiveUserFailure
+    | DeleteUserStarted
+    | DeleteUserSuccess
+    | DeleteUserFailure
+    | RequestAuthUserStarted
+    | ReceiveAuthUserSuccess
     | UserLogin
     | UserLogout
     | TokenUpdate;
@@ -126,11 +182,29 @@ export interface UserLogout {
 }
 
 /**
+ * Action that occurs when deleting a user account.
+ */
+export interface DeleteUserStarted extends ApiRequest {
+    type: DELETE_USER_STARTED;
+    id: number;
+}
+
+export interface DeleteUserSuccess {
+    type: DELETE_USER_SUCCESS;
+    id: number;
+}
+
+export interface DeleteUserFailure {
+    type: DELETE_USER_FAILURE;
+    id: number;
+}
+
+/**
  * Action that occurs when a new token is received or old token is refreshed
  */
 export interface TokenUpdate {
     type: TOKEN_UPDATE;
-    token: string;
+    token: string | null;
 }
 
 export interface AuthUser {

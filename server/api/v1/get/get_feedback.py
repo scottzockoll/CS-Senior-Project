@@ -1,5 +1,5 @@
+from server.auth import is_user
 from server.queries.get.query_get_feedback import query_get_feedback
-from server.utilities import is_user
 from flask import Response
 import json
 
@@ -10,7 +10,7 @@ def get_feedback(userId: int, movieId: int):
     :param int userId: The user id to retrieve
     :param int movieId: The movie id to retrieve
     :return: JSON object of movie id and rating
-    """    
+    """
     
     try:
         # Validate user permission level
@@ -23,7 +23,6 @@ def get_feedback(userId: int, movieId: int):
         
         # Retrieve feedback
         result = query_get_feedback(userId, movieId)
-        
         if result is None:
             return Response({}, mimetype='application/json', status=404)
         else:

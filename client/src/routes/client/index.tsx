@@ -1,97 +1,170 @@
 import React from 'react';
-import { Box, DataTable, Text, Button, Layer } from 'grommet';
-import { UserRecord } from '../admin/UserRecord';
+import { Box, DataTable, Text, Button } from 'grommet';
+import { connect } from 'react-redux';
 import en from '../../en.json';
+import { AppDispatch, RootState } from '../../store';
+import { deleteUser, requestSingleUser } from '../../store/user/actions';
+import StarRating from '../common/StarRating';
+import { updateMovieRating, deleteMovies } from '../../store/movie/actions';
+import { RouteComponentProps } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
+import { User } from '../../store/user';
+import Confirmation from '../common/Confirmation';
 
-interface ClientPageProps {
-    userRecord: UserRecord;
+interface ClientPageState {
+    showDeleteAccount: boolean;
+    showResetMovies: boolean;
 }
 
-export default function ClientPage(props: ClientPageProps) {
-    const [showSignOut, setShowSignOut] = React.useState<boolean>();
-    const [showDeleteAccount, setShowDeleteAccount] = React.useState<boolean>();
-    const [showResetMovies, setShowResetMovies] = React.useState<boolean>();
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    getUser: (offset: number) => dispatch(requestSingleUser(offset)),
+    deleteUser: (id: number) => dispatch(deleteUser(id)),
+    updateMovieRating: (feedbackId: number, rating: number) => dispatch(updateMovieRating(feedbackId, rating)),
+    deleteMovies: (id: number) => dispatch(deleteMovies(id)),
+    toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+});
 
+const mapStateToProps = (state: RootState) => ({
+    activeUserId: state.activeUser,
+    user: state.users.entities[state.activeUser],
+    movies: (() => {
+        if (state.activeUser === -1) return [];
+        if (state.users.entities.hasOwnProperty(state.activeUser)) {
+            return state.users.entities[state.activeUser].movies.map((id) => {
+                return state.movies.entities[id];
+            });
+        }
+    })(),
+    surveyVisible: state.surveyVisible,
+});
+
+type ClientPageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & RouteComponentProps;
+
+const ClientHeader = (props: { user: User }) => {
     return (
-        <React.Fragment>
-            <Box pad="medium" align="start">
-                <Text>
-                    {en.UI_LABELS.fullName}: {props.userRecord.firstName} {props.userRecord.lastName}
-                </Text>
-                <Text>
-                    {en.UI_LABELS.email}: {props.userRecord.email}
-                </Text>
-            </Box>
-            <Box width="large" pad="medium">
+        <Box pad={{ vertical: 'medium' }} align="start">
+            <Text>
+                {en.UI_LABELS.fullName}: {props.user ? props.user.firstName : ''}{' '}
+                {props.user ? props.user.lastName : ''}
+            </Text>
+
+            <Text>
+                {en.UI_LABELS.email}: {props.user ? props.user.email : ''}
+            </Text>
+        </Box>
+    );
+};
+
+class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
+    constructor(props: ClientPageProps, state: RootState) {
+        super(props);
+
+        this.state = {
+            showDeleteAccount: false,
+            showResetMovies: false,
+        };
+    }
+
+    hideReset = () => {
+        this.setState({
+            ...this.state,
+            showResetMovies: false,
+        });
+    };
+
+    showReset = () => {
+        this.setState({
+            ...this.state,
+            showResetMovies: true,
+        });
+    };
+
+    hideDelete = () => {
+        this.setState({
+            ...this.state,
+            showDeleteAccount: false,
+        });
+    };
+
+    showDelete = () => {
+        this.setState({
+            ...this.state,
+            showDeleteAccount: true,
+        });
+    };
+
+    render() {
+        return (
+            <Box pad={{ horizontal: 'medium' }}>
+                <ClientHeader user={this.props.user} />
                 <DataTable
                     border={true}
+                    data={this.props.movies}
                     columns={[
-                        { property: 'title', header: en.UI_LABELS.title },
-                        { property: 'userRating', header: en.UI_LABELS.userRating },
+                        { property: 'title', header: en.UI_LABELS.title, sortable: true },
+                        {
+                            property: 'rating',
+                            header: en.UI_LABELS.userRating,
+                            sortable: true,
+                            render: (datum) => (
+                                <StarRating
+                                    current={datum.rating ?? 0}
+                                    maximum={5}
+                                    onClick={(event, value) => {
+                                        this.props.updateMovieRating(datum.id, value);
+                                    }}
+                                />
+                            ),
+                        },
                     ]}
-                    data={props.userRecord.watchedMovies}
+                    sort={{
+                        property: 'title',
+                        direction: 'asc',
+                    }}
+                    sortable={true}
                 />
-            </Box>
-            <Box>
-                <Button
-                    label={en.UI_LABELS.resetMovieSurvey}
-                    fill={false}
-                    alignSelf="start"
-                    onClick={() => setShowResetMovies(true)}
-                />
-                {showResetMovies && (
-                    <Layer onEsc={() => setShowResetMovies(false)} onClickOutside={() => setShowResetMovies(false)}>
-                        <Box justify="center">
-                            <Text size="xxlarge">{en.UI_LABELS.resetYourMovies}</Text>
-                            <Text>----------------------------------------</Text>
-                        </Box>
+                <Box direction={'row'} margin={{ top: 'medium' }}>
+                    <Button
+                        margin={{ right: 'xsmall' }}
+                        label={en.UI_LABELS.resetMovieSurvey}
+                        onClick={this.showReset}
+                    />
+                    <Button label={en.UI_LABELS.deleteAccount} onClick={this.showDelete} />
+                </Box>
 
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowResetMovies(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowResetMovies(false)} />
-                        </Box>
-                    </Layer>
-                )}
-            </Box>
-            <Box direction="row" alignSelf="end" justify="end">
-                <Button
-                    label={en.UI_LABELS.signOut}
-                    fill={false}
-                    alignSelf="end"
-                    onClick={() => setShowSignOut(true)}
-                />
-                {showSignOut && (
-                    <Layer onEsc={() => setShowSignOut(false)} onClickOutside={() => setShowSignOut(false)}>
-                        <Box justify="center">
-                            <Text size="xxlarge">{en.UI_LABELS.signOutQuestion}</Text>
-                            <Text>---------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowSignOut(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowSignOut(false)} />
-                        </Box>
-                    </Layer>
+                {this.state.showResetMovies && (
+                    <Confirmation
+                        header={en.UI_LABELS.resetYourMovies}
+                        body={en.UI_LABELS.resetYourMoviesConfirmation}
+                        onConfirm={() => {
+                            this.props.deleteMovies(this.props.activeUserId);
+                            this.hideReset();
+                            toggleInitialSurveyModal(true);
+                        }}
+                        onCancel={this.hideReset}
+                    />
                 )}
 
-                <Button
-                    label={en.UI_LABELS.deleteAccount}
-                    fill={false}
-                    alignSelf="end"
-                    onClick={() => setShowDeleteAccount(true)}
-                />
-                {showDeleteAccount && (
-                    <Layer onEsc={() => setShowDeleteAccount(false)} onClickOutside={() => setShowDeleteAccount(false)}>
-                        <Box justify="center">
-                            <Text size="xxlarge">{en.UI_LABELS.deleteYourAccount}</Text>
-                            <Text>--------------------------------------------</Text>
-                        </Box>
-                        <Box direction="row" justify="center">
-                            <Button label={en.UI_LABELS.yes} onClick={() => setShowDeleteAccount(false)} />
-                            <Button label={en.UI_LABELS.no} onClick={() => setShowDeleteAccount(false)} />
-                        </Box>
-                    </Layer>
+                {this.state.showDeleteAccount && (
+                    <Confirmation
+                        header={en.UI_LABELS.deleteYourAccount}
+                        body={en.UI_LABELS.deleteYourAccountConfirmation}
+                        onConfirm={() => {
+                            // dispatch he deleteUser action
+                            this.props.deleteUser(this.props.activeUserId);
+
+                            this.hideDelete();
+
+                            // redirect the user back to the home page
+                            this.props.history.push('/');
+                        }}
+                        onCancel={this.hideDelete}
+                    />
                 )}
             </Box>
-        </React.Fragment>
-    );
+        );
+    }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ClientPage));
