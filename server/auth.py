@@ -35,14 +35,29 @@ def verify_user(firstName: str, lastName: str, email: str):
         result = cursor.fetchmany(size=1)
 
         if len(result) == 1:
-            return Response({}, mimetype='application/json', status=200)
+            return {
+                'id': result[0][0],
+                'firstName': result[0][1],
+                'lastName': result[0][2],
+                'email': result[0][3],
+                'isAdmin': result[0][4] == 1,
+            }
         else:
             cursor.execute("INSERT INTO users (firstName, lastName, email, isAdmin) VALUES (%s, %s, %s, 0)",
                            (firstName, lastName, email))
             con.commit()
-            return Response({}, mimetype='application/json', status=201)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+
+            return {
+                'id': cursor.lastrowid,
+                'firstName': firstName,
+                'lastName': lastName,
+                'email': email,
+                'isAdmin': False,
+            }
+    except Exception as e:
+        print(f'Exception in verify_user')
+        print(e)
+        return None
     finally:
         cursor.close()
         con.close()
@@ -71,9 +86,9 @@ def check_update(firstName: str, lastName: str, email: str):
             cursor.execute("UPDATE users SET lastName=%s WHERE email=%s", (lastName, email,))
 
         con.commit()
-        return Response({}, mimetype='application/json', status=200)
-    except Exception:
-        return Response({}, mimetype='application/json', status=500)
+    except Exception as e:
+        print(f"Error in check_update")
+        print(e)
     finally:
         cursor.close()
         con.close()
@@ -103,6 +118,7 @@ def authenticate(email: str, token: str) -> Union[Dict, None]:
     :param token: OAuth token to attempt to validate
     :return: Authorization status of the request.
     """
+    from server import app
     con, cursor = db_connection()
 
     try:
@@ -114,20 +130,16 @@ def authenticate(email: str, token: str) -> Union[Dict, None]:
         cursor.execute("SELECT id, isAdmin FROM users WHERE email=%s", (token_email,))
         result = cursor.fetchmany(size=1)
 
-        if result[0][1] == 1:
-            auth_status = AuthStatus.Admin
-        else:
-            auth_status = AuthStatus.User
-
         user = {
             'id': result[0][0],
             'firstName': token_first_name,
             'lastName': token_last_name,
-            'authStatus': auth_status.value[0],
+            'isAdmin': result[0][1] == 1,
             'email': token_email,
             'expiration': token_expiration
         }
         session['user'] = user
+        app.open_session(request)
 
         print(f"Login success: {user['lastName']}, {user['firstName']} ({user['email']})")
         return user
@@ -151,10 +163,7 @@ def is_user():
             session.clear()
             return False
         else:
-            if user['authStatus'] == "User":
-                return True
-            else:
-                return False
+            return True
     else:
         return False
 
@@ -171,10 +180,7 @@ def is_admin():
             session.clear()
             return False
         else:
-            if user['auth_status'] == "Admin":
-                return True
-            else:
-                return False
+            return user['isAdmin']
     else:
         return False
 

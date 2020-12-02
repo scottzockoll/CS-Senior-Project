@@ -25,5 +25,7 @@ def get_user(id: int):
         else:
             return Response(json.dumps(result), mimetype='application/json', status=200)
 
-    except Exception:
+    except Exception as e:
+        print(f'Error in get_user')
+        print(e)
         return Response({}, mimetype='application/json', status=500)

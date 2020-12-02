@@ -31,5 +31,7 @@ def get_users(limit: int, offset: int):
         else:
             return Response(json.dumps(result), mimetype='application/json', status=200)
 
-    except Exception:
+    except Exception as e:
+        print(f'Error in get_users')
+        print(e)
         return Response({}, mimetype='application/json', status=500)
