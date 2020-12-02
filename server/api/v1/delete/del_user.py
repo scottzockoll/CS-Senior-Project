@@ -14,7 +14,7 @@ def del_user(id: int):
 
     con, cursor = db_connection()
     try:
-        if not is_admin() and not is_current_user(id):
+        if not (is_admin() or is_current_user(id)):
             return Response({}, mimetype='application/json', status=401)
         else:
             cursor.execute("DELETE FROM users WHERE id=%s", (id,))
