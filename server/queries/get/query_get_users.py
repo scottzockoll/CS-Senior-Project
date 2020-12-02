@@ -34,26 +34,26 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
                     filter_dict["firstName"] = row[1]
                     filter_dict["lastName"] = row[2]
                     filter_dict["isAdmin"] = row[4] == 1
-                    if row[8] is not None:
+                    if row[9] is not None:
                         filter_dict["movies"] = [
-                            {"movie_id": row[6], "title": row[5], "rating": row[7],
-                             "tags": server.utilities.process_movie_tags(row[8])}]
+                            {"movie_id": row[7], "title": row[5], "rating": row[8], "genres": row[6], 
+                             "tags": server.utilities.process_movie_tags(row[9])}]
                         users_list.append(filter_dict)
                     else:
                         filter_dict["movies"] = [
-                            {"movie_id": row[6], "title": row[5], "rating": row[7]}]
+                            {"movie_id": row[7], "title": row[5], "rating": row[8], "genres": row[6]}]
                         users_list.append(filter_dict)
                     filter_dict = dict.fromkeys(["id", "email", "firstName", "lastName", "isAdmin", "movies"])
                 # if there is, just append the movie information to the existing dictionary for that user
                 else:
-                    if row[8] is not None:
-                        filter_dict["movies"] = {"movie_id": row[6], "title": row[5], "rating": row[7],
-                                                 "tags": server.utilities.process_movie_tags(row[8])}
+                    if row[9] is not None:
+                        filter_dict["movies"] = {"movie_id": row[7], "title": row[5], "rating": row[8], "genres": row[6],
+                                                 "tags": server.utilities.process_movie_tags(row[9])}
                         for dicts in users_list:
                             if dicts["id"] == row[0]:
                                 dicts["movies"].append(filter_dict["movies"])
                     else:
-                        filter_dict["movies"] = {"movie_id": row[6], "title": row[5], "rating": row[7]}
+                        filter_dict["movies"] = {"movie_id": row[7], "title": row[5], "rating": row[8], "genres": row[6]}
                         for dicts in users_list:
                             if dicts["id"] == row[0]:
                                 dicts["movies"].append(filter_dict["movies"])
