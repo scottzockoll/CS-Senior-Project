@@ -13,7 +13,7 @@ import {
     UserEntitiesActions,
     TOGGLE_USER_MODAL,
 } from './index';
-import { Paginated } from '../types';
+import { NestedPaginated, Paginated } from '../types';
 import { Movie, Rating } from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
@@ -88,7 +88,6 @@ const initialMovieEntitiesState: Paginated<Movie> = {
     isFetching: false,
 };
 
-// @ts-ignore
 export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
     switch (action.type) {
         case REQUEST_USER_STARTED:
@@ -100,11 +99,11 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             console.log(action.response.entities);
+            const users: Record<number, User> | undefined = action.response.entities.users;
             if (action.response.entities.movies) {
                 return {
                     ...state,
-                    // @ts-ignore
-                    ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
+                    ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
                     entities: {
                         ...state.entities,
                         ...action.response.entities.movies,
@@ -125,17 +124,16 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
     }
 }
 
-const initialRatingsEntitiesState: Paginated<Rating> = {
+const initialRatingsEntitiesState: NestedPaginated<Rating> = {
     ids: [],
     entities: {},
     isFetching: false,
 };
 
-// @ts-ignore
 export function userRatingsReducer(
     state = initialRatingsEntitiesState,
     action: UserEntitiesActions
-): Paginated<Rating> {
+): NestedPaginated<Rating> {
     switch (action.type) {
         case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
@@ -145,10 +143,10 @@ export function userRatingsReducer(
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            let entities: Record<number, Rating> = {};
-            // @ts-ignore
+            const movies: Record<number, Movie> | undefined = action.response.entities.movies;
+            let entities: Record<number, Record<number, Rating>> = {};
             let ratings: Array<Rating> = [
-                ...Object.values(action.response.entities.movies).map((movie) => ({
+                ...Object.values(movies as Object).map((movie) => ({
                     user_id: movie.parentId,
                     rating: movie.rating,
                     movie_id: movie.id,
@@ -157,17 +155,20 @@ export function userRatingsReducer(
             for (let r in ratings) {
                 let rating: Rating = ratings[r];
                 if (entities[rating.user_id] == undefined) {
-                    // @ts-ignore
-                    entities[rating.user_id] = {};
+                    entities[rating.user_id] = {
+                        [rating.user_id]: {
+                            user_id: -1,
+                            rating: -1,
+                            movie_id: -1,
+                        },
+                    };
                 }
-                // @ts-ignore
                 entities[rating.user_id][rating.movie_id] = rating;
             }
             console.log(entities);
             if (action.response.entities.movies) {
                 return {
                     ...state,
-                    // @ts-ignore
                     ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
                     entities: {
                         ...state.entities,
@@ -203,11 +204,11 @@ export function usersTagsReducer(state = initialTagEntitiesState, action: UserEn
                 isFetching: true,
             };
         case RECEIVE_USERS_SUCCESS:
+            const users: Record<number, User> | undefined = action.response.entities.users;
             if (action.response.entities.tags) {
                 return {
                     ...state,
-                    // @ts-ignore
-                    ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
+                    ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
                     entities: {
                         ...state.entities,
                         ...action.response.entities.tags,
