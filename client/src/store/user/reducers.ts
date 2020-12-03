@@ -106,6 +106,7 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
                     entities: {
                         ...state.entities,
                         [userId]: action.response.entities.movies,
+                        // ...action.response.entities.movies
                     },
                     isFetching: false,
                 };
@@ -113,6 +114,7 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
                 return state;
             }
         case RECEIVE_USERS_SUCCESS:
+            console.log(action.response.entities);
             if (action.response.entities.movies) {
                 return {
                     ...state,

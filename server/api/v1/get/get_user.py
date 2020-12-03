@@ -13,11 +13,11 @@ def get_user(id: int):
     """
 
     try:
-        if not server.auth.is_user():
-            return Response({}, mimetype='application/json', status=403)
-
-        if not isinstance(id, int):  # checks if id is an integer
-            return Response({}, mimetype='application/json', status=400)
+        # if not server.auth.is_user():
+        #     return Response({}, mimetype='application/json', status=403)
+        #
+        # if not isinstance(id, int):  # checks if id is an integer
+        #     return Response({}, mimetype='application/json', status=400)
 
         result = query_get_user(id)
         if not result:

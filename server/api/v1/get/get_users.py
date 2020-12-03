@@ -19,12 +19,11 @@ def get_users(limit: int, offset: int):
     """
 
     try:
-
-        if not server.auth.is_user():
-            return Response({}, mimetype='application/json', status=403)
-
-        if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
-            return Response({}, mimetype='application/json', status=400)
+        # if not server.auth.is_user():
+        #     return Response({}, mimetype='application/json', status=403)
+        #
+        # if not isinstance(limit, int) or not isinstance(offset, int):  # checks if id is an integer
+        #     return Response({}, mimetype='application/json', status=400)
 
         result = query_get_users(limit, offset)
         if not result:
