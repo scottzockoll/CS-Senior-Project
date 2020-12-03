@@ -96,29 +96,13 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
                 isFetching: true,
             };
         case RECEIVE_USER_SUCCESS:
-            // @ts-ignore
-            const userId = Object.keys(action.response.entities.users)[0];
-            if (action.response.entities.movies) {
-                return {
-                    ...state,
-                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
-                    // @ts-ignore
-                    entities: {
-                        ...state.entities,
-                        [userId]: action.response.entities.movies,
-                        // ...action.response.entities.movies
-                    },
-                    isFetching: false,
-                };
-            } else {
-                return state;
-            }
         case RECEIVE_USERS_SUCCESS:
             console.log(action.response.entities);
             if (action.response.entities.movies) {
                 return {
                     ...state,
-                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    // @ts-ignore
+                    ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
                     entities: {
                         ...state.entities,
                         ...action.response.entities.movies,

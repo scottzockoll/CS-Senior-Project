@@ -1,4 +1,5 @@
 import { schema } from 'normalizr';
+import { isArray } from 'util';
 
 const tagSchema = new schema.Entity(
     'tags',
@@ -7,13 +8,31 @@ const tagSchema = new schema.Entity(
         idAttribute: (tag) => tag.id,
     }
 );
+
+export function handleMerge(entityA: any, entityB: any) {
+    if (Array.isArray(entityA)) {
+        entityA.push(Object.values(entityB));
+        return entityA;
+    } else {
+        entityA = [Object.values(entityA)];
+        entityA.push(Object.values(entityB));
+        return entityA;
+    }
+}
+
 const movieSchema = new schema.Entity(
     'movies',
     {
         tags: [tagSchema],
     },
     {
-        idAttribute: (movie) => movie.id,
+        idAttribute: (movie, parent) => parent.id,
+        mergeStrategy: (entityA, entityB) => handleMerge(entityA, entityB),
+        // processStrategy: (value, parent) =>
+        // ({
+        //     ...value,
+        //     parentId: parent.id
+        // })
     }
 );
 const userSchema = new schema.Entity(
