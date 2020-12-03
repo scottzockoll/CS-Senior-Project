@@ -21,7 +21,7 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
                             FROM movie_feedback AS mf
                             INNER JOIN users AS u ON u.id = mf.user_id
                             INNER JOIN movies AS m ON m.id = mf.movie_id
-                            LEFT JOIN tag_feedback AS tf ON tf.movie_id = mf.movie_id AND tf.user_id=2
+                            LEFT JOIN tag_feedback AS tf ON tf.movie_id = mf.movie_id AND tf.user_id= mf.user_id
                             LEFT JOIN tags AS t ON t.id = tf.tag_id
                             INNER JOIN genre AS g on g.movie_id = mf.movie_id
                             WHERE mf.user_id >= {offset} AND mf.user_id < {offset+limit}
