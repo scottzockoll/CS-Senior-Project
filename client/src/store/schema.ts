@@ -5,7 +5,8 @@ const tagSchema = new schema.Entity(
     'tags',
     {},
     {
-        idAttribute: (tag) => tag.id,
+        idAttribute: (movie, parent) => parent.id,
+        mergeStrategy: (entityA, entityB) => handleMerge(entityA, entityB),
     }
 );
 
@@ -26,13 +27,11 @@ const movieSchema = new schema.Entity(
         tags: [tagSchema],
     },
     {
-        idAttribute: (movie, parent) => parent.id,
-        mergeStrategy: (entityA, entityB) => handleMerge(entityA, entityB),
-        // processStrategy: (value, parent) =>
-        // ({
-        //     ...value,
-        //     parentId: parent.id
-        // })
+        idAttribute: (movie) => movie.id,
+        processStrategy: (movie, parent) => ({
+            ...movie,
+            parentId: parent.id,
+        }),
     }
 );
 const userSchema = new schema.Entity(

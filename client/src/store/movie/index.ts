@@ -13,6 +13,12 @@ export interface Movie {
     tags: Record<number, Tag>;
 }
 
+export interface Rating {
+    user_id: number;
+    rating: number;
+    movie_id: number;
+}
+
 /**
  * Update Movie Rating
  */
