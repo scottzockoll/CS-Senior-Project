@@ -66,6 +66,10 @@ const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) 
                                                       label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
                                                       onClick: () => history.push('/'),
                                                   },
+                                                  {
+                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
+                                                      onClick: () => history.push('/admin'),
+                                                  },
                                               ]
                                             : [
                                                   {
@@ -75,10 +79,6 @@ const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) 
                                                   {
                                                       label: en.UI_LABELS.NAVIGATION_BAR_LABELS.home,
                                                       onClick: () => history.push('/'),
-                                                  },
-                                                  {
-                                                      label: en.UI_LABELS.NAVIGATION_BAR_LABELS.admin,
-                                                      onClick: () => history.push('/admin'),
                                                   },
                                               ]
                                     }
