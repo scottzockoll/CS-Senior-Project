@@ -8,15 +8,17 @@ import {
     RECEIVE_USERS_SUCCESS,
     REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
+    TOGGLE_USER_MODAL,
     User,
     UserAuthActions,
     UserEntitiesActions,
-    TOGGLE_USER_MODAL,
 } from './index';
 import { NestedPaginated, Paginated } from '../types';
 import { Movie, Rating } from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
+import { type } from 'os';
+import { schema } from 'normalizr';
 
 const initialUserAuthState: number = -1;
 
@@ -155,15 +157,10 @@ export function userRatingsReducer(
             for (let r in ratings) {
                 let rating: Rating = ratings[r];
                 if (entities[rating.user_id] == undefined) {
-                    entities[rating.user_id] = {
-                        [rating.user_id]: {
-                            user_id: -1,
-                            rating: -1,
-                            movie_id: -1,
-                        },
-                    };
+                    entities[rating.user_id] = { [rating.movie_id]: rating };
+                } else {
+                    entities[rating.user_id][rating.movie_id] = rating;
                 }
-                entities[rating.user_id][rating.movie_id] = rating;
             }
             console.log(entities);
             if (action.response.entities.movies) {
@@ -203,21 +200,84 @@ export function usersTagsReducer(state = initialTagEntitiesState, action: UserEn
                 ...state,
                 isFetching: true,
             };
+        case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            const users: Record<number, User> | undefined = action.response.entities.users;
+            const tags: Record<number, Tag> | undefined = action.response.entities.tags;
             if (action.response.entities.tags) {
                 return {
                     ...state,
-                    ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
+                    ids: [...state.ids, ...Object.values(tags as Object).map((tag) => tag.id)],
                     entities: {
                         ...state.entities,
-                        ...action.response.entities.tags,
+                        ...Object.values(action.response.entities.tags),
                     },
                     isFetching: false,
                 };
             } else {
                 return state;
             }
+        case RECEIVE_USERS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
+        default:
+            return state;
+    }
+}
+
+const initialTagRatingEntitiesState: NestedPaginated<Tag[]> = {
+    ids: [],
+    entities: {},
+    isFetching: false,
+};
+
+export function usersTagRatingsReducer(
+    state = initialTagRatingEntitiesState,
+    action: UserEntitiesActions
+): NestedPaginated<Tag[]> {
+    switch (action.type) {
+        case REQUEST_USER_STARTED:
+        case REQUEST_USERS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_USER_SUCCESS:
+        case RECEIVE_USERS_SUCCESS:
+            console.log(action.response.entities);
+            const users: Record<number, User> | undefined = action.response.entities.users;
+            const tags: Record<number, Tag> | undefined = action.response.entities.tags;
+            const entities: Record<number, Record<number, Tag[]>> | undefined = {};
+            if (tags) {
+                for (let t in action.response.entities.tags) {
+                    let tag: Tag = tags[parseInt(t)];
+                    if (entities.hasOwnProperty(tag.userId)) {
+                        if (entities[tag.userId].hasOwnProperty(tag.movieId)) {
+                            entities[tag.userId][tag.movieId].push(tag);
+                        } else {
+                            entities[tag.userId][tag.movieId] = [tag];
+                        }
+                    } else {
+                        entities[tag.userId] = { [tag.movieId]: [] };
+                        entities[tag.userId][tag.movieId].push(tag);
+                    }
+                }
+                console.log('entities');
+                console.log(entities);
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
+                    entities: {
+                        ...state.entities,
+                        ...entities,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,

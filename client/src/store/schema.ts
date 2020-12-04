@@ -1,23 +1,51 @@
 import { schema } from 'normalizr';
 import { isArray } from 'util';
+import { Movie } from './movie';
+import { User } from './user';
 
 const tagSchema = new schema.Entity(
     'tags',
     {},
     {
-        idAttribute: (movie, parent) => parent.id,
-        mergeStrategy: (entityA, entityB) => handleMerge(entityA, entityB),
+        idAttribute: (tag, parent) => tag.id,
+        processStrategy: (tag, parent) => ({
+            ...tag,
+            movieId: parent.id,
+            userId: parent.parentId,
+        }),
+        // mergeStrategy: (entityA, entityB) => handleMerge(entityA, entityB)
     }
 );
 
 export function handleMerge(entityA: any, entityB: any) {
-    if (Array.isArray(entityA)) {
-        entityA.push(Object.values(entityB));
-        return entityA;
+    if (entityA.hasOwnProperty('name')) {
+        if (entityA.movieId == entityB.movieId) {
+            return {
+                [entityA.movieId]: [entityA, entityB],
+            };
+        } else {
+            return {
+                [entityA.movieId]: {
+                    ...entityA,
+                },
+                [entityB.movieId]: {
+                    ...entityB,
+                },
+            };
+        }
     } else {
-        entityA = [Object.values(entityA)];
-        entityA.push(Object.values(entityB));
-        return entityA;
+        if (entityA.hasOwnProperty(entityB.movieId)) {
+            if (Array.isArray(entityA[entityB.movieId])) {
+                entityA[entityB.movieId].push(entityB);
+                return entityA;
+            } else {
+                entityA[entityB.movieId] = [entityA[entityB.movieId], entityB];
+                return entityA;
+            }
+        } else {
+            entityA[entityB.movieId] = entityB;
+            return entityA;
+        }
     }
 }
 

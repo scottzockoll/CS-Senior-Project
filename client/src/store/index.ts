@@ -9,6 +9,7 @@ import {
     userRatingsReducer,
     usersMoviesReducer,
     usersReducer,
+    usersTagRatingsReducer,
     usersTagsReducer,
 } from './user/reducers';
 import {
@@ -60,6 +61,7 @@ export const rootReducer = combineReducers({
     users: usersReducer,
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
+    tagRatings: usersTagRatingsReducer,
     ratings: userRatingsReducer,
     token: tokenReducer,
     surveyVisible: toggleInitialSurveyModalReducer,
