@@ -2,7 +2,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
 import {
-    deleteUserReducer,
     toggleUserModalReducer,
     tokenReducer,
     userAuthReducer,
@@ -20,7 +19,6 @@ import {
     TOGGLE_MOVIE_MODAL,
     ToggleMovieModal,
 } from './movie';
-import { deleteMoviesReducer } from './movie/reducers';
 import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
 import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
@@ -65,8 +63,6 @@ export const rootReducer = combineReducers({
     ratings: userRatingsReducer,
     token: tokenReducer,
     surveyVisible: toggleInitialSurveyModalReducer,
-    deleteUser: deleteUserReducer,
-    deleteMovies: deleteMoviesReducer,
     movieModal: toggleMovieModalReducer,
     showUserModal: toggleUserModalReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.

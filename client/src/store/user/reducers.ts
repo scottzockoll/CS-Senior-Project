@@ -1,7 +1,4 @@
 import {
-    DELETE_USER_FAILURE,
-    DELETE_USER_STARTED,
-    DELETE_USER_SUCCESS,
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
@@ -17,8 +14,6 @@ import { NestedPaginated, Paginated } from '../types';
 import { Movie, Rating } from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
-import { type } from 'os';
-import { schema } from 'normalizr';
 
 const initialUserAuthState: number = -1;
 
@@ -283,19 +278,6 @@ export function usersTagRatingsReducer(
                 ...state,
                 isFetching: false,
             };
-        default:
-            return state;
-    }
-}
-
-export function deleteUserReducer(state = -1, action: UserEntitiesActions): number {
-    switch (action.type) {
-        case DELETE_USER_STARTED:
-            return action.id;
-        case DELETE_USER_SUCCESS:
-            return -1;
-        case DELETE_USER_FAILURE:
-            return action.id;
         default:
             return state;
     }
