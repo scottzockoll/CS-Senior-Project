@@ -42,7 +42,7 @@ const callApi = async (
 
     let fetchParam: RequestInit = {
         method: method,
-        body: method === ('POST' || 'PUT') ? formData : null,
+        body: ['POST', 'PUT'].includes(method) ? formData : null,
         credentials: 'include',
     };
 
