@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { User } from '../../store/user';
 import Confirmation from '../common/Confirmation';
+import { Rating } from '../../store/movie';
 
 interface ClientPageState {
     showDeleteAccount: boolean;
@@ -31,9 +32,10 @@ const mapStateToProps = (state: RootState) => ({
     movies: (() => {
         if (state.activeUser === -1) return [];
         if (state.users.entities.hasOwnProperty(state.activeUser)) {
-            return state.users.entities[state.activeUser].movies.map((id) => {
-                return state.movies.entities[id];
-            });
+            return Object.values(state.ratings.entities[state.activeUser]).map((feedback) => ({
+                ...state.movies.entities[feedback.movieId],
+                ...feedback,
+            }));
         }
     })(),
     surveyVisible: state.surveyVisible,
@@ -107,12 +109,12 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                             property: 'rating',
                             header: en.UI_LABELS.userRating,
                             sortable: true,
-                            render: (datum) => (
+                            render: (rating: Rating) => (
                                 <StarRating
-                                    current={datum.rating ?? 0}
+                                    current={rating.rating ?? 0}
                                     maximum={5}
                                     onClick={(event, value) => {
-                                        this.props.updateMovieRating(datum.id, value);
+                                        this.props.updateMovieRating(rating.feedbackId, value);
                                     }}
                                 />
                             ),

@@ -170,17 +170,18 @@ export function userRatingsReducer(
             let entities: Record<number, Record<number, Rating>> = {};
             let ratings: Array<Rating> = [
                 ...Object.values(movies as Object).map((movie) => ({
-                    user_id: movie.parentId,
+                    userId: movie.parentId,
                     rating: movie.rating,
-                    movie_id: movie.id,
+                    movieId: movie.id,
+                    feedbackId: movie.feedbackId,
                 })),
             ];
             for (let r in ratings) {
                 let rating: Rating = ratings[r];
-                if (entities[rating.user_id] === undefined) {
-                    entities[rating.user_id] = { [rating.movie_id]: rating };
+                if (entities[rating.userId] === undefined) {
+                    entities[rating.userId] = { [rating.movieId]: rating };
                 } else {
-                    entities[rating.user_id][rating.movie_id] = rating;
+                    entities[rating.userId][rating.movieId] = rating;
                 }
             }
             if (action.response.entities.movies) {

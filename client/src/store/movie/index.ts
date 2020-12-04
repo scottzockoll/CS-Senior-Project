@@ -1,6 +1,5 @@
 import { ApiRequest } from '../api';
 import { Tag } from '../tag';
-import { User } from '../user';
 
 /**
  * A single movie.
@@ -14,9 +13,10 @@ export interface Movie {
 }
 
 export interface Rating {
-    user_id: number;
+    userId: number;
     rating: number;
-    movie_id: number;
+    movieId: number;
+    feedbackId: number;
 }
 
 export const REQUEST_MOVIE_STARTED = 'REQUEST_MOVIE_STARTED';
