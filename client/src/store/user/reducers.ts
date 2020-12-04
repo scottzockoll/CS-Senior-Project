@@ -95,7 +95,6 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            console.log(action.response.entities);
             const users: Record<number, User> | undefined = action.response.entities.users;
             if (action.response.entities.movies) {
                 return {
@@ -151,13 +150,12 @@ export function userRatingsReducer(
             ];
             for (let r in ratings) {
                 let rating: Rating = ratings[r];
-                if (entities[rating.user_id] == undefined) {
+                if (entities[rating.user_id] === undefined) {
                     entities[rating.user_id] = { [rating.movie_id]: rating };
                 } else {
                     entities[rating.user_id][rating.movie_id] = rating;
                 }
             }
-            console.log(entities);
             if (action.response.entities.movies) {
                 return {
                     ...state,
@@ -240,7 +238,6 @@ export function usersTagRatingsReducer(
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            console.log(action.response.entities);
             const users: Record<number, User> | undefined = action.response.entities.users;
             const tags: Record<number, Tag> | undefined = action.response.entities.tags;
             const entities: Record<number, Record<number, Tag[]>> | undefined = {};
@@ -258,8 +255,6 @@ export function usersTagRatingsReducer(
                         entities[tag.userId][tag.movieId].push(tag);
                     }
                 }
-                console.log('entities');
-                console.log(entities);
                 return {
                     ...state,
                     ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
