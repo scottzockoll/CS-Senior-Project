@@ -11,8 +11,6 @@ def update_feedback(feedbackId: int):
     :return: Nothing
     """
 
-    print(request.content_length)
-
     rating = request.form["rating"]
     
     try:
