@@ -10,7 +10,7 @@ export interface ApiRequest {
         endpoint: string | Function;
         schema: schema.Entity | schema.Entity[];
         method: string;
-        body: Record<string, string>;
+        body: Record<string, string | number>;
         types: {
             [AsyncActionStatus.Request]: string;
             [AsyncActionStatus.Success]: string;
@@ -26,14 +26,14 @@ const callApi = async (
     endpoint: string,
     schema: schema.Entity | schema.Entity[],
     method: string,
-    body?: Record<string, string>
+    body?: Record<string, string | number>
 ) => {
     const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
     let formData = new FormData();
     if (body) {
-        for (const key in Object.keys(body)) {
-            formData.append(key, body[key]);
+        for (const key of Object.keys(body)) {
+            formData.append(key, body[key].toString());
         }
     }
 
