@@ -9,7 +9,7 @@ export interface ApiRequest {
     [CALL_API]: {
         endpoint: string | Function;
         schema: schema.Entity | schema.Entity[];
-        method: string;
+        method: 'GET' | 'PUT' | 'POST' | 'DELETE';
         body: Record<string, string | number>;
         types: {
             [AsyncActionStatus.Request]: string;

@@ -11,7 +11,14 @@ import {
     UserEntitiesActions,
 } from './index';
 import { NestedPaginated, Paginated } from '../types';
-import { Movie, Rating } from '../movie';
+import {
+    Movie,
+    Rating,
+    RECEIVE_MOVIE_FAILURE,
+    RECEIVE_MOVIE_SUCCESS,
+    REQUEST_MOVIE_STARTED,
+    RequestMovieAction,
+} from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
 
@@ -85,8 +92,12 @@ const initialMovieEntitiesState: Paginated<Movie> = {
     isFetching: false,
 };
 
-export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
+export function usersMoviesReducer(
+    state = initialMovieEntitiesState,
+    action: UserEntitiesActions | RequestMovieAction
+): Paginated<Movie> {
     switch (action.type) {
+        case REQUEST_MOVIE_STARTED:
         case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
             return {
@@ -109,12 +120,28 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
             } else {
                 return state;
             }
+        case RECEIVE_MOVIE_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.movies,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_MOVIE_FAILURE:
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
             };
+
         default:
             return state;
     }
