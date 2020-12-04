@@ -11,16 +11,35 @@ def query_get_user(id: Union[int, str]):
     con, cursor = server.utilities.db_connection()
 
     try:
-        cursor.execute(f"""SELECT mf.user_id, u.firstName, u.lastName, u.email, u.isAdmin, m.name AS 'movieName', GROUP_CONCAT(DISTINCT g.genre ORDER BY g.id ASC SEPARATOR ',') as 'movieGenres', mf.movie_id, mf.rating as 'movieRating', GROUP_CONCAT(DISTINCT tf.tag_id, ',', tf.rating, ',', t.name ORDER BY tf.tag_id ASC SEPARATOR ';') as 'tagInfo'
-                            FROM movie_feedback AS mf
-                            INNER JOIN users AS u ON u.id = mf.user_id
-                            INNER JOIN movies AS m ON m.id = mf.movie_id
-                            LEFT JOIN tag_feedback AS tf ON tf.movie_id = mf.movie_id AND tf.user_id={id}
-                            LEFT JOIN tags AS t ON t.id = tf.tag_id
-                            INNER JOIN genre AS g on g.movie_id = mf.movie_id
-                            WHERE mf.user_id = {id}
-                            GROUP BY mf.movie_id, u.email
-                            ORDER BY mf.user_id, mf.movie_id, tf.tag_id;""")
+        cursor.execute(
+            f"""SELECT
+                    feedback.user_id,
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.isAdmin,
+                    movie.name AS 'movieName',
+                    GROUP_CONCAT(DISTINCT genres.genre ORDER BY genres.id ASC SEPARATOR ',') as 'movieGenres',
+                    feedback.movie_id,
+                    feedback.rating as 'movieRating',
+                    GROUP_CONCAT(DISTINCT tagFeedback.tag_id, ',', tagFeedback.rating, ',', tag.name ORDER BY tagFeedback.tag_id ASC SEPARATOR ';') 
+                        as 'tagInfo',
+                    feedback.id as 'feedbackId'
+                FROM movie_feedback AS feedback
+                    INNER JOIN users AS user ON user.id = feedback.user_id
+                    INNER JOIN movies AS movie ON movie.id = feedback.movie_id
+                    LEFT JOIN tag_feedback AS tagFeedback ON tagFeedback.movie_id = feedback.movie_id AND tagFeedback.user_id={id}
+                    LEFT JOIN tags AS tag ON tag.id = tagFeedback.tag_id
+                    INNER JOIN genre AS genres on genres.movie_id = feedback.movie_id
+                WHERE feedback.user_id = {id}
+                GROUP BY
+                    feedback.movie_id,
+                    user.email
+                ORDER BY
+                    feedback.user_id,
+                    feedback.movie_id,
+                    tagFeedback.tag_id;"""
+        )
         result = cursor.fetchall()
         if cursor.rowcount > 0:
             movie_info = []
