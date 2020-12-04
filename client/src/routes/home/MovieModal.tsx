@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import en from '../../en.json';
 import { toggleMovieModal } from '../../store/home/actions';
 import StarRating from '../common/StarRating';
-import { createMovieRating, updateMovieRating } from '../../store/movie/actions';
+import { createMovieRating, requestMovie, updateMovieRating } from '../../store/movie/actions';
 import { Rating } from '../../store/movie';
 
 const mapStateToProps = (state: RootState) => {
     const user = state.users.entities[state.activeUser];
     const show = state.movieModal.visible;
-    const movie = state.movies.entities[state.movieModal.movieId];
+    const movieId = state.movieModal.movieId;
+    const movie = state.movies.entities[movieId];
+    const fetching = state.movies.isFetching;
 
     let rating: Rating | undefined;
     if (state.activeUser !== -1) {
@@ -20,7 +22,7 @@ const mapStateToProps = (state: RootState) => {
         }
     }
 
-    return { show, movie, rating, user };
+    return { show, movie, user, rating, movieId, fetching };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -28,12 +30,20 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     updateMovieRating: (feedbackId: number, value: number) => dispatch(updateMovieRating(feedbackId, value)),
     createMovieRating: (userId: number, movieId: number, rating: number) =>
         dispatch(createMovieRating(userId, movieId, rating)),
-    // getMovie: (movieId: number) => requestMovie
+    getMovie: (movieId: number) => dispatch(requestMovie(movieId)),
 });
 
 type MovieModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class MovieModalComponent extends React.Component<MovieModalProps> {
+    componentDidUpdate(prevProps: Readonly<MovieModalProps>, prevState: Readonly<{}>, snapshot?: any) {
+        if (!this.props.show || this.props.movie || this.props.fetching) {
+            return;
+        }
+
+        this.props.getMovie(this.props.movieId);
+    }
+
     render() {
         const ratingValue = this.props.rating?.rating ?? 0;
 

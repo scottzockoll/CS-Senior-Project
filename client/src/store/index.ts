@@ -16,6 +16,7 @@ import {
     MovieDeleteEntitiesTypes,
     MovieEntitiesActions,
     MovieUpdateEntitiesTypes,
+    RequestMovieAction,
     TOGGLE_MOVIE_MODAL,
     ToggleMovieModal,
 } from './movie';
@@ -28,7 +29,8 @@ export type AppAction =
     | MovieEntitiesActions
     | MovieDeleteActions
     | ToggleMovieModal
-    | ToggleUserModal;
+    | ToggleUserModal
+    | RequestMovieAction;
 
 export type ActionType =
     | UsersEntitiesTypes
