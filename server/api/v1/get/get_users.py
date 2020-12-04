@@ -19,7 +19,6 @@ def get_users(limit: int, offset: int):
     """
 
     try:
-
         if not server.auth.is_user():
             return Response({}, mimetype='application/json', status=403)
 

@@ -1,7 +1,6 @@
 import { ApiRequest } from '../api';
 import { Movie } from '../movie';
 import { Tag } from '../tag';
-/* eslint-disable @typescript-eslint/no-redeclare */
 
 export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';

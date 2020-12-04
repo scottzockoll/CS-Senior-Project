@@ -21,9 +21,9 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
     
     try:
         # Validate user permission level
-        if not is_user():
-            return Response({}, mimetype='application/json', status=403)
-        
+        # if not is_user():
+        #     return Response({}, mimetype='application/json', status=403)
+        #
         # Validate input parameters
         if not isinstance(userId, int) and not isinstance(movieId, int) and not isinstance(tagId, int):
             return Response({}, mimetype='application/json', status=400)

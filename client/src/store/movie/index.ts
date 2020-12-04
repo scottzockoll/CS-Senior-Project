@@ -1,6 +1,5 @@
 import { ApiRequest } from '../api';
 import { Tag } from '../tag';
-/* eslint-disable @typescript-eslint/no-redeclare */
 
 /**
  * A single movie.
@@ -11,6 +10,12 @@ export interface Movie {
     genres: string[];
     rating: number;
     tags: Record<number, Tag>;
+}
+
+export interface Rating {
+    user_id: number;
+    rating: number;
+    movie_id: number;
 }
 
 /**
