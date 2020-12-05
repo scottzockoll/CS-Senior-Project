@@ -1,9 +1,11 @@
 from server.utilities import db_connection, is_admin, process_movie_tags
 from flask import Response
+import server.utilities
 import json
 
 
 def get_users_email_autocomplete(email: str, offset: int, limit: int = 500):
+
     """
     Get a list of auto-complete suggestions for a partial user's email.
     :param str email: The email to find suggestions for.
@@ -13,6 +15,40 @@ def get_users_email_autocomplete(email: str, offset: int, limit: int = 500):
     user information and the movies and tags they have rated.
     """
     con, cursor = db_connection()
+
+    #====================================================================
+    cursor.execute(f"SELECT user_id, firstName, lastName, email, isAdmin, "
+                               f"movieName, movie_id, movieRating, tagInfo FROM master_user_feedback_view "
+                               f"WHERE email LIKE '{email}%' LIMIT %s OFFSET %s", (limit, offset))
+
+    result = cursor.fetchall()
+    filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
+
+    users_list = []
+
+    for row in result:
+        # if there is not an instance of the user, create a dictionary in the list for them
+        if not any(d['id'] == row[0] for d in users_list):
+            filter_dict["id"] = row[0]
+            filter_dict["email"] = row[3]
+            filter_dict["first_name"] = row[1]
+            filter_dict["last_name"] = row[2]
+            filter_dict["is_admin"] = row[4]
+            filter_dict["movies"] = [
+                {"movie_id": row[6], "title": row[5], "rating": row[7], "tags": server.utilities.process_movie_tags(row[8])}]
+            users_list.append(filter_dict)
+            filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
+        # if there is, just append the movie information to the existing dictionary for that user
+        else:
+            filter_dict["movies"] = {"movie_id": row[6], "title": row[5], "rating": row[7],
+                                     "tags": server.utilities.process_movie_tags(row[8])}
+            for dicts in users_list:
+                if dicts["id"] == row[0]:
+                    dicts["movies"].append(filter_dict["movies"])
+            filter_dict = dict.fromkeys(["id", "email", "first_name", "last_name", "is_admin", "movies"])
+    return Response(json.dumps(users_list), mimetype='application/json', status=200)
+    #====================================================================
+
 
     try:
         if not is_admin():
