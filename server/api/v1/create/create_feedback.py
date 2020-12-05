@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_user
+from server.auth import is_user
+from server.queries.create.query_create_feedback import query_create_feedback
 from flask import Response
 import json
 
@@ -10,7 +11,6 @@ def create_feedback(userId: int, movieId: int):
     :param int movieId: The movie id to retrieve
     :return: JSON object of feedback id
     """
-    con, cursor = db_connection()
     
     # The line below is for the request body content, which is awaiting implementation on the frontend.
     # rating = request.form["rating"]
@@ -28,18 +28,10 @@ def create_feedback(userId: int, movieId: int):
             return Response({}, mimetype='application/json', status=400)
         
         # Create row in database
-        cursor.execute("INSERT INTO movie_feedback (rating, movie_id, user_id) VALUES ({r}, {m}, {u})".format(r = rating, m = movieId, u = userId))
-        if cursor.rowcount == 1:
-            con.commit()
-            data = {
-                "id": cursor.lastrowid
-            }
-            return Response(json.dumps(data), mimetype='application/json', status=201)
-        else:
-            con.rollback()
+        result = query_create_feedback(userId, movieId, rating)
+        if result is None:
             return Response({}, mimetype='application/json', status=404)
+        else:
+            return Response(json.dumps(result), mimetype='application/json', status=201)
     except Exception:
         return Response({}, mimetype='application/json', status=500)
-    finally:
-        cursor.close()
-        con.close()

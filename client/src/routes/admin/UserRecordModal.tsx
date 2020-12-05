@@ -1,12 +1,21 @@
-import { Box, DataTable, Grid, Heading, Text, Meter, Button } from 'grommet';
+import { Box, DataTable, Grid, Heading, Text, Button } from 'grommet';
 import React from 'react';
 import { User } from '../../store/user';
-import { CSVParser } from '../common/CSVParser';
+import { AppDispatch, RootState } from '../../store';
 import en from '../../en.json';
+import StarRating from '../common/StarRating';
+import { toggleUserModal } from '../../store/user/actions';
+import { connect } from 'react-redux';
 
-interface UserRecordModalProps {
-    user: User;
-}
+type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { user: User };
+
+const mapStateToProps = (state: RootState) => ({
+    showUserModal: state.showUserModal,
+});
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    toggleUserModal: (isVisible: boolean) => dispatch(toggleUserModal(isVisible)),
+});
 
 /***
  * Exports all of user's watched movie data to a CSV file.
@@ -14,29 +23,29 @@ interface UserRecordModalProps {
  * @param user
  */
 function exportUserRecordToCSV(user: User) {
-    const movies = Object.values(user.movies);
-
-    // check if the user has at least one movie watched
-    if (movies.length < 1) {
-        alert('User has no data to export. Cancelling download.');
-        return;
-    }
-
-    if (window.confirm('Download the selected user record to CSV?')) {
-        movies.forEach(function (movie) {
-            delete movie.tags;
-        });
-
-        // retrieve the current datetime
-        let date = new Date();
-        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
-
-        // format the filename
-        let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
-
-        // export user records to csv
-        CSVParser.exportToCsv(filename, movies);
-    }
+    // const movies = Object.values(user.movies);
+    //
+    // // check if the user has at least one movie watched
+    // if (movies.length < 1) {
+    //     alert('User has no data to export. Cancelling download.');
+    //     return;
+    // }
+    //
+    // if (window.confirm('Download the selected user record to CSV?')) {
+    //     movies.forEach(function (movie) {
+    //         delete movie.tags;
+    //     });
+    //
+    //     // retrieve the current datetime
+    //     let date = new Date();
+    //     let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    //
+    //     // format the filename
+    //     let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
+    //
+    //     // export user records to csv
+    //     CSVParser.exportToCsv(filename, movies);
+    // }
 }
 
 /**
@@ -44,7 +53,7 @@ function exportUserRecordToCSV(user: User) {
  * corresponding UserRecord
  * @param userRecord
  */
-export default class userRecordModal extends React.Component<UserRecordModalProps> {
+class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
     render() {
         return (
             <Box style={{ height: '80%' }} width={'large'}>
@@ -100,31 +109,23 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 header: en.UI_LABELS.title,
                                 sortable: true,
                             },
-                            // {
-                            //     property: 'genres',
-                            //     header: en.UI_LABELS.genre,
-                            //     sortable: true,
-                            //     render: (datum) => {
-                            //         const genres = Object.values(datum.genres);
-                            //         return <Text>{genres.join('/')}</Text>;
-                            //     },
-                            // },
+                            {
+                                property: 'genres',
+                                header: en.UI_LABELS.genre,
+                                sortable: true,
+                                render: (datum) => {
+                                    // const genres = Object.values(datum.genres);
+                                    // return <Text>{genres.join('/')}</Text>;
+                                    return <Text>TODO: {datum}</Text>;
+                                },
+                            },
                             {
                                 property: 'rating',
                                 header: en.UI_LABELS.userRating,
                                 sortable: true,
                                 render: (datum) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <Meter
-                                            background={'light-4'}
-                                            values={[
-                                                {
-                                                    value: datum.rating * 20,
-                                                },
-                                            ]}
-                                            thickness="small"
-                                            size="small"
-                                        />
+                                        <StarRating current={2} maximum={5} />
                                     </Box>
                                 ),
                             },
@@ -135,12 +136,19 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                         size={'medium'}
                     />
                 </Box>
-                <Box width={'small'} margin={{ top: '10px', left: 'auto', right: 'auto', bottom: '5px' }}>
+                <Box direction={'row'} margin={{ top: 'medium', horizontal: 'auto', bottom: 'medium' }}>
                     <Button
                         primary
-                        label={'Download to CSV'}
+                        margin={{ right: 'xsmall' }}
+                        label={en.UI_LABELS.BUTTON_LABELS.downloadToCsv}
                         onClick={() => {
                             exportUserRecordToCSV(this.props.user);
+                        }}
+                    />
+                    <Button
+                        label={en.UI_LABELS.BUTTON_LABELS.close}
+                        onClick={() => {
+                            this.props.toggleUserModal(false);
                         }}
                     />
                 </Box>
@@ -148,3 +156,5 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
         );
     }
 }
+
+export const UserRecordModal = connect(mapStateToProps, mapDispatchToProps)(UnconnectedUserRecordModal);

@@ -1,61 +1,64 @@
-import { Box, Button, Carousel, Heading, Image, Layer } from 'grommet';
+import { Box, Button, Heading, Layer } from 'grommet';
 import React from 'react';
-import { InitialSurvey } from './InitialSurveyModal';
+import { Survey } from '../common/Survey';
 import en from '../../en.json';
-import { toggleInitialSurveyModal } from './actions';
-import { Login } from '../common/Login';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
+import { SearchField } from '../common/SearchField';
+import { toggleInitialSurveyModal } from '../../store/home/actions';
+import MovieCarousel from './MovieCarousel';
 
 const mapStateToProps = (state: RootState) => ({
-    initialSurveyVisible: state.initialSurveyVisible,
+    // TODO: Can we leverage the Redux state to get an array of titles?
+    surveyVisible: state.surveyVisible,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    toggleInitialSurveyModal: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
+    toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
 });
 
 type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const HomepageComponent: React.FC<HomepageProps> = ({ initialSurveyVisible, toggleInitialSurveyModal }) => {
+const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurvey }) => {
     return (
         <Box background="light-3" height={'xxlarge'}>
             <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
                 <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
-            <Box margin={{ top: '20px', bottom: '20px' }}>
-                <Login />
+            <Box margin={{ left: 'auto', right: 'auto', bottom: '80px' }}>
+                <img width={'200px'} src={'images/FlickPickIcon.png'} alt={'FlickPick Logo'} />
             </Box>
-            <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} height="40%" width="medium">
-                <Carousel fill play={5000}>
-                    <Image fit={'cover'} src="images/movie1.jpg" />
-                    <Image fit={'cover'} src="images/movie2.jpg" />
-                    <Image fit={'cover'} src="images/movie3.jpg" />
-                    <Image fit={'cover'} src="images/movie4.jpg" />
-                    <Image fit={'cover'} src="images/movie5.jpg" />
-                </Carousel>
+            <Box
+                style={{ width: 250 }}
+                margin={{ left: 'auto', right: 'auto', top: '-20px', bottom: '50px' }}
+                width="medium"
+            >
+                <SearchField displayModal={true} />
+            </Box>
+            <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} width="medium">
+                <MovieCarousel />
                 <Button
                     style={{ width: 300 }}
                     primary
                     margin={{ top: 'medium', left: 'auto', right: 'auto' }}
-                    label={en.UI_LABELS.takeAMovieSurvey}
+                    label={en.UI_LABELS.BUTTON_LABELS.takeAMovieSurvey}
                     hoverIndicator
                     onClick={() => {
-                        toggleInitialSurveyModal(true);
+                        toggleSurvey(true);
                     }}
                 />
             </Box>
             {/* User Modal displayed when row is clicked */}
-            {initialSurveyVisible && (
+            {surveyVisible && (
                 <Layer
                     onEsc={() => {
-                        toggleInitialSurveyModal(false);
+                        toggleSurvey(false);
                     }}
                     onClickOutside={() => {
-                        toggleInitialSurveyModal(false);
+                        toggleSurvey(false);
                     }}
                 >
-                    <InitialSurvey />
+                    <Survey numMovies={5} />
                 </Layer>
             )}
         </Box>

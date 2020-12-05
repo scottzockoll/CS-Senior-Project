@@ -3,6 +3,7 @@ import { Box, Button, Grid } from 'grommet';
 import UserTable from './UserTable';
 import { connect } from 'react-redux';
 import { UserSearchBar } from './UserSearchBar';
+import en from '../../en.json';
 
 /***
  * Exports all the user records to a CSV file. Redirects the
@@ -40,7 +41,7 @@ const AdminPage: React.FC = () => {
                 <Box gridArea={'downloadButton'}>
                     <Button
                         secondary
-                        label={'Download All'}
+                        label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
                         alignSelf={'start'}
                         onClick={() => {
                             downloadAllToCSV();

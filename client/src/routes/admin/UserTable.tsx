@@ -1,30 +1,32 @@
 import React from 'react';
-import { Box, DataTable, Layer, TextInput } from 'grommet';
-import UserRecordModal from './UserRecordModal';
+import { DataTable, Layer } from 'grommet';
+import { UserRecordModal } from './UserRecordModal';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { User } from '../../store/user';
 import en from '../../en.json';
-import { requestUsers } from '../../store/user/actions';
+import { requestUsers, toggleUserModal } from '../../store/user/actions';
 
 interface UserTableState {
-    showModal: boolean;
+    showUserModal: boolean;
     offset: number;
 }
 
 const mapStateToProps = (state: RootState) => ({
     users: Object.values(state.users.entities),
+    showUserModal: state.showUserModal,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     getUsers: (offset: number, limit: number) => {
         dispatch(requestUsers(offset, limit));
     },
+    toggleUserModal: (isVisible: boolean) => dispatch(toggleUserModal(isVisible)),
 });
 
 type UserTableProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const PAGE_SIZE = 500;
+const PAGE_SIZE = 100;
 
 /**
  * React Component for UseTable displaying all the records for each user.
@@ -33,11 +35,11 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
     // Instance variables
     selectedUser: User; // The reference to the selected user record in the UserTable
 
-    constructor(props: UserTableProps, state: RootState) {
+    constructor(props: UserTableProps, state: UserTableState) {
         super(props);
 
         this.state = {
-            showModal: false,
+            showUserModal: false,
             offset: 1,
         };
 
@@ -72,56 +74,58 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
     render() {
         return (
             <React.Fragment>
-                {/*{this.props.users.length > 0 && (*/}
-                <DataTable
-                    columns={[
-                        {
-                            property: 'id',
-                            header: en.UI_LABELS.userId,
-                            primary: true,
-                            sortable: true,
-                        },
-                        {
-                            property: 'first_name',
-                            header: en.UI_LABELS.firstName,
-                            sortable: true,
-                        },
-                        {
-                            property: 'last_name',
-                            header: en.UI_LABELS.lastName,
-                            sortable: true,
-                        },
-                        {
-                            property: 'email',
-                            header: en.UI_LABELS.email,
-                            sortable: true,
-                        },
-                    ]}
-                    data={this.props.users}
-                    // onClickRow={(row) => {
-                    //     // On click row, show modal and set the selected user
-                    //     this.selectedUser = row.datum;
-                    //     this.setState({
-                    //         ...this.state,
-                    //         showModal: true,
-                    //     });
-                    // }}
-                    size="large"
-                    sortable={true}
-                    step={20}
-                    background="light-2"
-                    onMore={this.loadMore}
-                />
-                {/*)}*/}
+                {this.props.users.length > 0 && (
+                    <DataTable
+                        columns={[
+                            {
+                                property: 'id',
+                                header: en.UI_LABELS.userId,
+                                primary: true,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'firstName',
+                                header: en.UI_LABELS.firstName,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'lastName',
+                                header: en.UI_LABELS.lastName,
+                                sortable: true,
+                                search: true,
+                            },
+                            {
+                                property: 'email',
+                                header: en.UI_LABELS.email,
+                                sortable: true,
+                                search: true,
+                            },
+                        ]}
+                        data={this.props.users}
+                        onClickRow={(row) => {
+                            // On click row, show modal and set the selected user
+                            this.selectedUser = row.datum;
+                            // this.setState({showUserModal: true});
+                            this.props.toggleUserModal(true);
+                        }}
+                        size="large"
+                        sortable={true}
+                        step={50}
+                        background="light-2"
+                        onMore={this.loadMore}
+                    />
+                )}
 
                 {/* User Modal displayed when row is clicked */}
-                {this.state.showModal && (
+                {this.props.showUserModal && (
                     <Layer
                         onEsc={() => {
-                            this.setState({ showModal: false });
+                            this.props.toggleUserModal(false);
                         }}
                         onClickOutside={() => {
-                            this.setState({ showModal: false });
+                            this.props.toggleUserModal(false);
                         }}
                     >
                         <UserRecordModal user={this.selectedUser} />

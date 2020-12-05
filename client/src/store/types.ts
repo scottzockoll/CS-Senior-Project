@@ -8,17 +8,20 @@ export interface Paginated<T> {
      */
     entities: Record<number, T>;
     /**
-     * Set of all page numbers fetched.
+     * If a request is pending or not.
      */
-    pages: number[];
+    isFetching: boolean;
+}
+
+export interface NestedPaginated<T> {
     /**
-     * Previous page URL
+     * Set of all acquired ids.
      */
-    prevPage: string;
+    ids: number[];
     /**
-     * Next page URL
+     * Mapping of ids to their corresponding entities.
      */
-    nextPage: string;
+    entities: Record<number, Record<number, T>>;
     /**
      * If a request is pending or not.
      */

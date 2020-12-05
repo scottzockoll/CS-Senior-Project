@@ -1,5 +1,7 @@
+from server.queries.get.query_get_user import query_get_user
+import server.auth
 import server.utilities
-from flask import Flask, Response
+from flask import Response
 import json
 
 
@@ -10,38 +12,20 @@ def get_user(id: int):
     :return: JSON object with user firstName, lastName, and isAdmin
     """
 
-    con, cursor = server.utilities.db_connection()
     try:
-        if not server.utilities.is_user():
-            return Response({
-            }, mimetype='application/json', status=403)
-        if not isinstance(id, int):  # checks if id is an integer
-            return Response({
-            }, mimetype='application/json', status=400)
-        else:
-            cursor.execute('''SELECT * FROM FlickPick.master_user_feedback_view '''
-                           '''WHERE user_id = %s;''', (id,))
-            result = cursor.fetchall()
-            if len(result) < 1:
-                return Response({
-                }, mimetype='application/json', status=404)
-            else:
-                movie_info = [{'id': i[6], 'title': i[5], 'rating': i[7],
-                               'tags': server.utilities.process_movie_tags(i[8])
-                               } for i in result]
-                data = {
-                    "id": result[0][0],
-                    "email": result[0][3],
-                    "firstName": result[0][1],
-                    "lastName": result[0][2],
-                    "isAdmin": result[0][4],
-                    "movies": movie_info,
-                }
+        if not server.auth.is_user():
+            return Response({}, mimetype='application/json', status=403)
 
-                return Response(json.dumps(data), mimetype='application/json', status=200)
-    except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
-    finally:
-        cursor.close()
-        con.close()
+        if not isinstance(id, int):  # checks if id is an integer
+            return Response({}, mimetype='application/json', status=400)
+
+        result = query_get_user(id)
+        if not result:
+            return Response({}, mimetype='application/json', status=404)
+        else:
+            return Response(json.dumps(result), mimetype='application/json', status=200)
+
+    except Exception as e:
+        print(f'Error in get_user')
+        print(e)
+        return Response({}, mimetype='application/json', status=500)

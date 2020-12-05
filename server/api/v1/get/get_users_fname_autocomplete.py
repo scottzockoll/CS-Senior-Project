@@ -1,4 +1,5 @@
-from server.utilities import db_connection, is_admin, process_movie_tags
+from server.utilities import db_connection, process_movie_tags
+from server.auth import is_admin
 from flask import Response
 import server.utilities
 import json
@@ -61,11 +62,9 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
 
     try:
         if not is_admin():
-            return Response({
-            }, mimetype='application/json', status=401)
+            return Response({}, mimetype='application/json', status=401)
         elif not isinstance(firstName, str) or not isinstance(offset, int) or not isinstance(limit, int):
-            return Response({
-            }, mimetype='application/json', status=400)
+            return Response({}, mimetype='application/json', status=400)
         else:
             cursor.execute(f"SELECT user_id, firstName, lastName, email, isAdmin, "
                            f"movieName, movie_id, movieRating, tagInfo FROM master_user_feedback_view "
@@ -90,8 +89,7 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
 
                 return Response(json.dumps(data), mimetype='application/json', status=200)
     except Exception:
-        return Response({
-        }, mimetype='application/json', status=500)
+        return Response({}, mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()
