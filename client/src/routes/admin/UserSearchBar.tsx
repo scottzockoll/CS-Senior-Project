@@ -20,7 +20,7 @@ interface SearchFieldState {
     focused: boolean;
 }
 
-const PAGE_SIZE = 500;
+const PAGE_SIZE = 200;
 
 class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, SearchFieldState> {
     protected inputRef: any;

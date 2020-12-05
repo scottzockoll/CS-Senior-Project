@@ -100,15 +100,15 @@ export default class userRecordModal extends React.Component<UserRecordModalProp
                                 header: en.UI_LABELS.title,
                                 sortable: true,
                             },
-                            {
-                                property: 'genres',
-                                header: en.UI_LABELS.genre,
-                                sortable: true,
-                                render: (datum) => {
-                                    const genres = Object.values(datum.genres);
-                                    return <Text>{genres.join('/')}</Text>;
-                                },
-                            },
+                            // {
+                            //     property: 'genres',
+                            //     header: en.UI_LABELS.genre,
+                            //     sortable: true,
+                            //     render: (datum) => {
+                            //         const genres = Object.values(datum.genres);
+                            //         return <Text>{genres.join('/')}</Text>;
+                            //     },
+                            // },
                             {
                                 property: 'rating',
                                 header: en.UI_LABELS.userRating,

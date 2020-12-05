@@ -106,6 +106,7 @@ const initialMovieEntitiesState: Paginated<Movie> = {
 export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
     switch (action.type) {
         case REQUEST_USERS_STARTED:
+        case SEARCH_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
@@ -126,7 +127,23 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
             } else {
                 return state;
             }
+        case SEARCH_USERS_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...action.response.entities.movies,
+                    },
+                    nextPage: state.nextPage, // TODO
+                    prevPage: state.prevPage, // TODO
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
         case RECEIVE_USERS_FAILURE:
+        case SEARCH_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
