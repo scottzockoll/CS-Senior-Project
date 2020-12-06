@@ -1,8 +1,23 @@
 import React from 'react';
 import { Box, Carousel } from 'grommet';
 import { toggleMovieModal } from '../../store/home/actions';
+import { Movie } from '../../store/movie';
 
-class MovieCarousel extends React.Component {
+interface CarouselProps {
+    movies: Movie[];
+}
+interface CarouselState {
+    movies: Movie[];
+}
+
+class MovieCarousel extends React.Component<CarouselState> {
+    constructor(props: Readonly<CarouselProps>) {
+        super(props);
+        this.state = {
+            movies: [],
+        };
+    }
+
     render() {
         return (
             <Box>
@@ -13,18 +28,12 @@ class MovieCarousel extends React.Component {
                     fill
                     play={5000}
                 >
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 1</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 2</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 3</h1>
-                    </Box>
-                    <Box margin={{ bottom: '12px' }}>
-                        <h1>Title 4</h1>
-                    </Box>
+                    {this.state.movies.map((movie) => (
+                        <Box margin={{ bottom: '12px' }}>
+                            <h1>{movie.title}</h1>
+                        </Box>
+                    ))}
+
                     <Box margin={{ bottom: '12px' }}>
                         <h1>Title 5</h1>
                     </Box>
