@@ -57,11 +57,13 @@ class MovieModalComponent extends React.Component<MovieModalProps> {
                             </Box>
                             <Box margin={{ left: '150px' }}>
                                 <h3>{en.UI_LABELS.title}</h3>
-                                <Text>{this.props.movie ? this.props.movie.title : 'Loading...'}</Text>
+                                <Text>{this.props.movie ? this.props.movie.title : en.UI_LABELS.loading}</Text>
                             </Box>
                             <Box margin={{ left: '150px' }}>
                                 <h3>{en.UI_LABELS.genre}</h3>
-                                <Text>{this.props.movie ? this.props.movie.genres.join(', ') : 'Loading...'}</Text>
+                                <Text>
+                                    {this.props.movie ? this.props.movie.genres.join(', ') : en.UI_LABELS.loading}
+                                </Text>
                             </Box>
                             <Box margin={{ left: '150px' }}>
                                 <h3>{en.UI_LABELS.rating}</h3>
