@@ -14,7 +14,7 @@ type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<type
 const mapStateToProps = (state: RootState) => ({
     showUserModal: state.showUserModal,
     getMovies: (userId: number) => {
-        if (state.users.entities.hasOwnProperty(userId)) {
+        if (state.users.entities.hasOwnProperty(userId) && state.ratings.entities.hasOwnProperty(userId)) {
             return Object.values(state.ratings.entities[userId]).map((feedback) => ({
                 ...state.movies.entities[feedback.movieId],
                 ...feedback,
