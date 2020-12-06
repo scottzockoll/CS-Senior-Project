@@ -14,7 +14,7 @@ def query_create_feedback(userId: Union[int, str], movieId: Union[int, str], rat
     con, cursor = db_connection()
     
     try:
-        cursor.execute("INSERT INTO movie_feedback (rating, movie_id, user_id) VALUES ({r}, {m}, {u})".format(r = rating, m = movieId, u = userId))
+        cursor.execute(f"INSERT INTO movie_feedback (rating, movie_id, user_id) VALUES ({rating}, {movieId}, {userId})")
         if cursor.rowcount == 1:
             con.commit()
             data = {

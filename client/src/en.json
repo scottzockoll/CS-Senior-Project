@@ -48,6 +48,7 @@
     "signOutQuestion": "Sign Out?",
     "updateRating": "Select New Rating",
     "confirm": "Confirm",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loading": "Loading"
   }
 }

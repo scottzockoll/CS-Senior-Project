@@ -6,11 +6,23 @@ import en from '../../en.json';
 import StarRating from '../common/StarRating';
 import { toggleUserModal } from '../../store/user/actions';
 import { connect } from 'react-redux';
+import { Movie, Rating } from '../../store/movie';
+import { CSVParser } from '../common/CSVParser';
 
 type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { user: User };
 
 const mapStateToProps = (state: RootState) => ({
     showUserModal: state.showUserModal,
+    getMovies: (userId: number) => {
+        if (state.users.entities.hasOwnProperty(userId)) {
+            return Object.values(state.ratings.entities[userId]).map((feedback) => ({
+                ...state.movies.entities[feedback.movieId],
+                ...feedback,
+            }));
+        } else {
+            return [];
+        }
+    },
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -19,33 +31,31 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 
 /***
  * Exports all of user's watched movie data to a CSV file.
- *
- * @param user
  */
-function exportUserRecordToCSV(user: User) {
-    // const movies = Object.values(user.movies);
-    //
-    // // check if the user has at least one movie watched
-    // if (movies.length < 1) {
-    //     alert('User has no data to export. Cancelling download.');
-    //     return;
-    // }
-    //
-    // if (window.confirm('Download the selected user record to CSV?')) {
-    //     movies.forEach(function (movie) {
-    //         delete movie.tags;
-    //     });
-    //
-    //     // retrieve the current datetime
-    //     let date = new Date();
-    //     let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
-    //
-    //     // format the filename
-    //     let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
-    //
-    //     // export user records to csv
-    //     CSVParser.exportToCsv(filename, movies);
-    // }
+function exportUserRecordToCSV(user: User, movies: (Rating & Movie)[]) {
+    // check if the user has at least one movie watched
+    if (movies.length < 1) {
+        alert('User has no data to export. Cancelling download.');
+        return;
+    }
+
+    if (window.confirm('Download the selected user record to CSV?')) {
+        movies.forEach(function (movie: any) {
+            delete movie.tags;
+            delete movie.parentId;
+            delete movie.userId;
+        });
+
+        // retrieve the current datetime
+        let date = new Date();
+        let datetimeStr = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+        // format the filename
+        let filename = `${user.firstName}_${user.lastName}_${datetimeStr}.csv`;
+
+        // export user records to csv
+        CSVParser.exportToCsv(filename, movies);
+    }
 }
 
 /**
@@ -55,6 +65,7 @@ function exportUserRecordToCSV(user: User) {
  */
 class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
     render() {
+        const movies = this.props.getMovies(this.props.user.id);
         return (
             <Box style={{ height: '80%' }} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
@@ -108,41 +119,28 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
                                 property: 'title',
                                 header: en.UI_LABELS.title,
                                 sortable: true,
+                                render: (movie) => <Text>{movie.title}</Text>,
                             },
                             {
                                 property: 'genres',
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
-                                render: (datum) => {
-                                    // const genres = Object.values(datum.genres);
-                                    // return <Text>{genres.join('/')}</Text>;
-                                    return <Text>TODO: {datum}</Text>;
-                                },
+                                render: (movie) => <Text>{movie.genres.join(', ')}</Text>,
                             },
                             {
                                 property: 'rating',
                                 header: en.UI_LABELS.userRating,
                                 sortable: true,
-                                render: (datum) => (
+                                render: (movie) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        {/*<Meter*/}
-                                        {/*    background={'light-4'}*/}
-                                        {/*    values={[*/}
-                                        {/*        {*/}
-                                        {/*            value: datum.rating * 20,*/}
-                                        {/*        },*/}
-                                        {/*    ]}*/}
-                                        {/*    thickness="small"*/}
-                                        {/*    size="small"*/}
-                                        {/*/>*/}
-                                        <StarRating current={2} maximum={5} />
+                                        <StarRating current={movie.rating} maximum={5} />
                                     </Box>
                                 ),
                             },
                         ]}
                         sortable={true}
                         style={{ width: '100%' }}
-                        data={Object.values(this.props.user.movies)}
+                        data={movies}
                         size={'medium'}
                     />
                 </Box>
@@ -152,7 +150,7 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
                         margin={{ right: 'xsmall' }}
                         label={en.UI_LABELS.BUTTON_LABELS.downloadToCsv}
                         onClick={() => {
-                            exportUserRecordToCSV(this.props.user);
+                            exportUserRecordToCSV(this.props.user, movies);
                         }}
                     />
                     <Button

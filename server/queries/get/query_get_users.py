@@ -17,16 +17,38 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
     con, cursor = server.utilities.db_connection()
 
     try:
-        cursor.execute(f"""SELECT mf.user_id, u.firstName, u.lastName, u.email, u.isAdmin, m.name AS 'movieName', GROUP_CONCAT(DISTINCT g.genre ORDER BY g.id ASC SEPARATOR ',') as 'movieGenres', mf.movie_id, mf.rating as 'movieRating', GROUP_CONCAT(DISTINCT tf.tag_id, ',', tf.rating, ',', t.name ORDER BY tf.tag_id ASC SEPARATOR ';') as 'tagInfo'
-                            FROM movie_feedback AS mf
-                            INNER JOIN users AS u ON u.id = mf.user_id
-                            INNER JOIN movies AS m ON m.id = mf.movie_id
-                            LEFT JOIN tag_feedback AS tf ON tf.movie_id = mf.movie_id AND tf.user_id= mf.user_id
-                            LEFT JOIN tags AS t ON t.id = tf.tag_id
-                            INNER JOIN genre AS g on g.movie_id = mf.movie_id
-                            WHERE mf.user_id >= {offset} AND mf.user_id < {offset+limit}
-                            GROUP BY mf.movie_id, u.email
-                            ORDER BY mf.user_id, mf.movie_id, tf.tag_id;""")
+        cursor.execute(
+            f"""SELECT
+                    feedback.user_id,
+                    user.firstName,
+                    user.lastName,
+                    user.email,
+                    user.isAdmin,
+                    movie.name AS 'movieName',
+                    GROUP_CONCAT(DISTINCT genres.genre ORDER BY genres.id ASC SEPARATOR ',') as 'movieGenres',
+                    feedback.movie_id,
+                    feedback.rating as 'movieRating',
+                    GROUP_CONCAT(DISTINCT tagFeedback.tag_id, ',', tagFeedback.rating, ',', tag.name ORDER BY tagFeedback.tag_id ASC SEPARATOR ';') 
+                        as 'tagInfo',
+                    feedback.id as 'feedbackId'
+                FROM movie_feedback AS feedback
+                    INNER JOIN users AS user ON user.id = feedback.user_id
+                    INNER JOIN movies AS movie ON movie.id = feedback.movie_id
+                    LEFT JOIN tag_feedback AS tagFeedback ON tagFeedback.movie_id = feedback.movie_id
+                        AND (feedback.user_id >= {offset} OR feedback.user_id < {offset+limit})
+                    LEFT JOIN tags AS tag ON tag.id = tagFeedback.tag_id
+                    INNER JOIN genre AS genres on genres.movie_id = feedback.movie_id
+                WHERE
+                        feedback.user_id >= {offset}
+                    AND feedback.user_id < {offset+limit}
+                GROUP BY
+                    feedback.movie_id,
+                    user.email
+                ORDER BY
+                    feedback.user_id,
+                    feedback.movie_id,
+                    tagFeedback.tag_id;"""
+        )
         result = cursor.fetchall()
         if cursor.rowcount > 0:
             filter_dict = dict.fromkeys(["id", "email", "firstName", "lastName", "isAdmin", "movies"])
@@ -42,25 +64,47 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
                     filter_dict["lastName"] = row[2]
                     filter_dict["isAdmin"] = row[4] == 1
                     if row[9] is not None:
-                        filter_dict["movies"] = [
-                            {"id": row[7], "title": row[5], "rating": row[8], "genres": row[6].split(','),
-                             "tags": server.utilities.process_movie_tags(row[9])}]
+                        filter_dict["movies"] = [{
+                                "id": row[7],
+                                "title": row[5],
+                                "rating": row[8],
+                                "genres": row[6].split(','),
+                                "tags": server.utilities.process_movie_tags(row[9]),
+                                "feedbackId": row[10]
+                        }]
                         users_list.append(filter_dict)
                     else:
-                        filter_dict["movies"] = [
-                            {"id": row[7], "title": row[5], "rating": row[8], "genres": row[6].split(',')}]
+                        filter_dict["movies"] = [{
+                            "id": row[7],
+                            "title": row[5],
+                            "rating": row[8],
+                            "genres": row[6].split(','),
+                            "feedbackId": row[10]
+                        }]
                         users_list.append(filter_dict)
                     filter_dict = dict.fromkeys(["id", "email", "firstName", "lastName", "isAdmin", "movies"])
                 # if there is, just append the movie information to the existing dictionary for that user
                 else:
                     if row[9] is not None:
-                        filter_dict["movies"] = {"id": row[7], "title": row[5], "rating": row[8], "genres": row[6].split(','),
-                                                 "tags": server.utilities.process_movie_tags(row[9])}
+                        filter_dict["movies"] = {
+                            "id": row[7],
+                            "title": row[5],
+                            "rating": row[8],
+                            "genres": row[6].split(','),
+                            "tags": server.utilities.process_movie_tags(row[9]),
+                            "feedbackId": row[10]
+                        }
                         for dicts in users_list:
                             if dicts["id"] == row[0]:
                                 dicts["movies"].append(filter_dict["movies"])
                     else:
-                        filter_dict["movies"] = {"id": row[7], "title": row[5], "rating": row[8], "genres": row[6].split(',')}
+                        filter_dict["movies"] = {
+                            "id": row[7],
+                            "title": row[5],
+                            "rating": row[8],
+                            "genres": row[6].split(','),
+                            "feedbackId": row[10]
+                        }
                         for dicts in users_list:
                             if dicts["id"] == row[0]:
                                 dicts["movies"].append(filter_dict["movies"])

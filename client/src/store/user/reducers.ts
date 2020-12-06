@@ -1,7 +1,4 @@
 import {
-    DELETE_USER_FAILURE,
-    DELETE_USER_STARTED,
-    DELETE_USER_SUCCESS,
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
@@ -14,11 +11,16 @@ import {
     UserEntitiesActions,
 } from './index';
 import { NestedPaginated, Paginated } from '../types';
-import { Movie, Rating } from '../movie';
+import {
+    Movie,
+    Rating,
+    RECEIVE_MOVIE_FAILURE,
+    RECEIVE_MOVIE_SUCCESS,
+    REQUEST_MOVIE_STARTED,
+    RequestMovieAction,
+} from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
-import { type } from 'os';
-import { schema } from 'normalizr';
 
 const initialUserAuthState: number = -1;
 
@@ -90,8 +92,12 @@ const initialMovieEntitiesState: Paginated<Movie> = {
     isFetching: false,
 };
 
-export function usersMoviesReducer(state = initialMovieEntitiesState, action: UserEntitiesActions): Paginated<Movie> {
+export function usersMoviesReducer(
+    state = initialMovieEntitiesState,
+    action: UserEntitiesActions | RequestMovieAction
+): Paginated<Movie> {
     switch (action.type) {
+        case REQUEST_MOVIE_STARTED:
         case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
             return {
@@ -100,7 +106,6 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            console.log(action.response.entities);
             const users: Record<number, User> | undefined = action.response.entities.users;
             if (action.response.entities.movies) {
                 return {
@@ -115,12 +120,28 @@ export function usersMoviesReducer(state = initialMovieEntitiesState, action: Us
             } else {
                 return state;
             }
+        case RECEIVE_MOVIE_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    entities: {
+                        ...state.entities,
+                        ...action.response.entities.movies,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case RECEIVE_MOVIE_FAILURE:
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
             };
+
         default:
             return state;
     }
@@ -149,20 +170,20 @@ export function userRatingsReducer(
             let entities: Record<number, Record<number, Rating>> = {};
             let ratings: Array<Rating> = [
                 ...Object.values(movies as Object).map((movie) => ({
-                    user_id: movie.parentId,
+                    userId: movie.parentId,
                     rating: movie.rating,
-                    movie_id: movie.id,
+                    movieId: movie.id,
+                    feedbackId: movie.feedbackId,
                 })),
             ];
             for (let r in ratings) {
                 let rating: Rating = ratings[r];
-                if (entities[rating.user_id] == undefined) {
-                    entities[rating.user_id] = { [rating.movie_id]: rating };
+                if (entities[rating.userId] === undefined) {
+                    entities[rating.userId] = { [rating.movieId]: rating };
                 } else {
-                    entities[rating.user_id][rating.movie_id] = rating;
+                    entities[rating.userId][rating.movieId] = rating;
                 }
             }
-            console.log(entities);
             if (action.response.entities.movies) {
                 return {
                     ...state,
@@ -245,7 +266,6 @@ export function usersTagRatingsReducer(
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
-            console.log(action.response.entities);
             const users: Record<number, User> | undefined = action.response.entities.users;
             const tags: Record<number, Tag> | undefined = action.response.entities.tags;
             const entities: Record<number, Record<number, Tag[]>> | undefined = {};
@@ -263,8 +283,6 @@ export function usersTagRatingsReducer(
                         entities[tag.userId][tag.movieId].push(tag);
                     }
                 }
-                console.log('entities');
-                console.log(entities);
                 return {
                     ...state,
                     ids: [...state.ids, ...Object.values(users as Object).map((user) => user.id)],
@@ -283,19 +301,6 @@ export function usersTagRatingsReducer(
                 ...state,
                 isFetching: false,
             };
-        default:
-            return state;
-    }
-}
-
-export function deleteUserReducer(state = -1, action: UserEntitiesActions): number {
-    switch (action.type) {
-        case DELETE_USER_STARTED:
-            return action.id;
-        case DELETE_USER_SUCCESS:
-            return -1;
-        case DELETE_USER_FAILURE:
-            return action.id;
         default:
             return state;
     }
