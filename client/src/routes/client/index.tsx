@@ -30,8 +30,12 @@ const mapStateToProps = (state: RootState) => ({
     activeUserId: state.activeUser,
     user: state.users.entities[state.activeUser],
     movies: (() => {
-        if (state.activeUser === -1) return [];
-        if (state.users.entities.hasOwnProperty(state.activeUser)) {
+        if (state.activeUser === -1) {
+            return [];
+        } else if (
+            state.users.entities.hasOwnProperty(state.activeUser) &&
+            Object.keys(state.ratings.entities).length != 0
+        ) {
             return Object.values(state.ratings.entities[state.activeUser]).map((feedback) => ({
                 ...state.movies.entities[feedback.movieId],
                 ...feedback,
@@ -59,6 +63,10 @@ const ClientHeader = (props: { user: User }) => {
 };
 
 class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
+    componentDidMount() {
+        this.props.getUser(this.props.activeUserId);
+    }
+
     constructor(props: ClientPageProps, state: RootState) {
         super(props);
 
