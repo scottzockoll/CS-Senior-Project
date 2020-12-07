@@ -7,8 +7,10 @@ import { toggleMovieModal } from '../../store/home/actions';
 import StarRating from '../common/StarRating';
 import { createMovieRating, requestMovie, updateMovieRating } from '../../store/movie/actions';
 import { Rating } from '../../store/movie';
+import { requestSingleUser } from '../../store/user/actions';
 
 const mapStateToProps = (state: RootState) => {
+    const activeUserId = state.activeUser;
     const user = state.users.entities[state.activeUser];
     const show = state.movieModal.visible;
     const movieId = state.movieModal.movieId;
@@ -22,7 +24,7 @@ const mapStateToProps = (state: RootState) => {
         }
     }
 
-    return { show, movie, user, rating, movieId, fetching };
+    return { show, movie, user, rating, movieId, fetching, activeUserId };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -31,6 +33,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     createMovieRating: (userId: number, movieId: number, rating: number) =>
         dispatch(createMovieRating(userId, movieId, rating)),
     getMovie: (movieId: number) => dispatch(requestMovie(movieId)),
+    getUser: (offset: number) => dispatch(requestSingleUser(offset)),
 });
 
 type MovieModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -40,7 +43,6 @@ class MovieModalComponent extends React.Component<MovieModalProps> {
         if (!this.props.show || this.props.movie || this.props.fetching) {
             return;
         }
-
         this.props.getMovie(this.props.movieId);
     }
 
@@ -77,7 +79,7 @@ class MovieModalComponent extends React.Component<MovieModalProps> {
                                             }
 
                                             if (this.props.rating) {
-                                                // this.props.updateMovieRating(this.props.rating.)
+                                                this.props.updateMovieRating(this.props.movie.id, value);
                                             } else {
                                                 this.props.createMovieRating(
                                                     this.props.user.id,
