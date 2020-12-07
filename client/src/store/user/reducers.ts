@@ -118,7 +118,10 @@ export function usersMoviesReducer(
                     isFetching: false,
                 };
             } else {
-                return state;
+                return {
+                    ...state,
+                    isFetching: false,
+                };
             }
         case RECEIVE_MOVIE_SUCCESS:
             if (action.response.entities.movies) {
@@ -195,7 +198,10 @@ export function userRatingsReducer(
                     isFetching: false,
                 };
             } else {
-                return state;
+                return {
+                    ...state,
+                    isFetching: false,
+                };
             }
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
@@ -293,7 +299,10 @@ export function usersTagRatingsReducer(
                     isFetching: false,
                 };
             } else {
-                return state;
+                return {
+                    ...state,
+                    isFetching: false,
+                };
             }
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
