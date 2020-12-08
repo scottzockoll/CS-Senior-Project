@@ -6,7 +6,7 @@ import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
 import { SearchField } from '../common/SearchField';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
-import MovieCarousel from './MovieCarousel';
+import { MovieCarousel } from './MovieCarousel';
 
 const mapStateToProps = (state: RootState) => ({
     // TODO: Can we leverage the Redux state to get an array of titles?

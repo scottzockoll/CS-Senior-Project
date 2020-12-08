@@ -1,7 +1,16 @@
 import React from 'react';
 import { Box, Carousel } from 'grommet';
 import { toggleMovieModal } from '../../store/home/actions';
-class MovieCarousel extends React.Component {
+import { AppDispatch, RootState } from '../../store';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state: RootState) => {
+    const activeUser = state.activeUser;
+    return { activeUser };
+};
+
+type MovieCarouselProps = ReturnType<typeof mapStateToProps>;
+class MovieCarouselComponent extends React.Component<MovieCarouselProps> {
     render() {
         const mockMovieTitles = [
             'Ant-Man',
@@ -41,9 +50,7 @@ class MovieCarousel extends React.Component {
                     play={5000}
                     controls={'arrows'}
                 >
-                    {loggedIn ? (
-                        <Box>Recommendations endpoint</Box>
-                    ) : (
+                    {this.props.activeUser == -1 ? (
                         mockMovieTitles.map(function (title) {
                             return (
                                 <Box margin={{ bottom: '12px' }}>
@@ -51,6 +58,8 @@ class MovieCarousel extends React.Component {
                                 </Box>
                             );
                         })
+                    ) : (
+                        <Box>Recommendations endpoint</Box>
                     )}
                 </Carousel>
             </Box>
@@ -58,4 +67,4 @@ class MovieCarousel extends React.Component {
     }
 }
 
-export default MovieCarousel;
+export const MovieCarousel = connect(mapStateToProps)(MovieCarouselComponent);
