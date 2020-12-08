@@ -30,6 +30,7 @@ class MovieCarousel extends React.Component {
             'Zootopia',
             'Finding Nemo',
         ];
+        const loggedIn = false;
         return (
             <Box>
                 <Carousel
@@ -40,13 +41,17 @@ class MovieCarousel extends React.Component {
                     play={5000}
                     controls={'arrows'}
                 >
-                    {mockMovieTitles.map(function (title) {
-                        return (
-                            <Box margin={{ bottom: '12px' }}>
-                                <h2>{title}</h2>
-                            </Box>
-                        );
-                    })}
+                    {loggedIn ? (
+                        <Box>Recommendations endpoint</Box>
+                    ) : (
+                        mockMovieTitles.map(function (title) {
+                            return (
+                                <Box margin={{ bottom: '12px' }}>
+                                    <h2>{title}</h2>
+                                </Box>
+                            );
+                        })
+                    )}
                 </Carousel>
             </Box>
         );
