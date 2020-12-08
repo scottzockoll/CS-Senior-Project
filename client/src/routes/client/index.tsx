@@ -63,6 +63,10 @@ const ClientHeader = (props: { user: User }) => {
 };
 
 class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
+    componentDidMount() {
+        this.props.getUser(this.props.activeUserId);
+    }
+
     constructor(props: ClientPageProps, state: RootState) {
         super(props);
 
