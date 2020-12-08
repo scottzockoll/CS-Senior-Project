@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Carousel } from 'grommet';
 import { toggleMovieModal } from '../../store/home/actions';
-import { title } from 'process';
 class MovieCarousel extends React.Component {
     render() {
         const mockMovieTitles = [
@@ -41,10 +40,10 @@ class MovieCarousel extends React.Component {
                     play={5000}
                     controls={'arrows'}
                 >
-                    {mockMovieTitles.map(function (title, index) {
+                    {mockMovieTitles.map(function (title) {
                         return (
                             <Box margin={{ bottom: '12px' }}>
-                                <h1 key={index}>{title}</h1>
+                                <h2>{title}</h2>
                             </Box>
                         );
                     })}
