@@ -1,8 +1,10 @@
 import {
+    RECEIVE_RECOMMENDATIONS_SUCCESS,
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
+    REQUEST_RECOMMENDATIONS_STARTED,
     REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
     TOGGLE_USER_MODAL,
@@ -21,6 +23,47 @@ import {
 } from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
+
+const initialRecommendationsState = [
+    'Ant-Man',
+    '42 Hours',
+    'The Wolf of Wall St.',
+    'Spider-Man: Homecoming',
+    'Saving Private Ryan',
+    'Elf',
+    'Christmas Vacation',
+    'What Happened to Monday?',
+    'Wedding Crashers',
+    'Blackhawk Down',
+    'Beverly Hills Cop',
+    'Guardians of the Galaxy',
+    'Scream',
+    'Halloween',
+    'Toy Story',
+    'Cars',
+    'Captain America: The First Avenger',
+    'Avatar',
+    'Deadpool',
+    'The Sound of Music',
+    'Freaky Friday',
+    'Doctor Strange',
+    'Star Wars: The Last Jedi',
+    'Zootopia',
+    'Finding Nemo',
+];
+
+export function recommendationsReducer(state = initialRecommendationsState, action: UserEntitiesActions): string[] {
+    switch (action.type) {
+        case RECEIVE_RECOMMENDATIONS_SUCCESS:
+            if (action.recommendations) {
+                return action.recommendations;
+            } else {
+                return state;
+            }
+        default:
+            return state;
+    }
+}
 
 const initialUserAuthState: number = -1;
 

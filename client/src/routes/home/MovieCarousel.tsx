@@ -3,42 +3,28 @@ import { Box, Carousel } from 'grommet';
 import { toggleMovieModal } from '../../store/home/actions';
 import { AppDispatch, RootState } from '../../store';
 import { connect } from 'react-redux';
+import { requestRecommendations } from '../../store/user/actions';
 
 const mapStateToProps = (state: RootState) => {
     const activeUser = state.activeUser;
-    return { activeUser };
+    const recommendations = state.recommendations;
+    return { activeUser, recommendations };
 };
 
-type MovieCarouselProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
+    requestRecommendations: (id: number) => dispatch(requestRecommendations(id)),
+});
+
+type MovieCarouselProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+
 class MovieCarouselComponent extends React.Component<MovieCarouselProps> {
+    componentDidMount() {
+        if (this.props.activeUser != -1) {
+            this.props.requestRecommendations(this.props.activeUser);
+        }
+    }
+
     render() {
-        const mockMovieTitles = [
-            'Ant-Man',
-            '42 Hours',
-            'The Wolf of Wall St.',
-            'Spider-Man: Homecoming',
-            'Saving Private Ryan',
-            'Elf',
-            'Christmas Vacation',
-            'What Happened to Moday?',
-            'Wedding Crashers',
-            'Blackhawk Down',
-            'Beverly Hills Cop',
-            'Guardians of the Galaxy',
-            'Scream',
-            'Halloween',
-            'Toy Story',
-            'Cars',
-            'Captain America: The First Avenger',
-            'Avatar',
-            'Deadpool',
-            'The Sound of Music',
-            'Freaky Friday',
-            'Doctor Strange',
-            'Star Wars: The Last Jedi',
-            'Zootopia',
-            'Finding Nemo',
-        ];
         const loggedIn = false;
         return (
             <Box>
@@ -50,21 +36,17 @@ class MovieCarouselComponent extends React.Component<MovieCarouselProps> {
                     play={5000}
                     controls={'arrows'}
                 >
-                    {this.props.activeUser == -1 ? (
-                        mockMovieTitles.map(function (title) {
-                            return (
-                                <Box margin={{ bottom: '12px' }}>
-                                    <h2>{title}</h2>
-                                </Box>
-                            );
-                        })
-                    ) : (
-                        <Box>Recommendations endpoint</Box>
-                    )}
+                    {this.props.recommendations.map(function (title) {
+                        return (
+                            <Box margin={{ bottom: '12px' }}>
+                                <h2>{title}</h2>
+                            </Box>
+                        );
+                    })}
                 </Carousel>
             </Box>
         );
     }
 }
 
-export const MovieCarousel = connect(mapStateToProps)(MovieCarouselComponent);
+export const MovieCarousel = connect(mapStateToProps, mapDispatchToProps)(MovieCarouselComponent);

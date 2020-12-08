@@ -2,6 +2,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
 import {
+    recommendationsReducer,
     toggleUserModalReducer,
     tokenReducer,
     userAuthReducer,
@@ -59,6 +60,7 @@ export enum AsyncActionStatus {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    recommendations: recommendationsReducer,
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
     tagRatings: usersTagRatingsReducer,
