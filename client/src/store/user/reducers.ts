@@ -111,6 +111,7 @@ export function usersMoviesReducer(
             };
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
+        case SEARCH_USERS_SUCCESS:
             const users: Record<number, User> | undefined = action.response.entities.users;
             if (action.response.entities.movies) {
                 return {
@@ -135,20 +136,6 @@ export function usersMoviesReducer(
                     ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
                     entities: {
                         ...state.entities,
-                        ...action.response.entities.movies,
-                    },
-                    isFetching: false,
-                };
-            } else {
-                return state;
-            }
-        case SEARCH_USERS_SUCCESS:
-            const searchedUsers: Record<number, User> | undefined = action.response.entities.users;
-            if (action.response.entities.movies) {
-                return {
-                    ...state,
-                    ids: [...state.ids, ...Object.values(searchedUsers as Object).map((user) => user.id)],
-                    entities: {
                         ...action.response.entities.movies,
                     },
                     isFetching: false,
