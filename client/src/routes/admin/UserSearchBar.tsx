@@ -3,14 +3,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { searchUsers } from '../../store/user/actions';
+import { searchUsers, toggleSearchUser, toggleUserModal } from '../../store/user/actions';
 import { UserSearchFilter } from '../../store/user';
 
 const mapStateToProps = (state: RootState) => ({});
+
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     searchUsers: (filter: UserSearchFilter, searchVal: string, offset: number, limit: number) => {
         dispatch(searchUsers(filter, searchVal, offset, limit));
     },
+    toggleSearching: (searching: boolean) => dispatch(toggleSearchUser(searching)),
 });
 
 type UserSearchFieldProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -93,6 +95,8 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
 
         // Check if a filter has been selected
         if (this.state.filter === UserSearchFilter.NO_FILTER) {
+            // set searching to false
+            this.props.toggleSearching(false);
             // No filter selected, exit call
             return;
         }
@@ -100,7 +104,15 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
         // retrieve the input
         const input = event.target as HTMLInputElement;
 
+        // do not search if value is empty
+        if (input.value == '') {
+            // set searching to false
+            this.props.toggleSearching(false);
+            return;
+        }
+
         // Make the search request
+        this.props.toggleSearching(true);
         this.props.searchUsers(this.state.filter, input.value, 0, PAGE_SIZE);
 
         // // fire request in 150ms if the user stops typing

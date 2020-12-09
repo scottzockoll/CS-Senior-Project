@@ -14,7 +14,9 @@ interface UserTableState {
 
 const mapStateToProps = (state: RootState) => ({
     users: Object.values(state.users.entities),
+    searchedUsers: Object.values(state.searchedUsers.entities),
     showUserModal: state.showUserModal,
+    searching: state.searchingUser,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -64,11 +66,14 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
     }
 
     loadMore = () => {
-        this.props.getUsers(this.state.offset, PAGE_SIZE);
-        this.setState({
-            ...this.state,
-            offset: this.state.offset + PAGE_SIZE,
-        });
+        // if the Admin is not searching, load more
+        if (!this.props.searching) {
+            this.props.getUsers(this.state.offset, PAGE_SIZE);
+            this.setState({
+                ...this.state,
+                offset: this.state.offset + PAGE_SIZE,
+            });
+        }
     };
 
     render() {
@@ -103,7 +108,7 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
                                 search: true,
                             },
                         ]}
-                        data={this.props.users}
+                        data={this.props.searching ? this.props.searchedUsers : this.props.users}
                         onClickRow={(row) => {
                             // On click row, show modal and set the selected user
                             this.selectedUser = row.datum;

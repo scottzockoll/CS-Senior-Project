@@ -18,6 +18,8 @@ export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
 export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
 export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
 
+export const TOGGLE_SEARCH_USER = 'TOGGLE_SEARCH_USER';
+
 export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
 export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
 export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
@@ -33,6 +35,8 @@ export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
 export type SEARCH_USERS_STARTED = typeof SEARCH_USERS_STARTED;
 export type SEARCH_USERS_SUCCESS = typeof SEARCH_USERS_SUCCESS;
 export type SEARCH_USERS_FAILURE = typeof SEARCH_USERS_FAILURE;
+
+export type TOGGLE_SEARCH_USER = typeof TOGGLE_SEARCH_USER;
 
 export type UsersEntitiesTypes =
     | REQUEST_USERS_STARTED
@@ -200,6 +204,11 @@ export interface ReceiveAuthUserSuccess {
 export interface ReceiveAuthUserFailure {
     type: RECEIVE_AUTH_USER_FAILURE;
     email: string;
+}
+
+export interface ToggleSearchUser {
+    type: TOGGLE_SEARCH_USER;
+    searching: boolean;
 }
 
 /**

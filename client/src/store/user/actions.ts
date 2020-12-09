@@ -30,6 +30,7 @@ import {
     RECEIVE_USER_SUCCESS,
     RECEIVE_USER_FAILURE,
     TOGGLE_USER_MODAL,
+    TOGGLE_SEARCH_USER,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
@@ -183,5 +184,12 @@ export function toggleUserModal(shouldBeVisible: boolean): AppAction {
     return {
         type: TOGGLE_USER_MODAL,
         show: shouldBeVisible,
+    };
+}
+
+export function toggleSearchUser(searching: boolean): AppAction {
+    return {
+        type: TOGGLE_SEARCH_USER,
+        searching: searching,
     };
 }
