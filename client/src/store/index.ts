@@ -20,8 +20,8 @@ import {
     TOGGLE_MOVIE_MODAL,
     ToggleMovieModal,
 } from './movie';
-import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
-import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
+import { surveyReducer, toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
+import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal, UpdateSurveyAction } from './home';
 
 export type AppAction =
     | UserEntitiesActions
@@ -30,7 +30,8 @@ export type AppAction =
     | MovieDeleteActions
     | ToggleMovieModal
     | ToggleUserModal
-    | RequestMovieAction;
+    | RequestMovieAction
+    | UpdateSurveyAction;
 
 export type ActionType =
     | UsersEntitiesTypes
@@ -67,6 +68,7 @@ export const rootReducer = combineReducers({
     surveyVisible: toggleInitialSurveyModalReducer,
     movieModal: toggleMovieModalReducer,
     showUserModal: toggleUserModalReducer,
+    survey: surveyReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });

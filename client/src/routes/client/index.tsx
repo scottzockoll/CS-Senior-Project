@@ -34,7 +34,7 @@ const mapStateToProps = (state: RootState) => ({
             return [];
         } else if (
             state.users.entities.hasOwnProperty(state.activeUser) &&
-            Object.keys(state.ratings.entities).length != 0
+            Object.keys(state.ratings.entities).length !== 0
         ) {
             return Object.values(state.ratings.entities[state.activeUser]).map((feedback) => ({
                 ...state.movies.entities[feedback.movieId],

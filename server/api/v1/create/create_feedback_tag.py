@@ -1,7 +1,8 @@
-from server.auth import is_user
-from server.queries.create.query_create_feedback_tag import query_create_feedback_tag
-from flask import Response
 import json
+
+from flask import Response
+
+from server.queries.create.query_create_feedback_tag import query_create_feedback_tag
 
 
 def create_feedback_tag(userId: int, movieId: int, tagId: int):
@@ -26,13 +27,13 @@ def create_feedback_tag(userId: int, movieId: int, tagId: int):
         #
         # Validate input parameters
         if not isinstance(userId, int) and not isinstance(movieId, int) and not isinstance(tagId, int):
-            return Response({}, mimetype='application/json', status=400)
+            return Response(json.dumps({}), mimetype='application/json', status=400)
         
         # Create row in database
         result = query_create_feedback_tag(userId, movieId, tagId, rating)
         if result is None:
-            return Response({}, mimetype='application/json', status=404)
+            return Response(json.dumps({}), mimetype='application/json', status=404)
         else:
             return Response(json.dumps(result), mimetype='application/json', status=201)
     except Exception:
-        return Response({}, mimetype='application/json', status=500)
+        return Response(json.dumps({}), mimetype='application/json', status=500)

@@ -16,17 +16,17 @@ def create_feedback(userId: int, movieId: int):
     try:
         # Validate user permission level
         if not is_user():
-            return Response({}, mimetype='application/json', status=403)
+            return Response(json.dumps({}), mimetype='application/json', status=403)
         
         # Validate input parameters
         if not isinstance(userId, int) and not isinstance(movieId, int):
-            return Response({}, mimetype='application/json', status=400)
+            return Response(json.dumps({}), mimetype='application/json', status=400)
         
         # Create row in database
         result = query_create_feedback(userId, movieId, rating)
         if result is None:
-            return Response({}, mimetype='application/json', status=404)
+            return Response(json.dumps({}), mimetype='application/json', status=404)
         else:
             return Response(json.dumps(result), mimetype='application/json', status=201)
     except Exception:
-        return Response({}, mimetype='application/json', status=500)
+        return Response(json.dumps({}), mimetype='application/json', status=500)
