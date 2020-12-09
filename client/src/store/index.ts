@@ -1,7 +1,9 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
-import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
+import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes, ToggleSearchUser } from './user';
 import {
+    searchUsersReducer,
+    toggleSearchUserReducer,
     toggleUserModalReducer,
     tokenReducer,
     userAuthReducer,
@@ -30,6 +32,7 @@ export type AppAction =
     | MovieDeleteActions
     | ToggleMovieModal
     | ToggleUserModal
+    | ToggleSearchUser
     | RequestMovieAction
     | UpdateSurveyAction;
 
@@ -60,6 +63,7 @@ export enum AsyncActionStatus {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    searchedUsers: searchUsersReducer,
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
     tagRatings: usersTagRatingsReducer,
@@ -68,6 +72,7 @@ export const rootReducer = combineReducers({
     surveyVisible: toggleInitialSurveyModalReducer,
     movieModal: toggleMovieModalReducer,
     showUserModal: toggleUserModalReducer,
+    searchingUser: toggleSearchUserReducer,
     survey: surveyReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',

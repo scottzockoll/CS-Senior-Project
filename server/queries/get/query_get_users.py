@@ -111,7 +111,6 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
 
                     filter_dict = dict.fromkeys(["id", "email", "firstName", "lastName", "isAdmin", "movies"])
             return users_list
-
     finally:
         cursor.close()
         con.close()

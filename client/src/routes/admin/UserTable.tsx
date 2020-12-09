@@ -14,12 +14,14 @@ interface UserTableState {
 
 const mapStateToProps = (state: RootState) => ({
     users: Object.values(state.users.entities),
+    searchedUsers: Object.values(state.searchedUsers.entities),
     showUserModal: state.showUserModal,
+    searching: state.searchingUser,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    getUsers: (idOffset: number, limit: number) => {
-        dispatch(requestUsers(idOffset, limit));
+    getUsers: (offset: number, limit: number) => {
+        dispatch(requestUsers(offset, limit));
     },
     toggleUserModal: (isVisible: boolean) => dispatch(toggleUserModal(isVisible)),
 });
@@ -31,7 +33,7 @@ const PAGE_SIZE = 100;
 /**
  * React Component for UseTable displaying all the records for each user.
  */
-class UserTableComponent extends React.Component<UserTableProps, UserTableState> {
+class UnconnectedUserTable extends React.Component<UserTableProps, UserTableState> {
     // Instance variables
     selectedUser: User; // The reference to the selected user record in the UserTable
 
@@ -64,11 +66,14 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
     }
 
     loadMore = () => {
-        this.props.getUsers(this.state.offset, PAGE_SIZE);
-        this.setState({
-            ...this.state,
-            offset: this.state.offset + PAGE_SIZE,
-        });
+        // if the Admin is not searching, load more
+        if (!this.props.searching) {
+            this.props.getUsers(this.state.offset, PAGE_SIZE);
+            this.setState({
+                ...this.state,
+                offset: this.state.offset + PAGE_SIZE,
+            });
+        }
     };
 
     render() {
@@ -103,7 +108,7 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
                                 search: true,
                             },
                         ]}
-                        data={this.props.users}
+                        data={this.props.searching ? this.props.searchedUsers : this.props.users}
                         onClickRow={(row) => {
                             // On click row, show modal and set the selected user
                             this.selectedUser = row.datum;
@@ -136,4 +141,4 @@ class UserTableComponent extends React.Component<UserTableProps, UserTableState>
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserTableComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(UnconnectedUserTable);

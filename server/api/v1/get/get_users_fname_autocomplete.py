@@ -1,7 +1,9 @@
 from server.utilities import db_connection, process_movie_tags
 from server.auth import is_admin
 from flask import Response
+import server
 import json
+from server.queries.get.query_get_users_fname_autocomplete import query_get_users_fname_autocomplete
 
 
 def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
@@ -13,7 +15,6 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
     :return: A JSON object containing a list of dictionaries containing
     user information and the movies and tags they have rated.
     """
-    con, cursor = db_connection()
 
     try:
         if not is_admin():
@@ -21,30 +22,13 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
         elif not isinstance(firstName, str) or not isinstance(offset, int) or not isinstance(limit, int):
             return Response(json.dumps({}), mimetype='application/json', status=400)
         else:
-            cursor.execute(f"SELECT user_id, firstName, lastName, email, isAdmin, "
-                           f"movieName, movie_id, movieRating, tagInfo FROM master_user_feedback_view "
-                           f"WHERE firstName LIKE '{firstName}%' LIMIT %s OFFSET %s", (limit, offset))
+            result = query_get_users_fname_autocomplete(firstName, offset, limit)
 
-            result = cursor.fetchall()
-
-            if len(result) == 0:
-                return []
+            if not result:
+                return Response({}, mimetype='application/json', status=404)
             else:
-                movie_info = [{'id': i[6], 'title': i[5], 'rating': i[7],
-                               'tags': process_movie_tags(i[8])
-                               } for i in result]
-                data = {
-                    "id": result[0][0],
-                    "email": result[0][3],
-                    "firstName": result[0][1],
-                    "lastName": result[0][2],
-                    "isAdmin": result[0][4],
-                    "movies": movie_info,
-                }
-
-                return Response(json.dumps(data), mimetype='application/json', status=200)
-    except Exception:
-        return Response(json.dumps({}), mimetype='application/json', status=500)
-    finally:
-        cursor.close()
-        con.close()
+                return Response(json.dumps(result), mimetype='application/json', status=200)
+    except Exception as e:
+        print(f'Error in get_users')
+        print(e)
+        return Response({}, mimetype='application/json', status=500)

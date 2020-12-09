@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Button, Grid } from 'grommet';
+import { Box, Button, Grid, ResponsiveContext } from 'grommet';
 import UserTable from './UserTable';
 import { connect } from 'react-redux';
+import { UserSearchBar } from './UserSearchBar';
 import en from '../../en.json';
 
 /***
@@ -18,30 +19,90 @@ function downloadAllToCSV() {
 
 const AdminPage: React.FC = () => {
     return (
-        <Grid
-            rows={['xxsmall', 'large']}
-            columns={['medium']}
-            gap="small"
-            margin={{ top: 'small', left: 'small', right: 'small' }}
-            areas={[
-                { name: 'header', start: [0, 0], end: [1, 0] },
-                { name: 'main', start: [0, 1], end: [1, 1] },
-            ]}
-        >
-            <Box margin={{ top: '5px' }} gridArea="header">
-                <Button
-                    secondary
-                    label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
-                    alignSelf={'start'}
-                    onClick={() => {
-                        downloadAllToCSV();
-                    }}
-                />
-            </Box>
-            <Box gridArea="main" background="light-2">
-                <UserTable />
-            </Box>
-        </Grid>
+        <ResponsiveContext.Consumer>
+            {(size) => (
+                <React.Fragment>
+                    {size == 'large' && (
+                        <Grid
+                            rows={['xxsmall', 'large']}
+                            columns={['100%']}
+                            gap="small"
+                            margin={{ top: 'small', left: 'small', right: 'small' }}
+                            areas={[
+                                { name: 'header', start: [0, 0], end: [1, 0] },
+                                { name: 'main', start: [0, 1], end: [1, 1] },
+                            ]}
+                        >
+                            <Grid
+                                rows={['medium']}
+                                columns={['medium', 'medium']}
+                                gap="xlarge"
+                                areas={[
+                                    { name: 'downloadButton', start: [0, 0], end: [1, 0] },
+                                    { name: 'searchBar', start: [1, 0], end: [2, 0] },
+                                ]}
+                            >
+                                <Box gridArea={'downloadButton'}>
+                                    <Button
+                                        secondary
+                                        label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
+                                        alignSelf={'start'}
+                                        onClick={() => {
+                                            downloadAllToCSV();
+                                        }}
+                                    />
+                                </Box>
+                                <Box gridArea={'searchBar'} align={'end'}>
+                                    <UserSearchBar />
+                                </Box>
+                            </Grid>
+                            <Box gridArea="main" background="light-2">
+                                <UserTable />
+                            </Box>
+                        </Grid>
+                    )}
+                    {size != 'large' && (
+                        <Grid
+                            rows={['xxsmall', 'large']}
+                            columns={['41%']}
+                            gap="small"
+                            margin={{ top: 'small', left: 'small', right: 'small' }}
+                            areas={[
+                                { name: 'header', start: [0, 0], end: [1, 0] },
+                                { name: 'main', start: [0, 1], end: [1, 1] },
+                            ]}
+                        >
+                            <Grid
+                                rows={['medium']}
+                                columns={['93%', 'medium']}
+                                gap="xlarge"
+                                areas={[
+                                    { name: 'downloadButton', start: [0, 0], end: [1, 0] },
+                                    { name: 'searchBar', start: [1, 0], end: [2, 0] },
+                                ]}
+                            >
+                                <Box gridArea={'downloadButton'}>
+                                    <Button
+                                        secondary
+                                        label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
+                                        alignSelf={'start'}
+                                        onClick={() => {
+                                            downloadAllToCSV();
+                                        }}
+                                    />
+                                </Box>
+                                <Box gridArea={'searchBar'} align={'end'}>
+                                    <UserSearchBar />
+                                </Box>
+                            </Grid>
+                            <Box gridArea="main" background="light-2">
+                                <UserTable />
+                            </Box>
+                        </Grid>
+                    )}
+                </React.Fragment>
+            )}
+        </ResponsiveContext.Consumer>
     );
 };
 
