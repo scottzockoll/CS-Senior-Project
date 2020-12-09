@@ -19,7 +19,7 @@ def get_movie_autocomplete(name: str):
 
     try:
         if not is_user():
-            return Response({}, mimetype='application/json', status=403)
+            return Response(json.dumps({}), mimetype='application/json', status=403)
         else:
             cursor.execute(
                 f"SELECT movies.id, movies.name, group_concat(DISTINCT tags.name ORDER BY tags.name ASC SEPARATOR ',') as 'Tags',"
@@ -45,7 +45,7 @@ def get_movie_autocomplete(name: str):
 
             return Response(json.dumps(titles), mimetype='application/json', status=200)
     except Exception:
-        return Response({}, mimetype='application/json', status=500)
+        return Response(json.dumps({}), mimetype='application/json', status=500)
     finally:
         cursor.close()
         con.close()

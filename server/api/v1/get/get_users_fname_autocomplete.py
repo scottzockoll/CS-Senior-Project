@@ -17,10 +17,10 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
     """
 
     try:
-        if not True:        # TODO ==================================================
-            return Response({}, mimetype='application/json', status=401)
+        if not is_admin():
+            return Response(json.dumps({}), mimetype='application/json', status=401)
         elif not isinstance(firstName, str) or not isinstance(offset, int) or not isinstance(limit, int):
-            return Response({}, mimetype='application/json', status=400)
+            return Response(json.dumps({}), mimetype='application/json', status=400)
         else:
             result = query_get_users_fname_autocomplete(firstName, offset, limit)
 

@@ -15,16 +15,16 @@ def get_tag(id: int):
 
     try:
         if not is_user():
-            return Response({}, mimetype='application/json', status=403)
+            return Response(json.dumps({}), mimetype='application/json', status=403)
         if not isinstance(id, int):
-            return Response({}, mimetype='application/json', status=400)
+            return Response(json.dumps({}), mimetype='application/json', status=400)
         else:
             result = query_get_tag(id)
 
             if result is None:
-                return Response({}, mimetype='application/json', status=404)
+                return Response(json.dumps({}), mimetype='application/json', status=404)
             else:
                 return Response(json.dumps(result), mimetype='application/json', status=200)
     except Exception as e:
         print(e)
-        return Response({}, mimetype='application/json', status=500)
+        return Response(json.dumps({}), mimetype='application/json', status=500)

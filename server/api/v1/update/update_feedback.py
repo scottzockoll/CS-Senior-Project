@@ -1,6 +1,7 @@
 from server.auth import is_user
 from server.queries.update.query_update_feedback import query_update_feedback
 from flask import Response, request
+import json
 
 
 def update_feedback(feedbackId: int):
@@ -16,17 +17,17 @@ def update_feedback(feedbackId: int):
     try:
         # Validate user permission level
         if not is_user():
-            return Response({}, mimetype='application/json', status=403)
+            return Response(json.dumps({}), mimetype='application/json', status=403)
         
         # Validate input parameters
         if not isinstance(feedbackId, int):
-            return Response({}, mimetype='application/json', status=400)
+            return Response(json.dumps({}), mimetype='application/json', status=400)
         
         # Update row in database
         result = query_update_feedback(feedbackId, rating)
         if not result:
-            return Response({}, mimetype='application/json', status=404)
+            return Response(json.dumps({}), mimetype='application/json', status=404)
         else:
-            return Response({}, mimetype='application/json', status=200)
+            return Response(json.dumps({}), mimetype='application/json', status=200)
     except Exception:
-        return Response({}, mimetype='application/json', status=500)
+        return Response(json.dumps({}), mimetype='application/json', status=500)
