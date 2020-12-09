@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { SearchField } from './SearchField';
 import StarRating from './StarRating';
 import en from '../../en.json';
+import { createMovieRating } from '../../store/movie/actions';
 
 interface PassedProps {
     numMovies: number;
@@ -17,7 +18,8 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
     toggleSurvey: (isVisible: boolean) => dispatch(toggleInitialSurveyModal(isVisible)),
-    // Need to grab the updateRating function so we can use in UnconnectedSurvey & MovieSearchList
+    createMovieRating: (userId: number, movieId: number, rating: number) =>
+        dispatch(createMovieRating(userId, movieId, rating)),
 });
 
 type SurveyProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & PassedProps;

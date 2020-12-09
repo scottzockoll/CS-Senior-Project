@@ -6,6 +6,7 @@ import en from '../../en.json';
 import StarRating from '../common/StarRating';
 import { toggleUserModal } from '../../store/user/actions';
 import { connect } from 'react-redux';
+import { Movie, Rating } from '../../store/movie';
 import { CSVParser } from '../common/CSVParser';
 
 type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & { user: User };
@@ -13,6 +14,16 @@ type UserRecordModalProps = ReturnType<typeof mapStateToProps> & ReturnType<type
 const mapStateToProps = (state: RootState) => ({
     showUserModal: state.showUserModal,
     movies: Object.values(state.movies.entities),
+    getMovies: (userId: number) => {
+        if (state.users.entities.hasOwnProperty(userId) && state.ratings.entities.hasOwnProperty(userId)) {
+            return Object.values(state.ratings.entities[userId]).map((feedback) => ({
+                ...state.movies.entities[feedback.movieId],
+                ...feedback,
+            }));
+        } else {
+            return [];
+        }
+    },
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -58,6 +69,7 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
     }
 
     render() {
+        const movies = this.props.getMovies(this.props.user.id);
         return (
             <Box style={{ height: '80%' }} width={'large'}>
                 <Heading alignSelf={'center'} level={'2'}>
@@ -111,9 +123,9 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
                                 property: 'title',
                                 header: en.UI_LABELS.title,
                                 sortable: true,
-                                render: (datum) => (
+                                render: (movieIndex) => (
                                     <React.Fragment>
-                                        <Text>{this.props.movies[datum].title}</Text>
+                                        <Text>{this.props.movies[movieIndex].title}</Text>
                                     </React.Fragment>
                                 ),
                             },
@@ -121,8 +133,8 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
                                 property: 'genres',
                                 header: en.UI_LABELS.genre,
                                 sortable: true,
-                                render: (datum) => {
-                                    const genres = this.props.movies[datum].genres;
+                                render: (movieIndex) => {
+                                    const genres = this.props.movies[movieIndex].genres;
                                     return <Text>{genres.join(' / ')}</Text>;
                                 },
                             },
@@ -130,9 +142,9 @@ class UnconnectedUserRecordModal extends React.Component<UserRecordModalProps> {
                                 property: 'rating',
                                 header: en.UI_LABELS.userRating,
                                 sortable: true,
-                                render: (datum) => (
+                                render: (movieIndex) => (
                                     <Box pad={{ vertical: 'xsmall' }}>
-                                        <StarRating current={this.props.movies[datum].rating} maximum={5} />
+                                        <StarRating current={this.props.movies[movieIndex].rating} maximum={5} />
                                     </Box>
                                 ),
                             },

@@ -2,7 +2,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
 import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes, ToggleSearchUser } from './user';
 import {
-    deleteUserReducer,
     searchUsersReducer,
     toggleSearchUserReducer,
     toggleUserModalReducer,
@@ -19,10 +18,10 @@ import {
     MovieDeleteEntitiesTypes,
     MovieEntitiesActions,
     MovieUpdateEntitiesTypes,
+    RequestMovieAction,
     TOGGLE_MOVIE_MODAL,
     ToggleMovieModal,
 } from './movie';
-import { deleteMoviesReducer } from './movie/reducers';
 import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
 import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
 
@@ -33,7 +32,8 @@ export type AppAction =
     | MovieDeleteActions
     | ToggleMovieModal
     | ToggleUserModal
-    | ToggleSearchUser;
+    | ToggleSearchUser
+    | RequestMovieAction;
 
 export type ActionType =
     | UsersEntitiesTypes
@@ -69,8 +69,6 @@ export const rootReducer = combineReducers({
     ratings: userRatingsReducer,
     token: tokenReducer,
     surveyVisible: toggleInitialSurveyModalReducer,
-    deleteUser: deleteUserReducer,
-    deleteMovies: deleteMoviesReducer,
     movieModal: toggleMovieModalReducer,
     showUserModal: toggleUserModalReducer,
     searchingUser: toggleSearchUserReducer,

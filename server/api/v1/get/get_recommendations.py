@@ -3,6 +3,7 @@ import json
 
 from server.utilities import db_connection
 from server.auth import is_admin, is_current_user
+from server.queries.get.query_get_movie import query_get_movie
 from flask import Response
 import numpy as np
 
@@ -63,4 +64,5 @@ def get_recommendations(user_id: int):
                 )
             )
         )
-        return json.dumps(candidates[:limit])
+        candidates = list(map(query_get_movie, candidates[:limit]))
+        return json.dumps(candidates)

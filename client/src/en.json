@@ -49,6 +49,7 @@
     "updateRating": "Select New Rating",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "searchUser": "Search User"
+    "searchUser": "Search User",
+    "loading": "Loading"
   }
 }

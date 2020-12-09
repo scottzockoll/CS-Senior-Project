@@ -1,6 +1,6 @@
 from server.auth import is_user
 from server.queries.create.query_create_feedback import query_create_feedback
-from flask import Response
+from flask import Response, request
 import json
 
 
@@ -11,12 +11,7 @@ def create_feedback(userId: int, movieId: int):
     :param int movieId: The movie id to retrieve
     :return: JSON object of feedback id
     """
-    
-    # The line below is for the request body content, which is awaiting implementation on the frontend.
-    # rating = request.form["rating"]
-    
-    # TODO: For now it is hardcoded for testing purposes
-    rating = 1
+    rating = request.form["rating"]
     
     try:
         # Validate user permission level

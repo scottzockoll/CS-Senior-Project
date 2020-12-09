@@ -1,16 +1,40 @@
 import {
-    UPDATE_MOVIE_RATING_FAILURE,
-    UPDATE_MOVIE_RATING_STARTED,
-    UPDATE_MOVIE_RATING_SUCCESS,
-    UpdateMovieRatingStarted,
+    CREATE_MOVIE_RATING_STARTED,
+    CreateMovieRatingStarted,
     DELETE_MOVIES_FAILURE,
     DELETE_MOVIES_STARTED,
     DELETE_MOVIES_SUCCESS,
     DeleteMoviesStarted,
+    RECEIVE_MOVIE_FAILURE,
+    RECEIVE_MOVIE_SUCCESS,
+    REQUEST_MOVIE_STARTED,
+    RequestMovieStarted,
+    UPDATE_MOVIE_RATING_FAILURE,
+    UPDATE_MOVIE_RATING_STARTED,
+    UPDATE_MOVIE_RATING_SUCCESS,
+    UpdateMovieRatingStarted,
 } from './index';
 import { CALL_API } from '../api';
 import { SCHEMAS } from '../schema';
 import { AsyncActionStatus } from '../index';
+
+export function requestMovie(id: number): RequestMovieStarted {
+    return {
+        id,
+        type: 'REQUEST_MOVIE_STARTED',
+        [CALL_API]: {
+            body: {},
+            endpoint: `movie/${id}`,
+            method: 'GET',
+            schema: SCHEMAS['MOVIE'],
+            types: {
+                [AsyncActionStatus.Request]: REQUEST_MOVIE_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_MOVIE_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_MOVIE_FAILURE,
+            },
+        },
+    };
+}
 
 export function updateMovieRating(feedbackId: number, rating: number): UpdateMovieRatingStarted {
     return {
@@ -18,10 +42,34 @@ export function updateMovieRating(feedbackId: number, rating: number): UpdateMov
         rating,
         type: UPDATE_MOVIE_RATING_STARTED,
         [CALL_API]: {
-            endpoint: `feedback/movie/${feedbackId}/${rating}`,
+            endpoint: `feedback/movie/${feedbackId}`,
             schema: SCHEMAS['NULL'],
             method: 'PUT',
-            body: {},
+            body: {
+                rating,
+            },
+            types: {
+                [AsyncActionStatus.Request]: UPDATE_MOVIE_RATING_STARTED,
+                [AsyncActionStatus.Success]: UPDATE_MOVIE_RATING_SUCCESS,
+                [AsyncActionStatus.Failure]: UPDATE_MOVIE_RATING_FAILURE,
+            },
+        },
+    };
+}
+
+export function createMovieRating(userId: number, movieId: number, rating: number): CreateMovieRatingStarted {
+    return {
+        userId,
+        movieId,
+        rating,
+        type: CREATE_MOVIE_RATING_STARTED,
+        [CALL_API]: {
+            endpoint: `feedback/movie/${userId}/${movieId}`,
+            schema: SCHEMAS['NULL'],
+            method: 'POST',
+            body: {
+                rating: rating,
+            },
             types: {
                 [AsyncActionStatus.Request]: UPDATE_MOVIE_RATING_STARTED,
                 [AsyncActionStatus.Success]: UPDATE_MOVIE_RATING_SUCCESS,

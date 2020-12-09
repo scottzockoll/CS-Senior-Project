@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import { toggleInitialSurveyModal } from '../../store/home/actions';
 import { User } from '../../store/user';
 import Confirmation from '../common/Confirmation';
+import { Rating } from '../../store/movie';
 
 interface ClientPageState {
     showDeleteAccount: boolean;
@@ -29,11 +30,16 @@ const mapStateToProps = (state: RootState) => ({
     activeUserId: state.activeUser,
     user: state.users.entities[state.activeUser],
     movies: (() => {
-        if (state.activeUser === -1) return [];
-        if (state.users.entities.hasOwnProperty(state.activeUser)) {
-            return state.users.entities[state.activeUser].movies.map((id) => {
-                return state.movies.entities[id];
-            });
+        if (state.activeUser === -1) {
+            return [];
+        } else if (
+            state.users.entities.hasOwnProperty(state.activeUser) &&
+            Object.keys(state.ratings.entities).length != 0
+        ) {
+            return Object.values(state.ratings.entities[state.activeUser]).map((feedback) => ({
+                ...state.movies.entities[feedback.movieId],
+                ...feedback,
+            }));
         }
     })(),
     surveyVisible: state.surveyVisible,
@@ -57,6 +63,10 @@ const ClientHeader = (props: { user: User }) => {
 };
 
 class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
+    componentDidMount() {
+        this.props.getUser(this.props.activeUserId);
+    }
+
     constructor(props: ClientPageProps, state: RootState) {
         super(props);
 
@@ -107,12 +117,12 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                             property: 'rating',
                             header: en.UI_LABELS.userRating,
                             sortable: true,
-                            render: (datum) => (
+                            render: (rating: Rating) => (
                                 <StarRating
-                                    current={datum.rating ?? 0}
+                                    current={rating.rating ?? 0}
                                     maximum={5}
                                     onClick={(event, value) => {
-                                        this.props.updateMovieRating(datum.id, value);
+                                        this.props.updateMovieRating(rating.feedbackId, value);
                                     }}
                                 />
                             ),
