@@ -8,7 +8,8 @@ import { requestRecommendations } from '../../store/user/actions';
 const mapStateToProps = (state: RootState) => {
     const activeUser = state.activeUser;
     const recommendations = state.recommendations;
-    return { activeUser, recommendations };
+    const isUserFetching = state.users.isFetching;
+    return { activeUser, recommendations, isUserFetching };
 };
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
@@ -19,7 +20,7 @@ type MovieCarouselProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof
 
 class MovieCarouselComponent extends React.Component<MovieCarouselProps> {
     componentDidMount() {
-        if (this.props.activeUser != -1) {
+        if (this.props.activeUser != -1 && !this.props.isUserFetching) {
             this.props.requestRecommendations(this.props.activeUser);
         }
     }
@@ -36,7 +37,7 @@ class MovieCarouselComponent extends React.Component<MovieCarouselProps> {
                     play={5000}
                     controls={'arrows'}
                 >
-                    {this.props.recommendations.map(function (title) {
+                    {this.props.recommendations.movieTitles.map(function (title) {
                         return (
                             <Box margin={{ bottom: '12px' }}>
                                 <h2>{title}</h2>

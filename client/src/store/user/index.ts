@@ -141,7 +141,11 @@ export interface RequestRecommendationsStarted extends ApiRequest {
 
 export interface ReceiveRecommendationsSuccess extends ApiRequest {
     type: RECEIVE_RECOMMENDATIONS_SUCCESS;
-    recommendations: string[];
+    response: {
+        entities: {
+            movies: Movie[];
+        };
+    };
 }
 
 export interface ReceiveRecommendationsFailure extends ApiRequest {

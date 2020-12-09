@@ -27,3 +27,8 @@ export interface NestedPaginated<T> {
      */
     isFetching: boolean;
 }
+
+export interface RecommendationResults {
+    isFetching: boolean;
+    movieTitles: string[];
+}

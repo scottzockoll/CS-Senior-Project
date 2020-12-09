@@ -93,7 +93,7 @@ export function requestRecommendations(id: number): RequestRecommendationsStarte
         id,
         type: REQUEST_RECOMMENDATIONS_STARTED,
         [CALL_API]: {
-            endpoint: `recommendations/${id}`,
+            endpoint: `recommendation/${id}`,
             schema: SCHEMAS['MOVIE_ARRAY'],
             method: 'GET',
             body: {},

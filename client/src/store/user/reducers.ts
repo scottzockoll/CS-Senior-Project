@@ -1,4 +1,5 @@
 import {
+    RECEIVE_RECOMMENDATIONS_FAILURE,
     RECEIVE_RECOMMENDATIONS_SUCCESS,
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
@@ -9,10 +10,11 @@ import {
     REQUEST_USERS_STARTED,
     TOGGLE_USER_MODAL,
     User,
+    USER_LOGOUT,
     UserAuthActions,
     UserEntitiesActions,
 } from './index';
-import { NestedPaginated, Paginated } from '../types';
+import { NestedPaginated, Paginated, RecommendationResults } from '../types';
 import {
     Movie,
     Rating,
@@ -24,42 +26,66 @@ import {
 import { Tag } from '../tag';
 import { AppAction } from '..';
 
-const initialRecommendationsState = [
-    'Ant-Man',
-    '42 Hours',
-    'The Wolf of Wall St.',
-    'Spider-Man: Homecoming',
-    'Saving Private Ryan',
-    'Elf',
-    'Christmas Vacation',
-    'What Happened to Monday?',
-    'Wedding Crashers',
-    'Blackhawk Down',
-    'Beverly Hills Cop',
-    'Guardians of the Galaxy',
-    'Scream',
-    'Halloween',
-    'Toy Story',
-    'Cars',
-    'Captain America: The First Avenger',
-    'Avatar',
-    'Deadpool',
-    'The Sound of Music',
-    'Freaky Friday',
-    'Doctor Strange',
-    'Star Wars: The Last Jedi',
-    'Zootopia',
-    'Finding Nemo',
-];
+const initialRecommendationsState: RecommendationResults = {
+    isFetching: false,
+    movieTitles: [
+        'Ant-Man',
+        '42 Hours',
+        'The Wolf of Wall St.',
+        'Spider-Man: Homecoming',
+        'Saving Private Ryan',
+        'Elf',
+        'Christmas Vacation',
+        'What Happened to Monday?',
+        'Wedding Crashers',
+        'Blackhawk Down',
+        'Beverly Hills Cop',
+        'Guardians of the Galaxy',
+        'Scream',
+        'Halloween',
+        'Toy Story',
+        'Cars',
+        'Captain America: The First Avenger',
+        'Avatar',
+        'Deadpool',
+        'The Sound of Music',
+        'Freaky Friday',
+        'Doctor Strange',
+        'Star Wars: The Last Jedi',
+        'Zootopia',
+        'Finding Nemo',
+    ],
+};
 
-export function recommendationsReducer(state = initialRecommendationsState, action: UserEntitiesActions): string[] {
+export function recommendationsReducer(
+    state = initialRecommendationsState,
+    action: UserEntitiesActions
+): RecommendationResults {
     switch (action.type) {
+        case REQUEST_RECOMMENDATIONS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
         case RECEIVE_RECOMMENDATIONS_SUCCESS:
-            if (action.recommendations) {
-                return action.recommendations;
+            if (action.response.entities.movies) {
+                return {
+                    movieTitles: Object.values(action.response.entities.movies).map((movie) => movie.title),
+                    isFetching: false,
+                };
             } else {
-                return state;
+                return {
+                    ...state,
+                    isFetching: false,
+                };
             }
+        case RECEIVE_RECOMMENDATIONS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
+        case USER_LOGOUT:
+            return initialRecommendationsState;
         default:
             return state;
     }
