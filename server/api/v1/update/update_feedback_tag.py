@@ -1,13 +1,15 @@
+import json
+
+from flask import Response, request
+
 from server.auth import is_user
 from server.queries.update.query_update_feedback_tag import query_update_feedback_tag
-from flask import Response, request
-import json
 
 
 def update_feedback_tag(feedbackId: int):
     """
     Replace the feedback for a specific tag id
-    :param int feedbackId: The feedback id to retrieve
+    :param int feedbackId: The feedback tag id to retrieve
     :return: Nothing
     """
 

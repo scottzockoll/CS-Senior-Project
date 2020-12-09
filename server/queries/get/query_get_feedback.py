@@ -2,7 +2,7 @@ from server.utilities import db_connection
 from typing import Union
 
 
-# TODO: Handle comma separated lists of movies e.g. id="1,9,5,3"
+# TODO: Handle comma separated lists of movies (e.g. id="1,9,5,3")
 def query_get_feedback(userId: int, movieId: int):
     """
     Return the user’s feedback of the specified movie id

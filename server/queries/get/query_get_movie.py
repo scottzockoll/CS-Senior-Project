@@ -3,10 +3,13 @@ from typing import Union
 from server.utilities import db_connection
 
 
+# TODO: Handle comma separated lists of movies (e.g. id="1,9,5,3")
 def query_get_movie(id: Union[int, str]):
-    # Handle single movies
-    # Handle comma separated lists of movies
-    #   e.g. id="1,9,5,3"
+    """
+    Returns a single movie by movie id
+    :param Union[int, str] id: The movie id to retrieve
+    :return: JSON object with movie id, title, tags, and genres
+    """
 
     con, cursor = db_connection()
     try:

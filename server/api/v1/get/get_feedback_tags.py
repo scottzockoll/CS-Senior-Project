@@ -1,7 +1,9 @@
+import json
+
+from flask import Response
+
 from server.auth import is_user
 from server.queries.get.query_get_feedback_tags import query_get_feedback_tags
-from flask import Response
-import json
 
 
 def get_feedback_tags(userId: int, movieId: int):

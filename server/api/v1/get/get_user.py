@@ -9,16 +9,19 @@ def get_user(id: int):
     """
     Returns a single user by user id
     :param int id: The user id to retrieve
-    :return: JSON object with user firstName, lastName, and isAdmin
+    :return: JSON object with all user information
     """
 
     try:
+        # Validates user permission
         if not server.auth.is_user():
             return Response(json.dumps({}), mimetype='application/json', status=403)
 
-        if not isinstance(id, int):  # checks if id is an integer
+        # Validate input parameters
+        if not isinstance(id, int):
             return Response(json.dumps({}), mimetype='application/json', status=400)
 
+        # Retrieve a user
         result = query_get_user(id)
         if not result:
             return Response(json.dumps({}), mimetype='application/json', status=404)

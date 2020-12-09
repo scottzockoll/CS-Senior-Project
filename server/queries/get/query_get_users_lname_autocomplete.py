@@ -3,15 +3,14 @@ from typing import Union
 
 def query_get_users_lname_autocomplete(lastName: str, offset: int, limit: int = 500):
     """
-        Retrieves multiple rows from the master_user_feedback_view in the database
-        given the firstName value to search for, int for row limit, and an int for
-        the offset of where the SELECT statement starts.
-        :param int limit: The limit which restricts how many rows are returned
-        :param int offset: This specifies the offset of the first row to return.
-        :return: A JSON object containing a list of dictionaries containing
-        user information. The 'movie' key in each dictionary is also a list
-        of dictionaries, with the 'tag' key for those also being a list of
-        dictionaries.
+    Retrieves multiple users given their last name similarity.
+    :param str lastName: The last name to compare users by
+    :param int limit: The limit which restricts how many rows are returned
+    :param int offset: This specifies the offset of the first row to return
+    :return: A JSON object containing a list of dictionaries containing
+    user information. The 'movie' key in each dictionary is also a list
+    of dictionaries, with the 'tag' key for those also being a list of
+    dictionaries.
     """
 
     con, cursor = server.utilities.db_connection()

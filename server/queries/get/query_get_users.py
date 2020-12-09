@@ -3,11 +3,9 @@ from typing import Union
 
 def query_get_users(limit: Union[int, str], offset: Union[int, str]):
     """
-    Retrieves multiple rows from the master_user_feedback_view in the database
-    given an int for row limit, and an int for the offset of where the SELECT
-    statement starts.
+    Retrieves multiple users within a range with their associated feedback data.
     :param int limit: The limit which restricts how many rows are returned
-    :param int offset: This specifies the offset of the first row to return.
+    :param int offset: This specifies the offset of the first row to return
     :return: A JSON object containing a list of dictionaries containing
     user information. The 'movie' key in each dictionary is also a list
     of dictionaries, with the 'tag' key for those also being a list of
@@ -56,7 +54,7 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
             users_list = []
 
             for row in result:
-                # if there is not an instance of the user, create a dictionary in the list for them
+                # If there is not an instance of the user, create a dictionary in the list for them
                 if not any(d['id'] == row[0] for d in users_list):
                     filter_dict["id"] = row[0]
                     filter_dict["email"] = row[3]
@@ -83,7 +81,7 @@ def query_get_users(limit: Union[int, str], offset: Union[int, str]):
                         }]
                         users_list.append(filter_dict)
                     filter_dict = dict.fromkeys(["id", "email", "firstName", "lastName", "isAdmin", "movies"])
-                # if there is, just append the movie information to the existing dictionary for that user
+                # If there is, just append the movie information to the existing dictionary for that user
                 else:
                     if row[9] is not None:
                         filter_dict["movies"] = {

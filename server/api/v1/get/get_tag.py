@@ -1,8 +1,8 @@
 import json
 
-from server.auth import is_user
 from flask import Response
 
+from server.auth import is_user
 from server.queries.get.query_get_tag import query_get_tag
 
 

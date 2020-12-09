@@ -4,7 +4,7 @@ from typing import Union
 
 def query_create_feedback_tag(userId: Union[int, str], movieId: Union[int, str], tagId: Union[int, str], rating: Union[int, str]):
     """
-    Create a new feedback row for a movie from a user
+    Create a new feedback row for a movie's tag from a user
     :param Union[int, str] userId: The user id to retrieve
     :param Union[int, str] movieId: The movie id to retrieve
     :param Union[int, str] tagId: The tag id to retrieve
