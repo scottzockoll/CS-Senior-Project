@@ -255,7 +255,6 @@ export function userRatingsReducer(
                     if (entities[rating.userId] === {}) {
                         entities[rating.userId] = { [rating.movieId]: rating };
                     } else {
-                        // @ts-ignore
                         entities[rating.userId][rating.movieId] = rating;
                     }
                 }
