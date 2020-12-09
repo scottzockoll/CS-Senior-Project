@@ -39,7 +39,7 @@ def get_recommendations(user_id: int):
         user_ratings = np.array(user_ratings).flat
         user_ratings_dense = np.zeros(model_size)
         np.put(user_ratings_dense, user_ratings, [1])
-        user_ratings = set(user_ratings)
+        user_ratings = set([int(rating)+1 for rating in user_ratings])
 
         # calculate which users are the most similar to the requested user
         similarities = [(idx, similarity(user_ratings_dense, row.todense().flat)) for idx, row in enumerate(ratings_mat)]
@@ -52,15 +52,15 @@ def get_recommendations(user_id: int):
             candidates += ratings_mat[sim_id - 1].todense().flat * predict_mat[sim_id - 1]
 
         candidates = list(
-            map(
-                lambda x: x[0],
-                sorted(
-                    filter(
-                        lambda x: x[0] not in user_ratings,
-                        enumerate(candidates)
-                    ),
-                    key=lambda x: x[1],
-                    reverse=True
+            filter(
+                lambda x: x not in user_ratings,
+                map(
+                    lambda x: x[0],
+                    sorted(
+                        enumerate(candidates),
+                        key=lambda x: x[1],
+                        reverse=True
+                    )
                 )
             )
         )
