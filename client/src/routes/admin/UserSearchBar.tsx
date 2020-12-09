@@ -114,28 +114,6 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
         // Make the search request
         this.props.toggleSearching(true);
         this.props.searchUsers(this.state.filter, input.value, 0, PAGE_SIZE);
-
-        // // fire request in 150ms if the user stops typing
-        // this.timeout = setTimeout(async () => {
-        //   try {
-        //     // Check if a filter has been selected
-        //     if(this.state.filter === UserSearchFilter.NO_FILTER) {
-        //       // No filter selected, exit call
-        //       return;
-        //     }
-        //
-        //     // retrieve the input
-        //     const input = event.target as HTMLInputElement;
-        //
-        //     // Make the search request
-        //     this.props.searchUsers(this.state.filter, input.value, 0, PAGE_SIZE);
-        //   } catch (ex) {
-        //     // clear suggestions
-        //     this.setState({
-        //       ...this.state
-        //     });
-        //   }
-        // }, 150) as any;
     };
 
     render() {
