@@ -140,7 +140,12 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                         label={en.UI_LABELS.resetMovieSurvey}
                         onClick={this.showReset}
                     />
-                    <Button label={en.UI_LABELS.deleteAccount} onClick={this.showDelete} />
+                    <Button
+                        primary
+                        color={'status-critical'}
+                        label={en.UI_LABELS.deleteAccount}
+                        onClick={this.showDelete}
+                    />
                 </Box>
 
                 {this.state.showResetMovies && (
