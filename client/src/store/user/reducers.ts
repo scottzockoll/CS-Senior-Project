@@ -234,6 +234,13 @@ export function userRatingsReducer(
         case RECEIVE_USERS_SUCCESS:
             const movies: Record<number, Movie> | undefined = action.response.entities.movies;
             let entities: Record<number, Record<number, Rating>> = {};
+            let users: Array<User> | undefined = Object.values(action.response.entities.users as Object);
+            if (users) {
+                for (let user in users) {
+                    entities[users[parseInt(user)].id] = {};
+                }
+            }
+
             if (action.response.entities.movies) {
                 let ratings: Array<Rating> = [
                     ...Object.values(movies as Object).map((movie) => ({
@@ -245,9 +252,10 @@ export function userRatingsReducer(
                 ];
                 for (let r in ratings) {
                     let rating: Rating = ratings[r];
-                    if (entities[rating.userId] === undefined) {
+                    if (entities[rating.userId] === {}) {
                         entities[rating.userId] = { [rating.movieId]: rating };
                     } else {
+                        // @ts-ignore
                         entities[rating.userId][rating.movieId] = rating;
                     }
                 }
