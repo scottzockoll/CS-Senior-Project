@@ -155,7 +155,8 @@ class ClientPage extends React.Component<ClientPageProps, ClientPageState> {
                         onConfirm={() => {
                             this.props.deleteMovies(this.props.activeUserId);
                             this.hideReset();
-                            toggleInitialSurveyModal(true);
+                            //toggleInitialSurveyModal(true);
+                            window.location.reload(true);
                         }}
                         onCancel={this.hideReset}
                     />
