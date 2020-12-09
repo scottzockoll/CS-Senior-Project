@@ -8,6 +8,10 @@ import {
     REQUEST_RECOMMENDATIONS_STARTED,
     REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
+    SEARCH_USERS_FAILURE,
+    SEARCH_USERS_STARTED,
+    SEARCH_USERS_SUCCESS,
+    TOGGLE_SEARCH_USER,
     TOGGLE_USER_MODAL,
     User,
     USER_LOGOUT,
@@ -169,6 +173,7 @@ export function usersMoviesReducer(
         case REQUEST_MOVIE_STARTED:
         case REQUEST_USER_STARTED:
         case REQUEST_USERS_STARTED:
+        case SEARCH_USERS_STARTED:
             return {
                 ...state,
                 isFetching: true,
@@ -206,6 +211,21 @@ export function usersMoviesReducer(
             } else {
                 return state;
             }
+        case SEARCH_USERS_SUCCESS:
+            const searchedUsers: Record<number, User> | undefined = action.response.entities.users;
+            if (action.response.entities.movies) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(searchedUsers as Object).map((user) => user.id)],
+                    entities: {
+                        ...action.response.entities.movies,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case SEARCH_USERS_FAILURE:
         case RECEIVE_MOVIE_FAILURE:
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
@@ -274,6 +294,7 @@ export function userRatingsReducer(
             }
         case RECEIVE_USER_FAILURE:
         case RECEIVE_USERS_FAILURE:
+        case SEARCH_USERS_FAILURE:
             return {
                 ...state,
                 isFetching: false,
@@ -388,6 +409,45 @@ export function toggleUserModalReducer(state = false, action: AppAction): boolea
     switch (action.type) {
         case TOGGLE_USER_MODAL:
             return action.show;
+        default:
+            return state;
+    }
+}
+
+export function toggleSearchUserReducer(state = false, action: AppAction): boolean {
+    switch (action.type) {
+        case TOGGLE_SEARCH_USER:
+            return action.searching;
+        default:
+            return state;
+    }
+}
+
+export function searchUsersReducer(state = initialUserEntitiesState, action: UserEntitiesActions): Paginated<User> {
+    switch (action.type) {
+        case SEARCH_USERS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case SEARCH_USERS_SUCCESS:
+            if (action.response.entities.users) {
+                return {
+                    ...state,
+                    ids: [...state.ids, ...Object.values(action.response.entities.users).map((user) => user.id)],
+                    entities: {
+                        ...action.response.entities.users,
+                    },
+                    isFetching: false,
+                };
+            } else {
+                return state;
+            }
+        case SEARCH_USERS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
         default:
             return state;
     }

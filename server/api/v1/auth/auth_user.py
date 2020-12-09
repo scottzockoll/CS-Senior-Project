@@ -20,6 +20,6 @@ def auth_user(email: str):
             return Response(json.dumps(user), status=200)
 
     if user is None:
-        return Response({}, status=401)
+        return Response(json.dumps({}), status=401)
     else:
         return Response(json.dumps(user), status=200)

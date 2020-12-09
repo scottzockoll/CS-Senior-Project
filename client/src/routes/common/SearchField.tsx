@@ -12,7 +12,11 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
 });
 
 type SearchFieldProps = ReturnType<typeof mapStateToProps> &
-    ReturnType<typeof mapDispatchToProps> & { displayModal: boolean };
+    ReturnType<typeof mapDispatchToProps> & {
+        displayModal: boolean;
+        defaultValue?: string;
+        onSelect?: (suggestion: { label: string; value: number }) => void;
+    };
 
 interface SearchResult {
     id: number;
@@ -22,7 +26,7 @@ interface SearchFieldState {
     movies: SearchResult[];
 }
 
-class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFieldState> {
+export class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFieldState> {
     protected inputRef: any;
     protected timeout?: number;
 
@@ -87,6 +91,10 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
     }) => {
         this.inputRef.current.value = event.suggestion.label;
         this.props.displayModal && this.props.toggleMovieModal(true, event.suggestion.value);
+
+        if (this.props.onSelect) {
+            this.props.onSelect(event.suggestion);
+        }
     };
 
     render() {
@@ -101,6 +109,7 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
                     placeholder={en.UI_LABELS.movieSearch}
                     onSelect={this.onSelect}
                     onInput={this.onInput}
+                    defaultValue={this.props.defaultValue}
                 />
             </Box>
         );
@@ -108,3 +117,4 @@ class UnconnectedSearchField extends React.Component<SearchFieldProps, SearchFie
 }
 
 export const SearchField = connect(mapStateToProps, mapDispatchToProps)(UnconnectedSearchField);
+export type SearchField = typeof SearchField;

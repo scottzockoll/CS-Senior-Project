@@ -6,13 +6,19 @@ export const REQUEST_USERS_STARTED = 'REQUEST_USERS_STARTED';
 export const RECEIVE_USERS_SUCCESS = 'RECEIVE_USERS_SUCCESS';
 export const RECEIVE_USERS_FAILURE = 'RECEIVE_USERS_FAILURE';
 
-export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
-export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
-export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
+export const SEARCH_USERS_STARTED = 'SEARCH_USERS_STARTED';
+export const SEARCH_USERS_SUCCESS = 'SEARCH_USERS_SUCCESS';
+export const SEARCH_USERS_FAILURE = 'SEARCH_USERS_FAILURE';
 
 export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
 export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
 export const RECEIVE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
+
+export const TOGGLE_SEARCH_USER = 'TOGGLE_SEARCH_USER';
+
+export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
+export type RECEIVE_USERS_SUCCESS = typeof RECEIVE_USERS_SUCCESS;
+export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
 
 export type REQUEST_USER_STARTED = typeof REQUEST_USER_STARTED;
 export type RECEIVE_USER_SUCCESS = typeof RECEIVE_USER_SUCCESS;
@@ -34,6 +40,20 @@ export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
 export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
 export type RECEIVE_AUTH_USER_FAILURE = typeof RECEIVE_AUTH_USER_FAILURE;
 
+export type SEARCH_USERS_STARTED = typeof SEARCH_USERS_STARTED;
+export type SEARCH_USERS_SUCCESS = typeof SEARCH_USERS_SUCCESS;
+export type SEARCH_USERS_FAILURE = typeof SEARCH_USERS_FAILURE;
+
+export type TOGGLE_SEARCH_USER = typeof TOGGLE_SEARCH_USER;
+
+export type UsersEntitiesTypes =
+    | REQUEST_USERS_STARTED
+    | RECEIVE_USERS_SUCCESS
+    | RECEIVE_USERS_FAILURE
+    | SEARCH_USERS_STARTED
+    | SEARCH_USERS_SUCCESS
+    | SEARCH_USERS_FAILURE;
+
 export const DELETE_USER_STARTED = 'DELETE_USER_STARTED';
 export const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 export const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
@@ -42,12 +62,20 @@ export type DELETE_USER_STARTED = typeof DELETE_USER_STARTED;
 export type DELETE_USER_SUCCESS = typeof DELETE_USER_SUCCESS;
 export type DELETE_USER_FAILURE = typeof DELETE_USER_FAILURE;
 
-export type UsersEntitiesTypes = REQUEST_USERS_STARTED | RECEIVE_USERS_SUCCESS | RECEIVE_USERS_FAILURE;
-
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 export const TOKEN_UPDATE = 'TOKEN_UPDATE';
 export const AUTH_USER = 'AUTH_USER';
+
+/**
+ * User search constants
+ */
+export enum UserSearchFilter {
+    NO_FILTER = -1,
+    FIRST_NAME,
+    LAST_NAME,
+    EMAIL,
+}
 
 export type USER_LOGIN = typeof USER_LOGIN;
 export type USER_LOGOUT = typeof USER_LOGOUT;
@@ -108,7 +136,7 @@ export interface ReceiveUserFailure {
  */
 export interface RequestUsersStarted extends ApiRequest {
     type: REQUEST_USERS_STARTED;
-    idOffset: number;
+    offset: number;
     limit: number;
 }
 
@@ -131,6 +159,38 @@ export interface ReceiveUsersSuccess {
  */
 export interface ReceiveUsersFailure {
     type: RECEIVE_USERS_FAILURE;
+    id: number;
+}
+
+/**
+ * Action that occurs when searching user.
+ */
+export interface SearchUsersStarted extends ApiRequest {
+    type: SEARCH_USERS_STARTED;
+    searchValue: string;
+    offset: number;
+    limit: number;
+}
+
+/**
+ * Action that occurs when fetching a specific user succeeds.
+ */
+export interface SearchUsersSuccess {
+    type: SEARCH_USERS_SUCCESS;
+    response: {
+        entities: {
+            users?: Record<number, User>;
+            movies?: Record<number, Movie>;
+            tags?: Record<number, Tag>;
+        };
+    };
+}
+
+/**
+ * Action that occurs when fetching a specific user fails.
+ */
+export interface SearchUsersFailure {
+    type: SEARCH_USERS_FAILURE;
     id: number;
 }
 
@@ -172,12 +232,20 @@ export interface ReceiveAuthUserFailure {
     email: string;
 }
 
+export interface ToggleSearchUser {
+    type: TOGGLE_SEARCH_USER;
+    searching: boolean;
+}
+
 /**
  * Any user entities retrieval action, that is a user entities Request {Start, Success, Failure}.
  */
 export type UserEntitiesActions =
     | RequestUsersStarted
     | ReceiveUsersSuccess
+    | SearchUsersStarted
+    | SearchUsersSuccess
+    | SearchUsersFailure
     | ReceiveUsersFailure
     | RequestUserStarted
     | ReceiveUserSuccess

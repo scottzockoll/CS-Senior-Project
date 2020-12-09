@@ -1,7 +1,9 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { combineReducers } from 'redux';
-import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes } from './user';
+import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesTypes, ToggleSearchUser } from './user';
 import {
+    searchUsersReducer,
+    toggleSearchUserReducer,
     recommendationsReducer,
     toggleUserModalReducer,
     tokenReducer,
@@ -21,8 +23,8 @@ import {
     TOGGLE_MOVIE_MODAL,
     ToggleMovieModal,
 } from './movie';
-import { toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
-import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal } from './home';
+import { surveyReducer, toggleInitialSurveyModalReducer, toggleMovieModalReducer } from './home/reducers';
+import { TOGGLE_INITIAL_SURVEY_MODAL, ToggleInitialSurveyModal, UpdateSurveyAction } from './home';
 
 export type AppAction =
     | UserEntitiesActions
@@ -31,7 +33,9 @@ export type AppAction =
     | MovieDeleteActions
     | ToggleMovieModal
     | ToggleUserModal
-    | RequestMovieAction;
+    | ToggleSearchUser
+    | RequestMovieAction
+    | UpdateSurveyAction;
 
 export type ActionType =
     | UsersEntitiesTypes
@@ -61,6 +65,7 @@ export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
     recommendations: recommendationsReducer,
+    searchedUsers: searchUsersReducer,
     movies: usersMoviesReducer,
     tags: usersTagsReducer,
     tagRatings: usersTagRatingsReducer,
@@ -69,6 +74,8 @@ export const rootReducer = combineReducers({
     surveyVisible: toggleInitialSurveyModalReducer,
     movieModal: toggleMovieModalReducer,
     showUserModal: toggleUserModalReducer,
+    searchingUser: toggleSearchUserReducer,
+    survey: surveyReducer,
     // TODO: Should be loaded from the server (in HTML, query, etc), but not important for this project.
     googleClientId: () => '962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com',
 });
