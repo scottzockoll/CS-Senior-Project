@@ -11,7 +11,7 @@ model_name = '100k'
 
 
 def get_recommendations(user_id: int):
-    if not is_admin() or not is_current_user(user_id):
+    if not (is_admin() or is_current_user(user_id)):
         return Response(json.dumps({}), mimetype='application/json', status=401)
     else:
         connection, cursor = db_connection()
