@@ -1,3 +1,5 @@
+import { Movie } from './movie';
+
 export interface Paginated<T> {
     /**
      * Set of all acquired ids.
@@ -26,4 +28,9 @@ export interface NestedPaginated<T> {
      * If a request is pending or not.
      */
     isFetching: boolean;
+}
+
+export interface RecommendationResults {
+    isFetching: boolean;
+    movies: Movie[];
 }

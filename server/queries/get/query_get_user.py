@@ -8,8 +8,8 @@ def query_get_user(id: Union[int, str]):
     :param int id: The user id to retrieve
     :return: JSON object with user firstName, lastName, and isAdmin
     """
+    
     con, cursor = server.utilities.db_connection()
-
     try:
         cursor.execute(
             f"""SELECT

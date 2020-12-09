@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { requestSingleUser, updateToken, userLogin } from '../../store/user/actions';
+import { requestRecommendations, requestSingleUser, updateToken, userLogin } from '../../store/user/actions';
 import { User } from '../../store/user';
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import { API_ROOT } from '../../store/api';
@@ -56,6 +56,7 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
                 dispatch(userLogin(user.id));
                 dispatch(updateToken(token));
                 dispatch(requestSingleUser(user.id));
+                dispatch(requestRecommendations(user.id));
             };
 
             await auth(email, token);

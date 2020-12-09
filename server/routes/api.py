@@ -1,4 +1,6 @@
 from flask import Flask
+
+from server.api.v1.auth.auth_user import auth_user
 from server.api.v1.get.get_user import get_user
 from server.api.v1.delete.del_user import del_user
 from server.api.v1.get.get_movie import get_movie
@@ -11,13 +13,12 @@ from server.api.v1.update.update_feedback import update_feedback
 from server.api.v1.update.update_feedback_tag import update_feedback_tag
 from server.api.v1.create.create_feedback import create_feedback
 from server.api.v1.create.create_feedback_tag import create_feedback_tag
-from server.api.v1.auth.auth_user import auth_user
 from server.api.v1.get.get_recommendations import get_recommendations
 from server.api.v1.get.get_users import get_users
 from server.api.v1.delete.del_feedback import del_feedback
-from server.api.v1.get.get_users_lname_autocomplete import get_users_lname_autocomplete
 from server.api.v1.get.get_users_email_autocomplete import get_users_email_autocomplete
 from server.api.v1.get.get_users_fname_autocomplete import get_users_fname_autocomplete
+from server.api.v1.get.get_users_lname_autocomplete import get_users_lname_autocomplete
 
 
 def register_api_routes(app: Flask):

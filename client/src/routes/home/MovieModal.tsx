@@ -53,23 +53,23 @@ class MovieModalComponent extends React.Component<MovieModalProps> {
             <React.Fragment>
                 {this.props.show && (
                     <Layer>
-                        <Box height={'auto'} width={'650px'}>
-                            <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
+                        <Box height={'auto'} pad={{ horizontal: 'large', bottom: 'medium' }}>
+                            <Box margin={{ horizontal: 'auto' }} direction="row">
                                 <h1>{en.UI_LABELS.movieInformation}</h1>
                             </Box>
-                            <Box margin={{ left: '150px' }}>
+                            <Box>
                                 <h3>{en.UI_LABELS.title}</h3>
                                 <Text>{this.props.movie ? this.props.movie.title : en.UI_LABELS.loading}</Text>
                             </Box>
-                            <Box margin={{ left: '150px' }}>
+                            <Box>
                                 <h3>{en.UI_LABELS.genre}</h3>
                                 <Text>
                                     {this.props.movie ? this.props.movie.genres.join(', ') : en.UI_LABELS.loading}
                                 </Text>
                             </Box>
-                            <Box margin={{ left: '150px' }}>
+                            <Box direction={'row'}>
                                 <h3>{en.UI_LABELS.rating}</h3>
-                                <Box margin={{ left: '120px', top: '-44px' }}>
+                                <Box margin={{ left: 'auto' }}>
                                     <StarRating
                                         current={ratingValue}
                                         maximum={5}
@@ -91,13 +91,11 @@ class MovieModalComponent extends React.Component<MovieModalProps> {
                                     />
                                 </Box>
                             </Box>
-                            <Box width="26%" margin={{ top: 'large', left: 'auto', right: 'auto' }}>
-                                <Box margin={{ top: '2%', bottom: '5%' }}>
-                                    <Button
-                                        label={en.UI_LABELS.BUTTON_LABELS.close}
-                                        onClick={() => this.props.toggleMovieModal(false)}
-                                    />
-                                </Box>
+                            <Box margin={{ horizontal: 'auto' }}>
+                                <Button
+                                    label={en.UI_LABELS.BUTTON_LABELS.close}
+                                    onClick={() => this.props.toggleMovieModal(false)}
+                                />
                             </Box>
                         </Box>
                     </Layer>

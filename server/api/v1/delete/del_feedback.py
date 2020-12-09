@@ -1,13 +1,15 @@
+import json
+
+from flask import Response
+
 from server.utilities import db_connection
 from server.auth import is_current_user
-from flask import Response
-import json
 
 
 def del_feedback(userId: int):
     """
     Delete all user feedback for tags and movies
-    :param int userId: The users id to be used for deleting their feedback
+    :param int userId: The user whose feedback is being deleted
     :return: Nothing
     """
     con, cursor = db_connection()

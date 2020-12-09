@@ -1,7 +1,9 @@
+import json
+
+from flask import Response
+
 from server.utilities import db_connection
 from server.auth import is_admin, is_current_user
-from flask import Response
-import json
 
 
 def del_user(id: int):

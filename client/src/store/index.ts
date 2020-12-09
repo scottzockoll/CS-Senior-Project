@@ -4,6 +4,7 @@ import { ToggleUserModal, TOGGLE_USER_MODAL, UserEntitiesActions, UsersEntitiesT
 import {
     searchUsersReducer,
     toggleSearchUserReducer,
+    recommendationsReducer,
     toggleUserModalReducer,
     tokenReducer,
     userAuthReducer,
@@ -63,6 +64,7 @@ export enum AsyncActionStatus {
 export const rootReducer = combineReducers({
     activeUser: userAuthReducer,
     users: usersReducer,
+    recommendations: recommendationsReducer,
     searchedUsers: searchUsersReducer,
     movies: usersMoviesReducer,
     tags: usersTagsReducer,

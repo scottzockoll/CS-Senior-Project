@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataTable, Layer } from 'grommet';
+import { Box, DataTable, Layer } from 'grommet';
 import { UserRecordModal } from './UserRecordModal';
 import { connect } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
@@ -78,34 +78,31 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
 
     render() {
         return (
-            <React.Fragment>
+            <Box overflow={{ vertical: 'scroll' }} height={{ max: 'large' }}>
                 {this.props.users.length > 0 && (
                     <DataTable
+                        pin={true}
                         columns={[
                             {
                                 property: 'id',
                                 header: en.UI_LABELS.userId,
                                 primary: true,
                                 sortable: true,
-                                search: true,
                             },
                             {
                                 property: 'firstName',
                                 header: en.UI_LABELS.firstName,
                                 sortable: true,
-                                search: true,
                             },
                             {
                                 property: 'lastName',
                                 header: en.UI_LABELS.lastName,
                                 sortable: true,
-                                search: true,
                             },
                             {
                                 property: 'email',
                                 header: en.UI_LABELS.email,
                                 sortable: true,
-                                search: true,
                             },
                         ]}
                         data={this.props.searching ? this.props.searchedUsers : this.props.users}
@@ -115,7 +112,6 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
                             // this.setState({showUserModal: true});
                             this.props.toggleUserModal(true);
                         }}
-                        size="large"
                         sortable={true}
                         step={50}
                         background="light-2"
@@ -136,7 +132,7 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
                         <UserRecordModal user={this.selectedUser} />
                     </Layer>
                 )}
-            </React.Fragment>
+            </Box>
         );
     }
 }

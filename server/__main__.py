@@ -7,6 +7,9 @@ import argparse
 
 
 def main():
+    """
+    The main function of the machine learning algorithm.
+    """
     parser = argparse.ArgumentParser(description='FlickPick server.')
     parser.add_argument('--train-nn', action='store_true', help="Start the server in neural network training mode.")
     parser.add_argument('--train-mf', action='store_true', help="Start the server in candidate matrix training mode.")

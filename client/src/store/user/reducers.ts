@@ -1,8 +1,11 @@
 import {
+    RECEIVE_RECOMMENDATIONS_FAILURE,
+    RECEIVE_RECOMMENDATIONS_SUCCESS,
     RECEIVE_USER_FAILURE,
     RECEIVE_USER_SUCCESS,
     RECEIVE_USERS_FAILURE,
     RECEIVE_USERS_SUCCESS,
+    REQUEST_RECOMMENDATIONS_STARTED,
     REQUEST_USER_STARTED,
     REQUEST_USERS_STARTED,
     SEARCH_USERS_FAILURE,
@@ -11,10 +14,11 @@ import {
     TOGGLE_SEARCH_USER,
     TOGGLE_USER_MODAL,
     User,
+    USER_LOGOUT,
     UserAuthActions,
     UserEntitiesActions,
 } from './index';
-import { NestedPaginated, Paginated } from '../types';
+import { NestedPaginated, Paginated, RecommendationResults } from '../types';
 import {
     Movie,
     Rating,
@@ -25,6 +29,45 @@ import {
 } from '../movie';
 import { Tag } from '../tag';
 import { AppAction } from '..';
+
+const initialRecommendationsState: RecommendationResults = {
+    isFetching: false,
+    movies: [],
+};
+
+export function recommendationsReducer(
+    state = initialRecommendationsState,
+    action: UserEntitiesActions
+): RecommendationResults {
+    switch (action.type) {
+        case REQUEST_RECOMMENDATIONS_STARTED:
+            return {
+                ...state,
+                isFetching: true,
+            };
+        case RECEIVE_RECOMMENDATIONS_SUCCESS:
+            if (action.response.entities.movies) {
+                return {
+                    movies: Object.values(action.response.entities.movies),
+                    isFetching: false,
+                };
+            } else {
+                return {
+                    ...state,
+                    isFetching: false,
+                };
+            }
+        case RECEIVE_RECOMMENDATIONS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+            };
+        case USER_LOGOUT:
+            return initialRecommendationsState;
+        default:
+            return state;
+    }
+}
 
 const initialUserAuthState: number = -1;
 

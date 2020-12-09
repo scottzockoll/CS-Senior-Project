@@ -14,10 +14,6 @@ export const REQUEST_USER_STARTED = 'REQUEST_USER_STARTED';
 export const RECEIVE_USER_SUCCESS = 'RECEIVE_USER_SUCCESS';
 export const RECEIVE_USER_FAILURE = 'RECEIVE_USER_FAILURE';
 
-export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
-export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
-export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
-
 export const TOGGLE_SEARCH_USER = 'TOGGLE_SEARCH_USER';
 
 export type REQUEST_USERS_STARTED = typeof REQUEST_USERS_STARTED;
@@ -27,6 +23,18 @@ export type RECEIVE_USERS_FAILURE = typeof RECEIVE_USERS_FAILURE;
 export type REQUEST_USER_STARTED = typeof REQUEST_USER_STARTED;
 export type RECEIVE_USER_SUCCESS = typeof RECEIVE_USER_SUCCESS;
 export type RECEIVE_USER_FAILURE = typeof RECEIVE_USER_FAILURE;
+
+export const REQUEST_RECOMMENDATIONS_STARTED = 'REQUEST_RECOMMENDATIONS_STARTED';
+export const RECEIVE_RECOMMENDATIONS_SUCCESS = 'RECEIVE_RECOMMENDATIONS_SUCCESS';
+export const RECEIVE_RECOMMENDATIONS_FAILURE = 'RECEIVE_RECOMMENDATIONS_FAILURE';
+
+export type REQUEST_RECOMMENDATIONS_STARTED = typeof REQUEST_RECOMMENDATIONS_STARTED;
+export type RECEIVE_RECOMMENDATIONS_SUCCESS = typeof RECEIVE_RECOMMENDATIONS_SUCCESS;
+export type RECEIVE_RECOMMENDATIONS_FAILURE = typeof RECEIVE_RECOMMENDATIONS_FAILURE;
+
+export const REQUEST_AUTH_USER_STARTED = 'REQUEST_AUTH_USER_STARTED';
+export const RECEIVE_AUTH_USER_SUCCESS = 'RECEIVE_AUTH_USER_SUCCESS';
+export const RECEIVE_AUTH_USER_FAILURE = 'RECEIVE_AUTH_USER_FAILURE';
 
 export type REQUEST_AUTH_USER_STARTED = typeof REQUEST_AUTH_USER_STARTED;
 export type RECEIVE_AUTH_USER_SUCCESS = typeof RECEIVE_AUTH_USER_SUCCESS;
@@ -186,6 +194,24 @@ export interface SearchUsersFailure {
     id: number;
 }
 
+export interface RequestRecommendationsStarted extends ApiRequest {
+    type: REQUEST_RECOMMENDATIONS_STARTED;
+    id: number;
+}
+
+export interface ReceiveRecommendationsSuccess extends ApiRequest {
+    type: RECEIVE_RECOMMENDATIONS_SUCCESS;
+    response: {
+        entities: {
+            movies: Movie[];
+        };
+    };
+}
+
+export interface ReceiveRecommendationsFailure extends ApiRequest {
+    type: RECEIVE_RECOMMENDATIONS_FAILURE;
+}
+
 export interface RequestAuthUserStarted extends ApiRequest {
     type: REQUEST_AUTH_USER_STARTED;
     email: string;
@@ -231,7 +257,10 @@ export type UserEntitiesActions =
     | ReceiveAuthUserSuccess
     | UserLogin
     | UserLogout
-    | TokenUpdate;
+    | TokenUpdate
+    | RequestRecommendationsStarted
+    | ReceiveRecommendationsSuccess
+    | ReceiveRecommendationsFailure;
 
 /**
  * Action that occurs when the user logins in.

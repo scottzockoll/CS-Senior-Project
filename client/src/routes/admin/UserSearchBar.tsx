@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import en from '../../en.json';
 import { AppDispatch, RootState } from '../../store';
-import { searchUsers, toggleSearchUser, toggleUserModal } from '../../store/user/actions';
+import { searchUsers, toggleSearchUser } from '../../store/user/actions';
 import { UserSearchFilter } from '../../store/user';
 
 const mapStateToProps = (state: RootState) => ({});
@@ -40,14 +40,6 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
         this.inputRef = React.createRef();
         this.selectRef = React.createRef();
     }
-
-    onFocusGained = (event: React.FocusEvent) => {
-        // show drop down
-        this.setState({
-            ...this.state,
-            focused: true,
-        });
-    };
 
     onFocusLost = (event: React.FocusEvent) => {
         // hide drop down, slight delay allows button clicks to function
@@ -105,7 +97,7 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
         const input = event.target as HTMLInputElement;
 
         // do not search if value is empty
-        if (input.value == '') {
+        if (input.value === '') {
             // set searching to false
             this.props.toggleSearching(false);
             return;
@@ -118,14 +110,16 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
 
     render() {
         return (
-            <Box direction="row" align="end" width={'medium'}>
-                <Select
-                    options={['', 'First Name', 'Last Name', 'Email']}
-                    ref={this.selectRef}
-                    onChange={({ option }) => {
-                        this.onFilterChange(option);
-                    }}
-                />
+            <Box direction="row" margin={{ left: 'auto' }}>
+                <Box>
+                    <Select
+                        options={['First Name', 'Last Name', 'Email']}
+                        ref={this.selectRef}
+                        onChange={({ option }) => {
+                            this.onFilterChange(option);
+                        }}
+                    />
+                </Box>
                 <TextInput ref={this.inputRef} placeholder={en.UI_LABELS.searchUser} onInput={this.onInput} />
             </Box>
         );

@@ -31,6 +31,10 @@ import {
     RECEIVE_USER_FAILURE,
     TOGGLE_USER_MODAL,
     TOGGLE_SEARCH_USER,
+    RequestRecommendationsStarted,
+    REQUEST_RECOMMENDATIONS_STARTED,
+    RECEIVE_RECOMMENDATIONS_SUCCESS,
+    RECEIVE_RECOMMENDATIONS_FAILURE,
 } from './index';
 
 export function userLogin(id: number): UserLogin {
@@ -85,6 +89,24 @@ export function requestUsers(offset: number, limit: number): RequestUsersStarted
                 [AsyncActionStatus.Request]: REQUEST_USERS_STARTED,
                 [AsyncActionStatus.Success]: RECEIVE_USERS_SUCCESS,
                 [AsyncActionStatus.Failure]: RECEIVE_USERS_FAILURE,
+            },
+        },
+    };
+}
+
+export function requestRecommendations(id: number): RequestRecommendationsStarted {
+    return {
+        id,
+        type: REQUEST_RECOMMENDATIONS_STARTED,
+        [CALL_API]: {
+            endpoint: `recommendation/${id}`,
+            schema: SCHEMAS['MOVIE_ARRAY'],
+            method: 'GET',
+            body: {},
+            types: {
+                [AsyncActionStatus.Request]: REQUEST_RECOMMENDATIONS_STARTED,
+                [AsyncActionStatus.Success]: RECEIVE_RECOMMENDATIONS_SUCCESS,
+                [AsyncActionStatus.Failure]: RECEIVE_RECOMMENDATIONS_FAILURE,
             },
         },
     };

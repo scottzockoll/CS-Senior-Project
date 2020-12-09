@@ -1,7 +1,9 @@
+import json
+
+from flask import Response, request
+
 from server.auth import is_user
 from server.queries.create.query_create_feedback import query_create_feedback
-from flask import Response, request
-import json
 
 
 def create_feedback(userId: int, movieId: int):

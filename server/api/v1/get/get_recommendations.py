@@ -11,7 +11,12 @@ model_name = '100k'
 
 
 def get_recommendations(user_id: int):
-    if not is_admin() or not is_current_user(user_id):
+    """
+    Retrieves the top 10 best movies to fit a user's current taste.
+    :param int user_id: The user to make a recommendation for
+    :return: A list of recommended movies and all of their data
+    """
+    if not (is_admin() or is_current_user(user_id)):
         return Response(json.dumps({}), mimetype='application/json', status=401)
     else:
         connection, cursor = db_connection()
@@ -29,7 +34,7 @@ def get_recommendations(user_id: int):
 
         predict_mat = np.load(f"model/mf/{model_name}_r.npy")
 
-        # TODO; Slow. Should be loaded from disk.
+        # TODO: Slow. Should be loaded from disk.
         cursor.execute("SELECT MAX(movie_id) FROM movie_feedback;")
         model_size = cursor.fetchone()[0]
 
@@ -39,28 +44,28 @@ def get_recommendations(user_id: int):
         user_ratings = np.array(user_ratings).flat
         user_ratings_dense = np.zeros(model_size)
         np.put(user_ratings_dense, user_ratings, [1])
-        user_ratings = set(user_ratings)
+        user_ratings = set([int(rating)+1 for rating in user_ratings])
 
-        # calculate which users are the most similar to the requested user
+        # Calculate which users are the most similar to the requested user
         similarities = [(idx, similarity(user_ratings_dense, row.todense().flat)) for idx, row in enumerate(ratings_mat)]
         similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
 
-        # calculate the candidates based on the top 5 most similar users
-        # some movies will overlap, we'll weight those stronger
+        # Calculate the candidates based on the top 5 most similar users
+        # Some movies will overlap, we'll weight those stronger
         candidates = np.zeros_like(user_ratings_dense)
         for sim_id, sim_val in similarities[:5]:
             candidates += ratings_mat[sim_id - 1].todense().flat * predict_mat[sim_id - 1]
 
         candidates = list(
-            map(
-                lambda x: x[0],
-                sorted(
-                    filter(
-                        lambda x: x[0] not in user_ratings,
-                        enumerate(candidates)
-                    ),
-                    key=lambda x: x[1],
-                    reverse=True
+            filter(
+                lambda x: x not in user_ratings,
+                map(
+                    lambda x: x[0],
+                    sorted(
+                        enumerate(candidates),
+                        key=lambda x: x[1],
+                        reverse=True
+                    )
                 )
             )
         )
