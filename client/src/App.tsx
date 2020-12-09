@@ -10,7 +10,7 @@ import { MovieModal } from './routes/home/MovieModal';
 
 function App() {
     return (
-        <Box className="App">
+        <Box className="App" height={'100%'}>
             <NavigationBar />
             <MovieModal />
             <Switch>

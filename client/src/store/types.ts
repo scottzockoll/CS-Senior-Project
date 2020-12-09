@@ -1,3 +1,5 @@
+import { Movie } from './movie';
+
 export interface Paginated<T> {
     /**
      * Set of all acquired ids.
@@ -30,5 +32,5 @@ export interface NestedPaginated<T> {
 
 export interface RecommendationResults {
     isFetching: boolean;
-    movieTitles: string[];
+    movies: Movie[];
 }

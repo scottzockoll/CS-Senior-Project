@@ -32,33 +32,7 @@ import { AppAction } from '..';
 
 const initialRecommendationsState: RecommendationResults = {
     isFetching: false,
-    movieTitles: [
-        'Ant-Man (2015)',
-        '48 Hours (1982)',
-        'The Wolf of Wall St. (2013)',
-        'Spider-Man: Homecoming (2017)',
-        'Saving Private Ryan (1998)',
-        'Elf (2003)',
-        'Christmas Vacation (1989)',
-        'What Happened to Monday? (2017)',
-        'Wedding Crashers (2005)',
-        'Blackhawk Down (2001)',
-        'Beverly Hills Cop (1984)',
-        'Guardians of the Galaxy (2014)',
-        'Scream (1996)',
-        'Halloween (1978)',
-        'Toy Story (1995)',
-        'Cars (2006)',
-        'Captain America: The First Avenger (2011)',
-        'Avatar (2009)',
-        'Deadpool (2016)',
-        'The Sound of Music (1965)',
-        'Freaky Friday (2003)',
-        'Doctor Strange (2016)',
-        'Star Wars: The Last Jedi (2017)',
-        'Zootopia (2016)',
-        'Finding Nemo (2003)',
-    ],
+    movies: [],
 };
 
 export function recommendationsReducer(
@@ -74,7 +48,7 @@ export function recommendationsReducer(
         case RECEIVE_RECOMMENDATIONS_SUCCESS:
             if (action.response.entities.movies) {
                 return {
-                    movieTitles: Object.values(action.response.entities.movies).map((movie) => movie.title),
+                    movies: Object.values(action.response.entities.movies),
                     isFetching: false,
                 };
             } else {

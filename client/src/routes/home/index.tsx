@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Layer } from 'grommet';
+import { Box, Button, Heading, Image, Layer } from 'grommet';
 import React from 'react';
 import { Survey } from '../common/Survey';
 import en from '../../en.json';
@@ -21,31 +21,26 @@ type HomepageProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapD
 
 const HomepageComponent: React.FC<HomepageProps> = ({ surveyVisible, toggleSurvey }) => {
     return (
-        <Box background="light-3" height={'xxlarge'}>
-            <Box margin={{ left: 'auto', right: 'auto' }} direction="row">
-                <Heading margin="large">{en.UI_LABELS.welcomeToFlickPick}</Heading>
+        <Box background="light-3" height={'100%'}>
+            <Box margin={{ horizontal: 'auto' }} direction="row">
+                <Heading margin={{ vertical: 'small' }}>{en.UI_LABELS.welcomeToFlickPick}</Heading>
             </Box>
-            <Box margin={{ left: 'auto', right: 'auto', bottom: '80px' }}>
-                <img width={'200px'} src={'images/FlickPickIcon.png'} alt={'FlickPick Logo'} />
+            <Box margin={{ horizontal: 'auto', bottom: 'medium' }}>
+                <Image width={'200px'} src={'images/FlickPickIcon.png'} alt={'FlickPick Logo'} />
             </Box>
-            <Box
-                style={{ width: 250 }}
-                margin={{ left: 'auto', right: 'auto', top: '-20px', bottom: '50px' }}
-                width="medium"
-            >
+            <Box margin={{ horizontal: 'auto' }}>
                 <SearchField displayModal={true} />
             </Box>
-            <Box margin={{ left: 'auto', right: 'auto', top: '-15px' }} width="medium">
+            <Box pad={{ vertical: 'medium' }}>
                 <MovieCarousel />
+            </Box>
+            <Box margin={{ horizontal: 'auto', top: 'auto', bottom: 'xlarge' }}>
                 <Button
-                    style={{ width: 300 }}
                     primary
-                    margin={{ top: 'medium', left: 'auto', right: 'auto' }}
+                    margin={{ horizontal: 'auto' }}
                     label={en.UI_LABELS.BUTTON_LABELS.takeAMovieSurvey}
                     hoverIndicator
-                    onClick={() => {
-                        toggleSurvey(true);
-                    }}
+                    onClick={() => toggleSurvey(true)}
                 />
             </Box>
             {/* User Modal displayed when row is clicked */}
