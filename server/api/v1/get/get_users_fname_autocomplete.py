@@ -17,10 +17,13 @@ def get_users_fname_autocomplete(firstName: str, offset: int, limit: int = 500):
     """
 
     try:
+        # Validates user permission
         if not is_admin():
             return Response(json.dumps({}), mimetype='application/json', status=401)
+        # Validate input parameters
         elif not isinstance(firstName, str) or not isinstance(offset, int) or not isinstance(limit, int):
             return Response(json.dumps({}), mimetype='application/json', status=400)
+        # Retrieve autocomplete suggestions
         else:
             result = query_get_users_fname_autocomplete(firstName, offset, limit)
 

@@ -7,6 +7,11 @@ from time import time
 
 
 def auth_user(email: str):
+    """
+    Authenticates a user.
+    :param str email: The email of the user
+    :return: Response type result of the action
+    """
     print(f'Attempting authentication for {email}')
 
     user = authenticate(email, request.form['auth_token'])

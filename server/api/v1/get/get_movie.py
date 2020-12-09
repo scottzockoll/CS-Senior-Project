@@ -1,7 +1,8 @@
-from server.auth import is_user
-from flask import Response
 import json
 
+from flask import Response
+
+from server.auth import is_user
 from server.queries.get.query_get_movie import query_get_movie
 
 

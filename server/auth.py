@@ -23,9 +23,9 @@ def verify_user(firstName: str, lastName: str, email: str):
     """
     Check if the user signing in is a user in the database. If not,
     an entry is created in the user table.
-    :param firstName: First name of the user signing in
-    :param lastName: Last name of the user signing in
-    :param email: Email address of the user signing in
+    :param str firstName: First name of the user signing in
+    :param str lastName: Last name of the user signing in
+    :param str email: Email address of the user signing in
     :return: Authorization status of the request.
     """
     con, cursor = db_connection()
@@ -68,9 +68,9 @@ def check_update(firstName: str, lastName: str, email: str):
     Check if the user signing in has updated personal details and update values
     in the database if need be.
     NOTE: Only firstName and lastName can be updated
-    :param firstName: First name of the user signing in
-    :param lastName: Last name of the user signing in
-    :param email: Email address of the user signing in
+    :param str firstName: First name of the user signing in
+    :param str lastName: Last name of the user signing in
+    :param str email: Email address of the user signing in
     :return: Authorization status of the request.
     """
     con, cursor = db_connection()
@@ -95,6 +95,13 @@ def check_update(firstName: str, lastName: str, email: str):
 
 
 def _fetch_token_info(token: str) -> (str, str, str, int):
+    """
+    Retrieves user info from their sign in token.
+    This info includes their first name, last name,
+    email address, and the expiration of the token.
+    :param str token: Sign in token of the user.
+    :return: Tuple of user info from token.
+    """
     gapi_endpoint = "962049608735-md7079ef0ghdld3rq8cda06gticrp2p8.apps.googleusercontent.com"
     request = requests.Request()
     response = id_token.verify_oauth2_token(
@@ -114,8 +121,8 @@ def _fetch_token_info(token: str) -> (str, str, str, int):
 def authenticate(email: str, token: str) -> Union[Dict, None]:
     """
     Validate the user has the ability to login with the given token.
-    :param email: Email address to attempt to validate against
-    :param token: OAuth token to attempt to validate
+    :param str email: Email address to attempt to validate against
+    :param str token: OAuth token to attempt to validate
     :return: Authorization status of the request.
     """
     from server import app
@@ -191,7 +198,7 @@ def is_current_user(id: int):
     the id trying to be deleted.
     NOTE: if_current_user is false, is_admin must be true
     when checking.
-    :param id: The id of the user being deleted
+    :param int id: The id of the user being deleted
     :return: Boolean
     """
     user = session.get('user')
