@@ -6,7 +6,7 @@ describe('movie search', () => {
 
     const movieTitle = 'Toy Story';
 
-    it('can search for movie', () => {
+    it.skip('can search for movie', () => {
         searchForMovie(movieTitle);
         cy.get(selectors.movieModalSelectors.header).should('exist');
         closeMovieModal();

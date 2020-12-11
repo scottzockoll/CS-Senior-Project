@@ -50,6 +50,7 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "searchUser": "Search User",
-    "loading": "Loading"
+    "loading": "Loading",
+    "loadingYourRecommendations": "Loading your recommendations..."
   }
 }

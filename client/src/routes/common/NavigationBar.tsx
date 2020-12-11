@@ -23,6 +23,7 @@ const NavigationBar: React.FC<NavigationBarProps> = (props: NavigationBarProps) 
                         plain={true}
                         label={<Image height="40" src="images/FlickPickSmall.png" />}
                         onClick={() => history.push('/')}
+                        focusIndicator={false}
                     />
                 </Box>
                 <Box margin={{ left: 'auto' }}>

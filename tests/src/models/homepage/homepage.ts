@@ -4,9 +4,9 @@ export const messages = {
     headerMessage: 'Welcome to FlickPick!',
     movieModalHeader: 'Movie Information',
     takeAMovieSurvey: 'Take a Movie Survey',
-    go: 'Go',
     close: 'Close',
     submit: 'Submit',
+    cancel: 'Cancel',
     movieSurvey: 'Movie Survey',
     description: 'We want to provide you with the best possible content and recommendations',
 };
@@ -14,16 +14,23 @@ export const messages = {
 export const selectors = {
     header: `.StyledHeading-sc-1rdh4aw-0:contains(${messages.headerMessage})`,
     movieSearch: '.StyledTextInput-sc-1x30a0s-0',
-    goButton: `.gHIFjI > .StyledButton-sc-323bzc-0:contains(${messages.go})`,
-    takeAMovieSurveyButton: `.gjLUkY:contains(${messages.takeAMovieSurvey})`,
+    takeAMovieSurveyButton: `.cSUeQh > .StyledButton-sc-323bzc-0:contains(${messages.takeAMovieSurvey})`,
     movieModalSelectors: {
         header: `.Exrhr > .ApBkK > h1:contains(${messages.movieModalHeader})`,
         closeButton: `.gwuqRp:contains(${messages.close})`,
     },
+    ratingSelectors: {
+        ratingOne: ':nth-child(3) > .iYerny > .StyledBox-sc-13pk1d4-0 > :nth-child(5) > polygon',
+        ratingTwo: ':nth-child(4) > .iYerny > .StyledBox-sc-13pk1d4-0 > :nth-child(1) > polygon',
+        ratingThree: ':nth-child(5) > .iYerny > .StyledBox-sc-13pk1d4-0 > :nth-child(4) > polygon',
+        ratingFour: ':nth-child(6) > .iYerny > .StyledBox-sc-13pk1d4-0 > :nth-child(5) > polygon',
+        ratingFive: ':nth-child(7) > .iYerny > .StyledBox-sc-13pk1d4-0 > :nth-child(2) > polygon',
+    },
     initialSurveyModalSelectors: {
         header: `.hctKMK > h1:contains(${messages.movieSurvey})`,
-        description: 'text',
+        description: '.dcczsi > .StyledText-sc-1sadyjn-0',
         submitButton: `.eywOwc:contains(${messages.submit})`,
+        cancelButton: `.gwuqRp:contains(${messages.cancel})`,
     },
 };
 
@@ -36,11 +43,6 @@ export function navigateToHomepage(): void {
 
 export function searchForMovie(movieTitle: string): void {
     fillTextInput(selectors.movieSearch, movieTitle);
-    clickGoButton();
-}
-
-export function clickGoButton(): void {
-    cy.get(selectors.goButton).click();
 }
 
 export function closeMovieModal(): void {
@@ -53,6 +55,19 @@ export function openInitialSurveyModal(): void {
     cy.get(selectors.takeAMovieSurveyButton).click();
     cy.get(selectors.initialSurveyModalSelectors.header).should('exist');
     validateContains(selectors.initialSurveyModalSelectors.description, messages.description);
+}
+
+export function closeInitialSurveyModal(): void {
+    cy.get(selectors.initialSurveyModalSelectors.cancelButton).click();
+    cy.get(selectors.initialSurveyModalSelectors.header).should('not.exist');
+}
+
+export function selectRatings(): void {
+    cy.get(selectors.ratingSelectors.ratingOne).click();
+    cy.get(selectors.ratingSelectors.ratingTwo).click();
+    cy.get(selectors.ratingSelectors.ratingThree).click();
+    cy.get(selectors.ratingSelectors.ratingFour).click();
+    cy.get(selectors.ratingSelectors.ratingFive).click();
 }
 
 export function fillInitialSurvey(titles: string[]): void {

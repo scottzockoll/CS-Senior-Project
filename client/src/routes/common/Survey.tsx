@@ -99,6 +99,7 @@ class UnconnectedSurvey extends React.Component<SurveyProps> {
                                 onClick={() => {
                                     this.props.submitRatings(this.props.user.id, this.props.surveyMovies);
                                     this.props.toggleSurvey(false);
+                                    window.location.reload(true);
                                 }}
                             />
                             <Button
