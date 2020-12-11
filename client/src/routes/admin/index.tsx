@@ -20,9 +20,17 @@ function downloadAllToCSV() {
 const AdminPage: React.FC = () => {
     return (
         <Box>
-            <Box direction={'row'} pad={'small'}>
-                <Button secondary label={en.UI_LABELS.BUTTON_LABELS.downloadAll} onClick={() => downloadAllToCSV()} />
-                <UserSearchBar />
+            <Box direction={'row'} pad={'small'} justify={'between'} margin={{ top: '10px' }}>
+                <Box margin={{ bottom: '30px' }}>
+                    <Button
+                        secondary
+                        label={en.UI_LABELS.BUTTON_LABELS.downloadAll}
+                        onClick={() => downloadAllToCSV()}
+                    />
+                </Box>
+                <Box margin={{ bottom: '30px' }}>
+                    <UserSearchBar />
+                </Box>
             </Box>
             <UserTable />
         </Box>

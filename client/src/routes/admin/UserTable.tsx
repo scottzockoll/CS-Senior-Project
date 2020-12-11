@@ -78,7 +78,7 @@ class UnconnectedUserTable extends React.Component<UserTableProps, UserTableStat
 
     render() {
         return (
-            <Box overflow={{ vertical: 'scroll' }} height={{ max: 'large' }}>
+            <Box margin={{ top: '30px' }} overflow={{ vertical: 'scroll' }} height={{ max: 'large' }}>
                 {this.props.users.length > 0 && (
                     <DataTable
                         pin={true}
