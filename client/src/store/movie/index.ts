@@ -10,6 +10,7 @@ export interface Movie {
     genres: string[];
     rating: number;
     tags: Record<number, Tag>;
+    feedbackId: number;
 }
 
 export interface Rating {

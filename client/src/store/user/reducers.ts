@@ -233,27 +233,35 @@ export function userRatingsReducer(
         case RECEIVE_USER_SUCCESS:
         case RECEIVE_USERS_SUCCESS:
             const movies: Record<number, Movie> | undefined = action.response.entities.movies;
+            let users: Array<User> | undefined = Object.values(action.response.entities.users as Object);
             let entities: Record<number, Record<number, Rating>> = {};
-            if (action.response.entities.movies) {
-                let ratings: Array<Rating> = [
-                    ...Object.values(movies as Object).map((movie) => ({
-                        userId: movie.parentId,
-                        rating: movie.rating,
-                        movieId: movie.id,
-                        feedbackId: movie.feedbackId,
-                    })),
-                ];
-                for (let r in ratings) {
-                    let rating: Rating = ratings[r];
-                    if (entities[rating.userId] === undefined) {
-                        entities[rating.userId] = { [rating.movieId]: rating };
-                    } else {
-                        entities[rating.userId][rating.movieId] = rating;
+            if (users) {
+                for (let user in users) {
+                    entities[users[parseInt(user)].id] = {};
+                }
+            }
+
+            if (movies) {
+                for (let u in users) {
+                    let user: User = users[parseInt(u)];
+                    entities[user.id] = {};
+                    for (let m in user.movies) {
+                        let movie: Movie = movies[user.movies[m]];
+                        entities[user.id][movie.id] = {
+                            userId: user.id,
+                            rating: movie.rating,
+                            movieId: movie.id,
+                            feedbackId: movie.feedbackId,
+                        };
                     }
                 }
+
                 return {
                     ...state,
-                    ids: [...state.ids, ...Object.values(action.response.entities.movies).map((movie) => movie.id)],
+                    ids: [
+                        ...state.ids,
+                        ...Object.values(action.response.entities.movies as Object).map((movie) => movie.id),
+                    ],
                     entities: {
                         ...state.entities,
                         ...entities,

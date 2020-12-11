@@ -111,7 +111,7 @@ class UnconnectedUserSearchBar extends React.Component<UserSearchFieldProps, Sea
     render() {
         return (
             <Box direction="row" margin={{ left: 'auto' }}>
-                <Box>
+                <Box margin={{ right: '5px', bottom: '10px' }}>
                     <Select
                         options={['First Name', 'Last Name', 'Email']}
                         ref={this.selectRef}
